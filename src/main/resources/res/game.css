@@ -4,6 +4,17 @@ html, body {
     background: #dddddd;
 }
 
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    overflow: auto;
+    flex-grow: 1;
+}
+
 @media(min-width: 960px) {
     #root {
         margin: 0 auto;
@@ -23,23 +34,28 @@ html, body {
     text-align: center;
 }
 
+.start-appearance {
+    min-height: 250px;
+}
+
 .error {
     color: #aa3333;
     font-weight: bold;
 }
 
 .chat-box {
-    position: fixed;
-    bottom: 0;
+    /*position: fixed;*/
+    /*bottom: 0;*/
     border: 1px solid black;
     background: #eee;
     width: 100%;
-    padding: 0.5em;
+    /*padding: 0.5em;*/
     box-sizing: border-box;
     border-radius: 8px 8px 0px 0px;
 }
 
 .chat-history {
+    margin: 0.5em;
     overflow-y:scroll;
     height: 100px;
 }
@@ -65,7 +81,7 @@ html, body {
 
 .chat-send-div {
     display: flex;
-    margin-top: 0.5em;
+    margin: 0.5em;
 }
 
 .chat-send-div input {
@@ -92,6 +108,12 @@ html, body {
 }
 .flex-grow-1 {
     flex-grow: 1;
+}
+.mt-4 {
+    margin-top: 1em;
+}
+.mt-8 {
+    margin-top: 2em;
 }
 
 .colorbox {

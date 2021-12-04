@@ -127,6 +127,8 @@ abstract class Creature {
 	 *
 	 */
 
+	val isAlive get() = HP > 0
+
 	val gender
 		get() = when {
 			hasCock() && hasVagina() -> Gender.HERM

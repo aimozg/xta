@@ -1,13 +1,16 @@
 package xta
 
 import xta.game.PlayerCharacter
+import xta.game.Scene
+import xta.game.combat.Combat
+import xta.game.scenes.Limbo
 import xta.logging.LogContext
 import xta.net.protocol.GuestProtocol
 import xta.net.protocol.RemoteGuestProtocol
 import xta.net.protocol.messages.ScreenJson
 import xta.net.transport.DeadConnection
-import xta.text.RemoteDisplay
 import xta.text.Parser
+import xta.text.RemoteDisplay
 
 /*
  * Created by aimozg on 01.12.2021.
@@ -35,9 +38,26 @@ class Player(
 	val isOnline get() = isMe || guest.isConnected
 
 	val display = RemoteDisplay(this, Parser(this, this))
+	var scene: Scene = Limbo
 	var screen: ScreenJson
 		get() = display.screen
 		set(value) {
 			display.screen = value
 		}
+
+	/*
+	 *     ██████  ██████  ███    ███ ██████   █████  ████████
+	 *    ██      ██    ██ ████  ████ ██   ██ ██   ██    ██
+	 *    ██      ██    ██ ██ ████ ██ ██████  ███████    ██
+	 *    ██      ██    ██ ██  ██  ██ ██   ██ ██   ██    ██
+	 *     ██████  ██████  ██      ██ ██████  ██   ██    ██
+	 *
+	 *
+	 */
+
+	var combat: Combat? = null
+	var party: Combat.Party = Combat.Party(listOf(this))
+	val inCombat get() =
+		combat?.ongoing == true
+
 }

@@ -1,16 +1,35 @@
 package xta.utils
 
 import kotlinx.browser.document
-import org.w3c.dom.Document
-import org.w3c.dom.DocumentFragment
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.asList
+import org.w3c.dom.*
 
 fun Document.getElementByIdOrThrow(elementId:String) =
 	getElementById(elementId) ?: error("Element #$elementId not found in document")
 
 fun DocumentFragment.getElementByIdOrThrow(elementId:String) =
 	getElementById(elementId) ?: error("Element #$elementId not found in document fragment")
+
+fun<T: Element> T.trim():T {
+	trimStart()
+	trimEnd()
+	return this
+}
+fun<T: Element> T.trimStart():T {
+	val f = firstChild
+	when {
+		f is Element -> f.trimStart()
+		f?.nodeType == Node.TEXT_NODE -> f.textContent = f.textContent?.trimStart()
+	}
+	return this
+}
+fun<T: Element> T.trimEnd():T {
+	val f = firstChild
+	when {
+		f is Element -> f.trimEnd()
+		f?.nodeType == Node.TEXT_NODE -> f.textContent = f.textContent?.trimEnd()
+	}
+	return this
+}
 
 fun HTMLElement.appendHTML(content:String) {
 	val f = document.createElement("div")

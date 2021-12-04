@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CoC XTA</title>\
+    <title>CoC XTA</title>
 </head>
 <body>
 
@@ -13,19 +13,19 @@
     <div class="start-menu">
         <h1>CoC Xianxia Tournament Arc</h1>
         Import your CoCX save file: <input type="file" data-ref="savefile">
-        <div class="d-flex">
+        <div class="d-flex start-appearance">
             <div data-ref="charview" class="float-left"></div>
             <div data-ref="maintext"></div>
         </div>
-        <div>
+        <div class="mt-4">
             <button data-ref="host-btn" type="button">Host game</button>
             <button data-ref="join-btn" type="button">Join game</button>
-        </div>
-        <div>
             <label>
                 <input type="checkbox" data-ref="agreement"> I have read the privacy note.
             </label>
-            <div>
+        </div>
+        <div class="">
+            <div class="mt-4">
                 <strong>Privacy note:</strong>
                 You communicate with the lobby server of your choice and other players.
                 Your public IP and all communications can be viewed by a lobby server.
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="chat-send-div">
-            <label>Message</label>
+            <!--<label>Message</label>-->
             <input type="text" data-ref="message-input">
             <button type="button" data-ref="send-button">Send</button>
         </div>

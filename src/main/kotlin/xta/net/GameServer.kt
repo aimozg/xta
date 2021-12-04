@@ -1,5 +1,6 @@
 package xta.net
 
+import org.khronos.webgl.Uint8Array
 import xta.Game
 import xta.Player
 import xta.game.PlayerCharacter
@@ -19,7 +20,6 @@ import xta.net.transport.AbstractConnection
 import xta.utils.decodeToJson
 import xta.utils.jsobject
 import xta.utils.stringify
-import org.khronos.webgl.Uint8Array
 
 /**
  * ```
@@ -70,6 +70,7 @@ class GameServer(): LogContext {
 		players.add(player)
 	}
 	fun playerLeft(player: Player, reason:String) {
+		player.scene.onLeave(player)
 		broadcastChatMessage("${player.chatName} left the game ($reason)")
 		players.remove(player)
 	}
@@ -169,11 +170,7 @@ class GameServer(): LogContext {
 		} else {
 			logger.warn(player, "Inappropriate action $sceneId/$actionId requested (player is in ${player.screen.sceneId})")
 		}
-		player.guest.onMessage(jsobject { msg ->
-			msg.statusUpdate = jsobject {
-				it.screen = player.screen
-			}
-		})
+		updateScreen(player)
 	}
 
 	private fun placePlayer(player: Player) {
@@ -191,6 +188,17 @@ class GameServer(): LogContext {
 		for (player in players) {
 			player.guest.onMessage(msg)
 		}
+	}
+
+	fun updateScene(player: Player) {
+		player.scene.execute(player)
+	}
+	fun updateScreen(player: Player) {
+		player.guest.onMessage(jsobject { msg ->
+			msg.statusUpdate = jsobject {
+				it.screen = player.screen
+			}
+		})
 	}
 
 	companion object {

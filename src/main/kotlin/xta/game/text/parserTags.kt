@@ -20,6 +20,7 @@ fun evalParserTag(
 			"malefemaleherm" -> Appearance.maleFemaleHerm(character)
 			"race" -> character.race()
 
+			"name" -> character.name
 			"is" -> if (character === myCharacter) "are" else "is"
 			"he" -> if (character === myCharacter) "you" else character.mf("he","she")
 			"him" -> if (character === myCharacter) "your" else character.mf("him","her")

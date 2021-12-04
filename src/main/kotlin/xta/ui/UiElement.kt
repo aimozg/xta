@@ -2,11 +2,12 @@ package xta.ui
 
 import kotlinx.browser.document
 import org.w3c.dom.*
+import xta.utils.trim
 
 open class UiElement(
 	template: HTMLTemplateElement
 ) {
-	constructor(templateId: String): this(findTemplate(templateId))
+	constructor(templateId: String): this(findTemplate(templateId).trim())
 
 	val fragment: DocumentFragment = template.content.cloneNode(true) as DocumentFragment
 

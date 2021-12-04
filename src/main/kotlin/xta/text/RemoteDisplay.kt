@@ -1,18 +1,19 @@
 package xta.text
 
+import js.jspush
 import xta.Player
 import xta.game.Scene
+import xta.game.scenes.Limbo
 import xta.net.protocol.messages.ScreenJson
 import xta.utils.jsobject
-import js.jspush
 
 class RemoteDisplay(
 	override val player: Player,
 	override val parser: Parser
 ): Display() {
 	var screen: ScreenJson = jsobject { scene ->
-		scene.sceneId = "limbo"
-		scene.content = "You float in nothingness, disconnected from server"
+		scene.sceneId = Limbo.sceneId
+		scene.content = "You float in nothingness"
 		scene.actions = emptyArray()
 	}
 	val callbacks = HashMap<String,()->Unit>()
