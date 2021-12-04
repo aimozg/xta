@@ -1,5 +1,6 @@
 package xta.text
 
+import xta.Game
 import xta.Player
 import xta.game.Scene
 
@@ -33,5 +34,9 @@ abstract class Display {
 			goto(scene)
 		}
 	}
+
+	fun allPlayers() = Game.server?.players?:listOf(player)
+	fun playersHere() = allPlayers().filter{ it.scene.sceneId == sceneId}
+	fun otherPlayers() = playersHere() - player
 }
 

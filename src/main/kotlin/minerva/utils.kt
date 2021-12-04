@@ -1,7 +1,7 @@
 package minerva
 
-import xta.utils.mapToDynamicArray
 import js.Object
+import xta.utils.mapToDynamicArray
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -32,7 +32,6 @@ const val AMF3_TYPE_OBJECT = "Object"
 
 const val AMF3_OBJECT_CLASS_OBJECT = "Object"
 
-@JsExport
 fun unwrap(wrappedValue: AMF3WrappedValue): dynamic {
 	val value = wrappedValue.value
 	return when (val type = wrappedValue.__traits.type) {

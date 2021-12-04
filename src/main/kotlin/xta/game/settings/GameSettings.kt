@@ -1,10 +1,10 @@
 package xta.game.settings
 
+import js.Object
+import kotlinx.browser.localStorage
 import xta.logging.LogManager
 import xta.utils.jsObject
 import xta.utils.randomString
-import js.Object
-import kotlinx.browser.localStorage
 import kotlin.random.Random
 
 /*
@@ -18,6 +18,8 @@ object GameSettings {
 		reset()
 	}
 	fun reset() {
+		data.eula = 0
+
 		data.wsLobbyUrl = "ws://127.0.0.1:8081/lobby"
 		data.wsIdentity = Random.Default.randomString(16)
 		data.wsToken = Random.Default.randomString(16)

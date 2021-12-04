@@ -4,7 +4,7 @@ import org.khronos.webgl.Uint8Array
 import xta.Game
 import xta.Player
 import xta.game.PlayerCharacter
-import xta.game.scenes.TownScene
+import xta.game.scenes.Town
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.net.protocol.MessageToGuest
@@ -174,7 +174,7 @@ class GameServer(): LogContext {
 	}
 
 	private fun placePlayer(player: Player) {
-		TownScene.execute(player)
+		Town.main.execute(player)
 	}
 
 	fun broadcastChatMessage(content:String, senderName:String = "[Server]", senderStyle:String = "-server") {

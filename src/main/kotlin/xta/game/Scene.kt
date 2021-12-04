@@ -2,6 +2,7 @@ package xta.game
 
 import xta.Game
 import xta.Player
+import xta.logging.LogManager
 import xta.text.Display
 
 /*
@@ -9,7 +10,8 @@ import xta.text.Display
  */
 abstract class Scene(val sceneId: String) {
 	open val updateOnVisit: Boolean get() = false
-	open fun onLeave(player: Player){
+	open fun onLeave(player: Player) {
+		logger.debug(player,"leaves",sceneId)
 		if (updateOnVisit) {
 			for (other in playersHere()) {
 				if (player != other) {
@@ -26,6 +28,7 @@ abstract class Scene(val sceneId: String) {
 		if (oldScene != this) {
 			player.scene = this
 			oldScene.onLeave(player)
+			logger.debug(player,"enters",sceneId)
 			if (isNew && updateOnVisit) {
 				for (other in playersHere()) {
 					if (player != other) {
@@ -35,14 +38,20 @@ abstract class Scene(val sceneId: String) {
 			}
 		}
 	}
+
 	fun execute(display: Display) {
 		display.startScene(sceneId)
 		display.doExecute()
 		display.endScene()
 	}
+
 	abstract fun Display.doExecute()
 
-	fun allPlayers(): List<Player> = Game.server?.players?: emptyList()
+	fun allPlayers(): List<Player> = Game.server?.players ?: emptyList()
 	fun playersHere() = allPlayers().filter { it.scene == this }
-	fun Display.otherPlayers() = allPlayers().filter { it != player && it.scene == this@Scene }
+
+	companion object {
+		private val logger = LogManager.getLogger("xta.game.Scene")
+	}
 }
+

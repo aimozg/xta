@@ -1,16 +1,17 @@
 package xta.ui
 
-import xta.Game
-import xta.game.PlayerCharacter
-import xta.ScreenManager
-import xta.charview.CharViewImage
-import xta.flash.FlashImporter
-import xta.game.scenes.PlayerAppearanceScene
-import xta.text.Parser
 import kotlinx.dom.clear
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.files.get
+import xta.Game
+import xta.ScreenManager
+import xta.charview.CharViewImage
+import xta.flash.FlashImporter
+import xta.game.PlayerCharacter
+import xta.game.scenes.PlayerAppearanceScene
+import xta.game.settings.GameSettings
+import xta.text.Parser
 
 /*
  * Created by aimozg on 29.11.2021.
@@ -36,6 +37,7 @@ class StartMenu: UiScreen("start-menu") {
 		ScreenManager.chatEnabled = false
 		hostButton.disabled = true
 		joinButton.disabled = true
+		agreement.checked = GameSettings.data.eula == 1
 
 		fun importCharacter(character: PlayerCharacter) {
 			Game.me.char = character
@@ -47,6 +49,10 @@ class StartMenu: UiScreen("start-menu") {
 		}
 		if (Game.characterImported) {
 			showCharacter()
+			if (agreement.checked) {
+				hostButton.disabled = false
+				joinButton.disabled = false
+			}
 		}
 		agreement.onchange = {
 			if (Game.characterImported && agreement.checked) {
@@ -69,9 +75,11 @@ class StartMenu: UiScreen("start-menu") {
 			}
 		})
 		hostButton.onclick = {
+			GameSettings.data.eula = 1
 			ScreenManager.showConnectMenu(true)
 		}
 		joinButton.onclick = {
+			GameSettings.data.eula = 1
 			ScreenManager.showConnectMenu(false)
 		}
 	}

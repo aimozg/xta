@@ -13,6 +13,7 @@ import xta.utils.jsobject
 /**
  * Globals
  */
+@JsExport
 object Game {
 	val me = Player(isMe = true)
 

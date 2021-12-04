@@ -1,14 +1,14 @@
 package xta.ui
 
-import xta.Game
-import xta.game.PlayerCharacter
-import xta.ScreenManager
-import xta.net.protocol.messages.ScreenJson
-import xta.game.settings.GameSettings
 import kotlinx.dom.appendElement
 import kotlinx.dom.clear
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.asList
+import xta.Game
+import xta.ScreenManager
+import xta.game.PlayerCharacter
+import xta.game.settings.GameSettings
+import xta.net.protocol.messages.ScreenJson
 
 /*
  * Created by aimozg on 01.12.2021.
@@ -49,7 +49,7 @@ class MainScreen: UiScreen("main-screen") {
 	}
 
 	fun showCharacter(char: PlayerCharacter) {
-		statusPanel.showCharacter(char, GameSettings.data.render)
+		statusPanel.showCharacter(char, GameSettings.data.render?:false)
 	}
 
 }

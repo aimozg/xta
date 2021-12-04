@@ -2,9 +2,9 @@ package xta
 
 import kotlinx.browser.window
 import xta.charview.CharViewImage
+import xta.game.settings.GameSettings
 import xta.logging.LogManager
 import xta.logging.Logger
-import xta.game.settings.GameSettings
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -21,7 +21,7 @@ fun main() {
 	GameSettings.load()
 	Game.whisperToSelf("Welcome to the CoC-XTA")
 	ScreenManager.showStartMenu()
-	if (GameSettings.data.render) {
+	if (GameSettings.data.render == true) {
 		Game.whisperToSelf("Loading images...")
 		window.setTimeout({
 			CharViewImage.INSTANCE
