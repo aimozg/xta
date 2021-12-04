@@ -1,0 +1,61 @@
+package xta.text
+
+import xta.Player
+import xta.game.Scene
+import xta.net.protocol.messages.ScreenJson
+import xta.utils.jsobject
+import js.jspush
+
+class RemoteDisplay(
+	override val player: Player,
+	override val parser: Parser
+): Display() {
+	var screen: ScreenJson = jsobject { scene ->
+		scene.sceneId = "limbo"
+		scene.content = "You float in nothingness, disconnected from server"
+		scene.actions = emptyArray()
+	}
+	val callbacks = HashMap<String,()->Unit>()
+
+	override fun rawOutput(text: String) {
+		screen.content += text
+	}
+
+	override var sceneId: String
+		get() = screen.sceneId
+		set(value) {
+			screen.sceneId = value
+		}
+
+	override fun endScene() {
+		if (!player.guest.isConnected) return
+		player.guest.onMessage(jsobject { msg ->
+			msg.sceneTransition = jsobject {
+				it.screen = this@RemoteDisplay.screen
+			}
+		})
+	}
+
+	override fun clearOutput() {
+		screen.content = ""
+		screen.actions = emptyArray()
+		callbacks.clear()
+	}
+
+	override fun goto(scene: Scene) {
+		scene.execute(player)
+	}
+
+	// auto-generate action ids?
+	override fun addButton(label: String, actionId: String, hint: String, disabled: Boolean, callback: () -> Unit) {
+		screen.actions.jspush(jsobject {
+			if (disabled) it.disabled = true
+			it.label = parser.parse(label)
+			it.actionId = actionId
+			if (hint.isNotEmpty()) it.hint = parser.parse(hint)
+			if (!disabled) {
+				callbacks[actionId] = callback
+			}
+		})
+	}
+}

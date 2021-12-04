@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CoC XTA</title>
+<!--    <script type="text/javascript" src="res/bugout.min.js"></script>-->
+</head>
+<body>
+
+<div id="root"></div>
+<div id="chatbox-container"></div>
+
+<template id="start-menu">
+    <div class="start-menu">
+        <h1>CoC Xianxia Tournament Arc</h1>
+        Import your CoCX save file: <input type="file" data-ref="savefile">
+        <div class="d-flex">
+            <div data-ref="charview" class="float-left"></div>
+            <div data-ref="maintext"></div>
+        </div>
+        <div>
+            <button data-ref="host-btn" type="button">Host game</button>
+            <button data-ref="join-btn" type="button">Join game</button>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" data-ref="agreement"> I have read the privacy note.
+            </label>
+            <div>
+                <strong>Privacy note:</strong>
+                <!-- for WebSocket (WsLobby) transport   -->
+                You communicate with the lobby server of your choice and other players.
+                Your public IP and all communications can be viewed by a lobby server.
+
+                <!-- for WebRTC/WebTorrent (Bugout) transport -->
+                <!--    Your public and internal IPs are shared to trackers and other players.
+                    Players communicate browser-to-browser via WebRTC.
+                    Servers are announced and discovered via WebTorrent using trackers <a href="https://openwebtorrent.com">tracker.openwebtorrent.com</a> and <a href="https://btorrent.xyz">tracker.btorrent.xyz</a>.-->
+
+                If you don't like it, don't click "Host game" or "Join game".
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="connect-screen">
+    <div class="connect-screen">
+        <div>
+            <label>Lobby server: </label>
+            <input type="text" data-ref="lobby-url" value="ws://127.0.0.1:8081/">
+        </div>
+        <div>
+            <label>Username: </label>
+            <input type="text" data-ref="identity">
+        </div>
+        <div>
+            <label>Password: </label>
+            <input type="password" data-ref="token">
+        </div>
+        <div data-ref="host-block">
+            <label>Room ID: </label>
+            <input type="text" data-ref="room">
+        </div>
+        <div data-ref="guest-block">
+            <label>Invite: </label>
+            <input type="text" data-ref="invite">
+        </div>
+        <button type="button" data-ref="connect-btn">Connect</button>
+    </div>
+</template>
+
+<template id="main-screen">
+    <div class="main-screen">
+        <div class="mainscreen-topmenu"></div>
+        <div class="mainscreen-status" data-ref="status"></div>
+        <div data-ref="text-output" class="mainscreen-text"></div>
+        <div data-ref="actions" class="mainscreen-actions"></div>
+    </div>
+</template>
+
+<template id="status-panel">
+    <div class="status-panel d-flex-column">
+        <div class="char-title" data-ref="title"></div>
+        <div class="char-subtitle" data-ref="subtitle"></div>
+        <div class="flex-grow-1"></div>
+        <div class="char-render" data-ref="render"></div>
+    </div>
+</template>
+
+<template id="chat-box">
+    <div class="chat-box">
+        <div data-ref="history" class="chat-history">
+            <div data-ref="message" class="chat-message">
+                <span data-ref="message-author" class="message-author"></span>
+                <span data-ref="message-content" class="message-content"></span>
+            </div>
+        </div>
+        <div class="chat-send-div">
+            <label>Message</label>
+            <input type="text" data-ref="message-input">
+            <button type="button" data-ref="send-button">Send</button>
+        </div>
+    </div>
+</template>
+
+
+<script src="cocxta.js"></script>
+</body>
+</html>
