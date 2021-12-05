@@ -3,7 +3,6 @@ package xta.net.protocol
 import xta.Player
 import xta.game.PlayerCharacter
 import xta.logging.LogContext
-import xta.net.protocol.messages.toJson
 import xta.utils.jsobject
 
 /*
@@ -26,7 +25,7 @@ abstract class HostProtocol: LogContext {
 	fun sendOfferCharMessage(char: PlayerCharacter) {
 		sendMessage(jsobject { msg ->
 			msg.offerChar = jsobject {
-				it.char = char.toJson()
+				it.char = char.serializeToJson()
 			}
 		})
 	}

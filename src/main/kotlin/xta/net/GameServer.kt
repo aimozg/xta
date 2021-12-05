@@ -14,8 +14,6 @@ import xta.net.protocol.guest.OfferCharMessage
 import xta.net.protocol.guest.SceneActionMessage
 import xta.net.protocol.guest.SendChatMessage
 import xta.net.protocol.guest.StatusRequestMessage
-import xta.net.protocol.messages.fromJson
-import xta.net.protocol.messages.toJson
 import xta.net.transport.AbstractConnection
 import xta.utils.decodeToJson
 import xta.utils.jsobject
@@ -115,7 +113,7 @@ class GameServer(): LogContext {
 	private fun handleOfferCharMessage(sender: Player, request: OfferCharMessage) {
 		// TODO validate
 		val oldChar = if (sender.charLoaded) sender.char.chatName else null
-		sender.char = PlayerCharacter().fromJson(request.char)
+		sender.char = PlayerCharacter().apply { deserializeFromJson(request.char) }
 		sender.guest.onMessage(jsobject { msg ->
 			msg.charAccepted = jsobject {  }
 		})
@@ -133,7 +131,7 @@ class GameServer(): LogContext {
 	private fun handleStatusRequestMessage(sender: Player, request: StatusRequestMessage) {
 		sender.guest.onMessage(jsobject { msg ->
 			msg.statusUpdate = jsobject {
-				if (request.char == true) it.char = sender.char.toJson()
+				if (request.char == true) it.char = sender.char.serializeToJson()
 				if (request.screen == true) it.screen = sender.screen
 			}
 		})

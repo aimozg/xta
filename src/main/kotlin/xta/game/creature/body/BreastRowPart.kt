@@ -1,5 +1,7 @@
 package xta.game.creature.body
 
-class BreastRowPart {
-	var breastRating:Int = BreastCup.FLAT
+import xta.net.serialization.JsonSerializable
+
+class BreastRowPart: JsonSerializable() {
+	var breastRating:Int by property(BreastCup.FLAT)
 }

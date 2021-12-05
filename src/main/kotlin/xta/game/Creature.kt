@@ -1,16 +1,15 @@
 package xta.game
 
 import xta.game.creature.Gender
-import xta.game.creature.body.*
+import xta.game.creature.body.SkinCoatType
 
 /*
  * Created by aimozg on 28.11.2021.
  */
-abstract class Creature {
+@JsExport
+abstract class Creature: AbstractCreature() {
 
-	var name: String = "You"
-
-	/***
+	/*
 	 *    ███████  ██████  ██    ██ ██ ██████  ███    ███ ███████ ███    ██ ████████
 	 *    ██      ██    ██ ██    ██ ██ ██   ██ ████  ████ ██      ████   ██    ██
 	 *    █████   ██    ██ ██    ██ ██ ██████  ██ ████ ██ █████   ██ ██  ██    ██
@@ -20,32 +19,7 @@ abstract class Creature {
 	 *
 	 */
 
-
-	/***
-	 *    ███████ ████████  █████  ████████ ███████
-	 *    ██         ██    ██   ██    ██    ██
-	 *    ███████    ██    ███████    ██    ███████
-	 *         ██    ██    ██   ██    ██         ██
-	 *    ███████    ██    ██   ██    ██    ███████
-	 */
-
-	//Primary stats
-	var cor:Int = 0
-	var fatigue:Int = 0
-	var mana:Int = 0
-	var soulforce:Int = 0
-
-	//Combat Stats
-	var HP:Int = 0
-	var lust:Int = 0
-	var wrath:Int = 0
-
-	//Level Stats
-	var xp: Int = 0
-	var level: Int = 0
-	var gems: Int = 0
-
-	/***
+	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
 	 *    ██   ██ ██   ██ ██   ██ ██      ██   ██ ██   ██ ██   ██ ████   ██ ██      ██
 	 *    ███████ ██████  ██████  █████   ███████ ██████  ███████ ██ ██  ██ ██      █████
@@ -57,77 +31,28 @@ abstract class Creature {
 
 	abstract fun race(): String
 
-	var tallness: Int = 0
-	var femininity: Int = 50
-
-	var hairType = HairType.NORMAL
-	var hairStyle = HairStyle.PLAIN
-	var hairColor = "no"
-	var hairColor2 = ""
-	var hairLength = 0
-//	var beardStyle = BeardStyle.NORMAL
-//	var beardLength = 0
-
-	val skin = SkinPart(this)
-	val skinColor get() = skin.skinColor
-	val skinColor2 get() = skin.skinColor2
-	val furColor get() = skin.furColor
-	val furColor2 get() = skin.furColor2
-	val scaleColor get() = skin.scaleColor
-	val scaleColor2 get() = skin.scaleColor2
-	val chitinColor get() = skin.chitinColor
-	val chitinColor2 get() = skin.chitinColor2
-	// facePart
-	// clawsPart
-	// underBody
-	// ears
-	// horns
-	// wings
-	// lowerBodyPart
-	// tail
-	// antennae
-	val eyePart = EyePart(this)
-	val eyeColor get() = eyePart.irisColor
-	// tongue
-	// arms
-	// gills
-	// rearBody
-
-	var thickness: Int = 0
-	var tone: Int = 0
-	var hipRating: Int = 0
-	var buttRating: Int = 0
-	// ass
-
-	// piercings
-
-	// Sexual Stuff
-	// MALE STUFF
-	val cocks = ArrayList<PenisPart>()
-	var balls = 0
-	var cumMultiplier = 1.0
-	var ballSize = 0
-	// hoursSinceCum?
-
-	// FEMALE STUFF
-	val vaginas = ArrayList<VaginaPart>()
-	// clitLength
-	// fertility
-	// nipplelength
-	val breastRows = ArrayList<BreastRowPart>()
-
-
-	/***
-	 *    ██    ██ ████████ ██ ██      ██ ████████ ██ ███████ ███████
-	 *    ██    ██    ██    ██ ██      ██    ██    ██ ██      ██
-	 *    ██    ██    ██    ██ ██      ██    ██    ██ █████   ███████
-	 *    ██    ██    ██    ██ ██      ██    ██    ██ ██           ██
-	 *     ██████     ██    ██ ███████ ██    ██    ██ ███████ ███████
+	/*
+	 *    ███████ ████████  █████  ████████     ███████ ███    ██ ███████
+	 *    ██         ██    ██   ██    ██        ██      ████   ██ ██
+	 *    ███████    ██    ███████    ██        █████   ██ ██  ██ ███████
+	 *         ██    ██    ██   ██    ██        ██      ██  ██ ██      ██
+	 *    ███████    ██    ██   ██    ██        ██      ██   ████ ███████
 	 *
 	 *
 	 */
 
-	val isAlive get() = HP > 0
+	val isAlive get() = hp > 0
+
+
+	/*
+	 *    ██████   ██████  ██████  ██    ██     ███████ ███    ██ ███████
+	 *    ██   ██ ██    ██ ██   ██  ██  ██      ██      ████   ██ ██
+	 *    ██████  ██    ██ ██   ██   ████       █████   ██ ██  ██ ███████
+	 *    ██   ██ ██    ██ ██   ██    ██        ██      ██  ██ ██      ██
+	 *    ██████   ██████  ██████     ██        ██      ██   ████ ███████
+	 *
+	 *
+	 */
 
 	val gender
 		get() = when {
@@ -137,7 +62,16 @@ abstract class Creature {
 			else -> Gender.GENDERLESS
 		}
 
+	val eyeColor get() = eyePart.irisColor
 	val skinTone get() = skin.color
+	val skinColor get() = skin.skinColor
+	val skinColor2 get() = skin.skinColor2
+	val furColor get() = skin.furColor
+	val furColor2 get() = skin.furColor2
+	val scaleColor get() = skin.scaleColor
+	val scaleColor2 get() = skin.scaleColor2
+	val chitinColor get() = skin.chitinColor
+	val chitinColor2 get() = skin.chitinColor2
 	// coatColor, coatColor2, nakedCoatColor
 	// hasCoat, hasFullCoat, coatType, hasCoatOfType, hasFullCoatOfType, skinDesc, skinAdj
 	// hasGills

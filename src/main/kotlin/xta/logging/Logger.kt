@@ -9,8 +9,13 @@ abstract class Logger(val id:String) {
 	var level: Level = Level.INFO
 
 	abstract fun doLog(level:Level, context: LogContext, message:String)
+	abstract fun doLogObject(level:Level, context: LogContext, message:String, obj: Any?)
+
 	fun log(level:Level, context: LogContext?, message:String) {
 		if (level >= this.level) doLog(level, context ?: Game.me, message)
+	}
+	fun logObject(level:Level, context: LogContext?, message:String, obj: Any?) {
+		if (level >= this.level) doLogObject(level, context ?: Game.me, message, obj)
 	}
 
 	fun trace(context: LogContext?, message: String) = log(Level.TRACE, context, message)

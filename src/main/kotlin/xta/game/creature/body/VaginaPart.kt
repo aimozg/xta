@@ -1,5 +1,7 @@
 package xta.game.creature.body
 
-class VaginaPart {
+import xta.net.serialization.JsonSerializable
 
+class VaginaPart: JsonSerializable(){
+	var virgin by property(true)
 }

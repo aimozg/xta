@@ -1,14 +1,14 @@
 package xta.net.protocol
 
+import org.khronos.webgl.Uint8Array
 import xta.Game
 import xta.Player
 import xta.ScreenManager
+import xta.game.PlayerCharacter
 import xta.logging.LogManager
-import xta.net.protocol.messages.fromJson
 import xta.net.transport.AbstractGuestConnection
 import xta.utils.decodeToJson
 import xta.utils.stringify
-import org.khronos.webgl.Uint8Array
 
 class LocalGuestProtocol(
 	override val player: Player,
@@ -22,6 +22,7 @@ class LocalGuestProtocol(
 	override fun toLogString() = connection?.toLogString()?:"[LocalHost]"
 
 	override fun onMessage(message: MessageToGuest) {
+		logger.ifdebug(this) { "< ${message.stringify()}" }
 		message.chat?.let {
 			ScreenManager.displayChatMessage(it)
 			return
@@ -36,7 +37,7 @@ class LocalGuestProtocol(
 		}
 		message.statusUpdate?.let { msg ->
 			msg.char?.let {
-				Game.me.char.fromJson(it)
+				Game.me.char = PlayerCharacter().apply { deserializeFromJson(it) }
 				ScreenManager.updateCharacter()
 			}
 			msg.screen?.let {

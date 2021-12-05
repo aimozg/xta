@@ -1,12 +1,13 @@
 package xta.game.creature.body
 
 import xta.game.Creature
+import xta.net.serialization.JsonSerializable
 
 /*
  * Created by aimozg on 28.11.2021.
  */
 
-class SkinPart(val host: Creature) {
+class SkinPart(val host: Creature): JsonSerializable() {
 	enum class Coverage(
 		val cocID:Int
 	) {
@@ -21,13 +22,13 @@ class SkinPart(val host: Creature) {
 		}
 	}
 
-	var coverage: Coverage = Coverage.NONE
-	var baseColor = ""
-	var baseColor2 = ""
-	var baseType = SkinBaseType.PLAIN
-	var coatColor: String = ""
-	var coatColor2: String = ""
-	var coatType = SkinCoatType.FUR
+	var coverage by property(Coverage.NONE)
+	var baseColor by property("")
+	var baseColor2 by property("")
+	var baseType by property(SkinBaseType.PLAIN)
+	var coatColor by property("")
+	var coatColor2 by property("")
+	var coatType by property(SkinCoatType.FUR)
 
 	val color get() = skinValue(baseColor, coatColor)
 

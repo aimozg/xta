@@ -1,11 +1,11 @@
 package xta.net.protocol.guest
 
-import xta.net.protocol.messages.CharacterJson
+import kotlin.js.Json
 
 /*
  * Created by aimozg on 01.12.2021.
  */
 external interface OfferCharMessage {
-	var char: CharacterJson
+	var char: Json
 }
 
