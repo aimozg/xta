@@ -50,3 +50,9 @@ gradlew browserDevelopmentRun --continuous
 This will compile the game, open it in a browser, and when you edit the sources, re-compile and refresh the page.
 
 #### Packaging a distribution
+
+```
+gradlew browserProductionWebpack
+```
+
+Results are placed in `build/distributions`.

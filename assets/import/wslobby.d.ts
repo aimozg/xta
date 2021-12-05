@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+
 /** Namespace wslobby. */
 export namespace wslobby {
 
