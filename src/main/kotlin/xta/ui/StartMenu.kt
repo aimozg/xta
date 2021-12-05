@@ -9,8 +9,8 @@ import xta.ScreenManager
 import xta.charview.CharViewImage
 import xta.flash.FlashImporter
 import xta.game.PlayerCharacter
-import xta.game.scenes.PlayerAppearanceScene
 import xta.game.settings.GameSettings
+import xta.game.text.PlayerAppearance
 import xta.text.Parser
 
 /*
@@ -28,7 +28,7 @@ class StartMenu: UiScreen("start-menu") {
 
 	fun showCharacter() {
 		display.clearOutput()
-		PlayerAppearanceScene.execute(display)
+		display.outputText(PlayerAppearance(Game.myCharacter).describe())
 		charviewDiv.clear()
 		charviewDiv.append(CharViewImage.INSTANCE.renderCharacter(Game.myCharacter).canvas)
 	}

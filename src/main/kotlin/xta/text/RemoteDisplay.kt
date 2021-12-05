@@ -12,7 +12,7 @@ class RemoteDisplay(
 	override val parser: Parser
 ): Display() {
 	var screen: ScreenJson = jsobject { scene ->
-		scene.sceneId = Limbo.sceneId
+		scene.sceneId = Limbo.scene.sceneId
 		scene.content = "You float in nothingness"
 		scene.actions = emptyArray()
 	}

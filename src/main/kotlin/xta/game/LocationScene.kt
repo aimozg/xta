@@ -2,12 +2,14 @@ package xta.game
 
 import xta.text.Display
 
-class SimpleScene(
-	sceneId: String,
+class LocationScene(
+	val location: GameLocation,
+	suffix: String,
 	override val updateOnVisit: Boolean = false,
 	val body: Display.() -> Unit
-) : Scene(sceneId) {
+) : Scene(location.id+"/"+suffix) {
 	override fun Display.doExecute() {
+		player.location = location
 		body()
 	}
 }

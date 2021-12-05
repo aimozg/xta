@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as $protobuf from "protobufjs";
 
 /** Namespace wslobby. */

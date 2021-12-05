@@ -1,5 +1,6 @@
 package xta
 
+import xta.game.GameLocation
 import xta.game.PlayerCharacter
 import xta.game.Scene
 import xta.game.combat.Combat
@@ -20,8 +21,10 @@ class Player(
 	val isMe: Boolean
 ) : LogContext {
 	var guest: GuestProtocol = RemoteGuestProtocol(this, DeadConnection())
+	val id:String get() = guest.identity // TODO make connection-independent constant?
 	override fun toLogString(): String =
 		if (isHost && isMe) "[LocalHost]" else guest.toLogString()
+	override fun toString() = "Player($id)"
 
 	var isHost = false
 	val chatName
@@ -38,12 +41,26 @@ class Player(
 	val isOnline get() = isMe || guest.isConnected
 
 	val display = RemoteDisplay(this, Parser(this, this))
-	var scene: Scene = Limbo
+	var location: GameLocation = Limbo
+		set(value) {
+			if (field != value) {
+				field.playerLeft(this)
+				field = value
+				value.playerEntered(this)
+			}
+		}
+	var scene: Scene = Limbo.scene
 	var screen: ScreenJson
 		get() = display.screen
 		set(value) {
 			display.screen = value
 		}
+	fun updateScene() {
+		Game.server?.updateScene(this)
+	}
+	fun updateScreen() {
+		Game.server?.updateScreen(this)
+	}
 
 	/*
 	 *     ██████  ██████  ███    ███ ██████   █████  ████████
