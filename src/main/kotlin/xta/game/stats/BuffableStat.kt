@@ -3,7 +3,7 @@ package xta.game.stats
 import xta.net.serialization.JsonSerializable
 import kotlin.js.Json
 
-open class BuffPool(
+open class BuffableStat(
 	override val statName: String,
 	val aggregate: Aggregate = Aggregate.SUM,
 	val baseValue: Double = aggregate.defaultBase,

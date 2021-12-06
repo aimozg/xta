@@ -16,8 +16,9 @@ import xta.net.protocol.messages.ScreenJson
 class MainScreen: UiScreen("main-screen") {
 	private val textOutputDiv = fragment.ref("text-output")
 	private val actionsDiv = fragment.ref("actions")
-	private val statusDiv = fragment.ref("status")
-	private val playerPanel = CharacterPanel().also { it.insertTo(statusDiv) }
+	private val leftDiv = fragment.ref("left")
+	private val rightDiv = fragment.ref("right")
+	private val playerPanel = CharacterPanel().also { it.insertTo(leftDiv) }
 
 	init {
 		ScreenManager.chatEnabled = true

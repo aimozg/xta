@@ -5,7 +5,7 @@ import xta.utils.jsobject
 import kotlin.js.Json
 
 class Buff(
-	val pool: BuffPool,
+	val pool: BuffableStat,
 	val tag: String,
 	var value: Double,
 	var text: String,
@@ -27,7 +27,7 @@ class Buff(
 	}
 
 	companion object {
-		fun serializer(pool: BuffPool) = object: JsonSerializer<Buff> {
+		fun serializer(pool: BuffableStat) = object: JsonSerializer<Buff> {
 			override fun serializeObject(t: Buff) = jsobject<BuffJson> { json ->
 				json.tag = t.tag
 				json.value = t.value

@@ -24,50 +24,50 @@ open class JsonSerializable: IJsonSerializable {
 	// Field name is same as property
 
 	//Shortcuts under the same name
-	fun property(defaultValue: String) = stringProperty(defaultValue)
-	fun property(defaultValue: Int) = intProperty(defaultValue)
-	fun property(defaultValue: Double) = doubleProperty(defaultValue)
-	fun property(defaultValue: Boolean) = booleanProperty(defaultValue)
-	inline fun<reified T:Enum<T>> property(defaultValue: T) = enumProperty(defaultValue)
+	protected fun property(defaultValue: String) = stringProperty(defaultValue)
+	protected fun property(defaultValue: Int) = intProperty(defaultValue)
+	protected fun property(defaultValue: Double) = doubleProperty(defaultValue)
+	protected fun property(defaultValue: Boolean) = booleanProperty(defaultValue)
+	protected inline fun<reified T:Enum<T>> property(defaultValue: T) = enumProperty(defaultValue)
 
-	fun stringProperty(defaultValue: String) =
+	protected fun stringProperty(defaultValue: String) =
 		PropertyDelegateProvider<Any, VariableHolder<String>> { _, property ->
 			stringProperty(property.name, VariableHolder(defaultValue))
 		}
 
-	fun intProperty(defaultValue: Int) =
+	protected fun intProperty(defaultValue: Int) =
 		PropertyDelegateProvider<Any, VariableHolder<Int>> { _, property ->
 			intProperty(property.name, VariableHolder(defaultValue))
 		}
 
-	fun doubleProperty(defaultValue: Double) =
+	protected fun doubleProperty(defaultValue: Double) =
 		PropertyDelegateProvider<Any, VariableHolder<Double>> { _, property ->
 			doubleProperty(property.name, VariableHolder(defaultValue))
 		}
 
-	fun booleanProperty(defaultValue: Boolean) =
+	protected fun booleanProperty(defaultValue: Boolean) =
 		PropertyDelegateProvider<Any, VariableHolder<Boolean>> { _, property ->
 			booleanProperty(property.name, VariableHolder(defaultValue))
 		}
 
-	inline fun<reified T:Enum<T>> enumProperty(defaultValue: T) =
+	protected inline fun<reified T:Enum<T>> enumProperty(defaultValue: T) =
 		PropertyDelegateProvider<Any, VariableHolder<T>> { _, property ->
 			enumProperty(property.name, VariableHolder(defaultValue), enumValues())
 		}
 
-	fun<T:IJsonSerializable> nestedProperty(defaultValue: T) =
+	protected fun<T:IJsonSerializable> nestedProperty(defaultValue: T) =
 		PropertyDelegateProvider<Any, ReadOnlyProperty<Any, T>> { _, property ->
 			nestedValProperty(property.name, ValueHolder(defaultValue))
 		}
 
-	fun<T:IJsonSerializable> nestedJsonList(
+	protected fun<T:IJsonSerializable> nestedJsonList(
 		defaultValue: ArrayList<T> = ArrayList(),
 		spawner: (dynamic)->T
 	) = PropertyDelegateProvider<Any, ReadOnlyProperty<Any, MutableList<T>>> { _, property ->
 		nestedJsonListProperty(property.name, ValueHolder(defaultValue), spawner)
 	}
 
-	fun<T:Any> nestedList(
+	protected fun<T:Any> nestedList(
 		serializer: JsonSerializer<T>,
 		defaultValue: ArrayList<T> = ArrayList()
 	) = PropertyDelegateProvider<Any, ReadOnlyProperty<Any, MutableList<T>>> { _, property ->
@@ -76,37 +76,37 @@ open class JsonSerializable: IJsonSerializable {
 
 	// Custom field name or holder
 
-	fun stringProperty(properyName: String, variableHolder: VariableHolder<String>) = variableHolder.also {
+	protected fun stringProperty(properyName: String, variableHolder: VariableHolder<String>) = variableHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.StringField(properyName, it)
 		)
 	}
-	fun intProperty(properyName: String, variableHolder: VariableHolder<Int>) = variableHolder.also {
+	protected fun intProperty(properyName: String, variableHolder: VariableHolder<Int>) = variableHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.IntField(properyName, it)
 		)
 	}
-	fun doubleProperty(properyName: String, variableHolder: VariableHolder<Double>) = variableHolder.also {
+	protected fun doubleProperty(properyName: String, variableHolder: VariableHolder<Double>) = variableHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.DoubleField(properyName, it)
 		)
 	}
-	fun booleanProperty(properyName: String, variableHolder: VariableHolder<Boolean>) = variableHolder.also {
+	protected fun booleanProperty(properyName: String, variableHolder: VariableHolder<Boolean>) = variableHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.BooleanField(properyName, it)
 		)
 	}
-	fun<T:Enum<T>> enumProperty(propertyName: String, variableHolder: VariableHolder<T>, values: Array<T>)= variableHolder.also {
+	protected fun<T:Enum<T>> enumProperty(propertyName: String, variableHolder: VariableHolder<T>, values: Array<T>)= variableHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.EnumField(propertyName, it, values)
 		)
 	}
-	fun<T:IJsonSerializable> nestedValProperty(properyName: String, valueHolder: ValueHolder<T>) = valueHolder.also {
+	protected fun<T:IJsonSerializable> nestedValProperty(properyName: String, valueHolder: ValueHolder<T>) = valueHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.NestedVal(properyName, it)
 		)
 	}
-	fun<T:IJsonSerializable> nestedJsonListProperty(
+	protected fun<T:IJsonSerializable> nestedJsonListProperty(
 		properyName: String,
 		valueHolder: ValueHolder<MutableList<T>>,
 		spawner:(dynamic)->T
@@ -115,7 +115,7 @@ open class JsonSerializable: IJsonSerializable {
 			JsonPropertyDescriptor.NestedJsonList(properyName, it, spawner)
 		)
 	}
-	fun<T:Any> nestedListProperty(
+	protected fun<T:Any> nestedListProperty(
 		properyName: String,
 		valueHolder: ValueHolder<MutableList<T>>,
 		serializer: JsonSerializer<T>

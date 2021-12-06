@@ -9,8 +9,8 @@ open class PrimaryStat(
 ): JsonSerializable(), IStat, IStatHolder {
 
 	val core: RawStat by nestedProperty(RawStat("$statName.core"))
-	val mult: BuffPool by nestedProperty(BuffPool("$statName.mult", baseValue = 1.0, min = 0.0))
-	val bonus: BuffPool by nestedProperty(BuffPool("$statName.bonus"))
+	val mult: BuffableStat by nestedProperty(BuffableStat("$statName.mult", baseValue = 1.0, min = 0.0))
+	val bonus: BuffableStat by nestedProperty(BuffableStat("$statName.bonus"))
 
 	open val min get() = 1.0
 

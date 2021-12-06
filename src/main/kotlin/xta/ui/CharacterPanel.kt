@@ -45,44 +45,44 @@ class CharacterPanel : UiTemplate("char-panel") {
 			xpBar.removeClass("-levelup")
 		}
 		// TODO mark buffed/debuffed stats with text-positive/text-negative classses
-		strVal.textContent = char.strStat.value.roundToInt().toString()
-		touVal.textContent = char.touStat.value.roundToInt().toString()
-		speVal.textContent = char.speStat.value.roundToInt().toString()
-		intVal.textContent = char.intStat.value.roundToInt().toString()
-		wisVal.textContent = char.wisStat.value.roundToInt().toString()
-		libVal.textContent = char.libStat.value.roundToInt().toString()
-		senVal.textContent = char.sensStat.value.roundToInt().toString()
+		strVal.textContent = char.str.roundToInt().toString()
+		touVal.textContent = char.tou.roundToInt().toString()
+		speVal.textContent = char.spe.roundToInt().toString()
+		intVal.textContent = char.int.roundToInt().toString()
+		wisVal.textContent = char.wis.roundToInt().toString()
+		libVal.textContent = char.lib.roundToInt().toString()
+		senVal.textContent = char.sens.roundToInt().toString()
 		corVal.textContent = char.cor.toString()
 		hpBar.displayValue(
 			value = char.hp.toDouble(),
 			max = char.maxHp().toDouble(),
-			text = char.hp.toString()
+			text = "${char.hp}/${char.maxHp()}"
 		)
 		lustBar.displayValue(
 			value = char.lust.toDouble(),
 			extra = char.minLust().toDouble(),
 			max = char.maxLust().toDouble(),
-			text = char.lust.toString()
+			text = "${char.lust}/${char.maxLust()}"
 		)
 		wrathBar.displayValue(
 			value = char.wrath.toDouble(),
 			max = char.maxWrath().toDouble(),
-			text = char.wrath.toString()
+			text = "${char.wrath}/${char.maxWrath()}"
 		)
 		staminaBar.displayValue(
 			value = char.stamina.toDouble(),
 			max = char.maxFatigue().toDouble(),
-			text = char.stamina.toString()
+			text = "${char.stamina}/${char.maxFatigue()}"
 		)
 		manaBar.displayValue(
 			value = char.mana.toDouble(),
 			max = char.maxMana().toDouble(),
-			text = char.mana.toString()
+			text = "${char.mana}/${char.maxMana()}"
 		)
 		sfBar.displayValue(
 			value = char.soulforce.toDouble(),
 			max = char.maxSoulforce().toDouble(),
-			text = char.soulforce.toString()
+			text = "${char.soulforce}/${char.maxSoulforce()}"
 		)
 		gemsValue.textContent = char.gems.toString()
 		ssValue.textContent = "0" // TODO soulstones

@@ -10,7 +10,7 @@ import org.w3c.files.arrayBuffer
 import xta.game.PlayerCharacter
 import xta.game.creature.body.*
 import xta.game.stats.Buff
-import xta.game.stats.BuffPool
+import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
 import xta.game.stats.RawStat
 import xta.logging.LogManager
@@ -34,7 +34,7 @@ class FlashImporter {
 		return importAMF(AMF3().readData(MinervaByteArray(buffer)))
 	}
 
-	private fun importStat(dest:BuffPool, src:CocBuffableStatJson) {
+	private fun importStat(dest:BuffableStat, src:CocBuffableStatJson) {
 		for ((value, tag, options) in src.effects) {
 			dest.addOrReplaceBuff(tag,
 				value,

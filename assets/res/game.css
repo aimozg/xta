@@ -219,17 +219,21 @@ body {
     grid-template-columns: min-content auto;
     grid-template-rows: min-content auto min-content;
     grid-template-areas:
-        "menu menu"
-        "status text"
-        "status actions";
+        "menu menu menu"
+        "left text right"
+        "left actions right";
 }
 
 .mainscreen-topmenu {
     grid-area: menu;
 }
 
-.mainscreen-status {
-    grid-area: status;
+.mainscreen-left {
+    grid-area: left;
+    margin: 1em;
+}
+.mainscreen-right {
+    grid-area: right;
     margin: 1em;
 }
 
@@ -240,7 +244,7 @@ body {
     white-space: break-spaces;
     overflow-y: scroll;
 }
-.mainscreen-status .status-panel {
+.mainscreen-left .status-panel {
     height: 100%;
 }
 

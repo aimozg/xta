@@ -1,7 +1,7 @@
 package xta.game
 
 import xta.game.creature.body.*
-import xta.game.stats.BuffPool
+import xta.game.stats.BuffableStat
 import xta.game.stats.IStatHolder
 import xta.game.stats.PrimaryStat
 import xta.game.stats.StatStore
@@ -50,7 +50,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val libStat by nestedProperty(PrimaryStat(this as Creature, "lib").also {
 		statStore.addStat(it)
 	})
-	val sensStat by nestedProperty(BuffPool("sens", baseValue = 15.0).also {
+	val sensStat by nestedProperty(BuffableStat("sens", baseValue = 15.0).also {
 		statStore.addStat(it)
 	})
 
