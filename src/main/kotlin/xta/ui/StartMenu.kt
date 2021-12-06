@@ -47,15 +47,16 @@ class StartMenu: UiScreen("start-menu") {
 				joinButton.disabled = false
 			}
 		}
-		if (Game.characterImported) {
-			showCharacter()
-			if (agreement.checked) {
-				hostButton.disabled = false
-				joinButton.disabled = false
+		if (Game.me.charLoaded) {
+			importCharacter(Game.me.char)
+		} else {
+			val ch = GameSettings.loadCharacter()
+			if (ch != null) {
+				importCharacter(ch)
 			}
 		}
 		agreement.onchange = {
-			if (Game.characterImported && agreement.checked) {
+			if (Game.me.charLoaded && agreement.checked) {
 				hostButton.disabled = false
 				joinButton.disabled = false
 			} else {
@@ -68,9 +69,10 @@ class StartMenu: UiScreen("start-menu") {
 			if (files?.length == 1) {
 				FlashImporter().importBlob(files[0]!!).then { character ->
 					importCharacter(character)
+					GameSettings.saveCharacter(character)
 				}.catch { e ->
 					console.error(e)
-					Game.localErrorMessage("Failed to import: "+e.message)
+					Game.localErrorMessage("Failed to import: " + e.message)
 				}
 			}
 		})

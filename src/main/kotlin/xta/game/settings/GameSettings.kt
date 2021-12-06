@@ -2,9 +2,14 @@ package xta.game.settings
 
 import js.Object
 import kotlinx.browser.localStorage
+import xta.Game
+import xta.game.PlayerCharacter
 import xta.logging.LogManager
 import xta.utils.jsObject
+import xta.utils.jsobject
 import xta.utils.randomString
+import xta.utils.stringify
+import kotlin.js.Json
 import kotlin.random.Random
 
 /*
@@ -12,6 +17,7 @@ import kotlin.random.Random
  */
 object GameSettings {
 	var localStorageKey = "cocxta-settings"
+	var localStorageCharKey = "cocxta-character"
 	var data = jsObject<GameSettingsJson> {  }
 
 	init {
@@ -34,18 +40,41 @@ object GameSettings {
 		try {
 			Object.assign(data, JSON.parse(localStorage.getItem(localStorageKey)?:"{}"))
 		} catch (e:Error) {
-			logger.error(null,"Error parsing preferences",e)
-			e.printStackTrace()
+			logger.error(null,"Error importing game settings",e)
 			reset()
 		}
 	}
+	fun loadCharacter():PlayerCharacter? {
+		try {
+			val scj = JSON.parse<SavedCharacterJson>(localStorage.getItem(localStorageCharKey)?:"{}")
+			if (scj.version == SCJ_VERSION) return PlayerCharacter().apply { deserializeFromJson(scj.data) }
+		} catch (e:Error) {
+			logger.error(null,"Error importing character",e)
+		}
+		return null
+	}
 
 	fun save() {
-		localStorage.setItem(localStorageKey,JSON.stringify(data))
+		try {
+			localStorage.setItem(localStorageKey, JSON.stringify(data))
+		} catch (e:Error) {
+			logger.error(null,"Error saving settings",e)
+		}
+	}
+	fun saveCharacter(char:PlayerCharacter) {
+		try {
+			localStorage.setItem(localStorageCharKey, jsobject<SavedCharacterJson> {
+				it.version = SCJ_VERSION
+				it.data = char.serializeToJson()
+			}.stringify())
+		} catch (e:Error) {
+			logger.error(null,"Error saving character",e)
+		}
 	}
 
 	private val logger by lazy {
 		LogManager.getLogger("xta.settings.GameSettings")
 	}
+	private const val SCJ_VERSION = 1
 }
 

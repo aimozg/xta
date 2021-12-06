@@ -18,7 +18,6 @@ object Game {
 	val me = Player(isMe = true)
 
 	val myCharacter get() = me.char
-	val characterImported get() = me.charLoaded
 
 	var server: GameServer? = null
 	var hostProtocol: HostProtocol = RemoteHostProtocol(me, DeadConnection())
