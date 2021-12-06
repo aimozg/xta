@@ -17,7 +17,7 @@ class MainScreen: UiScreen("main-screen") {
 	private val textOutputDiv = fragment.ref("text-output")
 	private val actionsDiv = fragment.ref("actions")
 	private val statusDiv = fragment.ref("status")
-	private val statusPanel = StatusPanel().also { it.insertTo(statusDiv) }
+	private val playerPanel = CharacterPanel().also { it.insertTo(statusDiv) }
 
 	init {
 		ScreenManager.chatEnabled = true
@@ -49,7 +49,7 @@ class MainScreen: UiScreen("main-screen") {
 	}
 
 	fun showCharacter(char: PlayerCharacter) {
-		statusPanel.showCharacter(char, GameSettings.data.render?:false)
+		playerPanel.showCharacter(char, GameSettings.data.render?:false)
 	}
 
 }

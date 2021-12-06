@@ -43,6 +43,36 @@ abstract class Creature: AbstractCreature() {
 
 	val isAlive get() = hp > 0
 
+	// TODO calculations
+	fun xpToLevelUp(): Int {
+		return 1000
+	}
+	fun maxHp():Int {
+		return 100
+	}
+	fun minLust():Int {
+		return 0
+	}
+	fun maxLust():Int {
+		return 100
+	}
+	fun maxWrath():Int {
+		return 100
+	}
+	var stamina:Int
+		get() = maxFatigue() - fatigue
+		set(value) {
+			fatigue = maxFatigue() - value
+		}
+	fun maxFatigue():Int {
+		return 100
+	}
+	fun maxMana():Int {
+		return 100
+	}
+	fun maxSoulforce():Int {
+		return 100
+	}
 
 	/*
 	 *    ██████   ██████  ██████  ██    ██     ███████ ███    ██ ███████

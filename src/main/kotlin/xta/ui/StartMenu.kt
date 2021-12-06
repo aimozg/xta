@@ -1,12 +1,10 @@
 package xta.ui
 
-import kotlinx.dom.clear
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.files.get
 import xta.Game
 import xta.ScreenManager
-import xta.charview.CharViewImage
 import xta.flash.FlashImporter
 import xta.game.PlayerCharacter
 import xta.game.settings.GameSettings
@@ -17,20 +15,21 @@ import xta.text.Parser
  * Created by aimozg on 29.11.2021.
  */
 class StartMenu: UiScreen("start-menu") {
+	private val characterDiv = fragment.ref("character")
+	private val playerPanel = CharacterPanel().also { it.insertTo(characterDiv) }
 	private val outputElement = fragment.ref("maintext")
 	private val hostButton = fragment.ref<HTMLButtonElement>("host-btn")
 	private val joinButton = fragment.ref<HTMLButtonElement>("join-btn")
 	private val saveFile = fragment.ref<HTMLInputElement>("savefile")
 	private val agreement = fragment.ref<HTMLInputElement>("agreement")
-	private val charviewDiv = fragment.ref("charview")
 
 	private val display = HTMLElementDisplay(Game.me,Parser(Game.me,Game.me), outputElement)
 
 	fun showCharacter() {
 		display.clearOutput()
 		display.outputText(PlayerAppearance(Game.myCharacter).describe())
-		charviewDiv.clear()
-		charviewDiv.append(CharViewImage.INSTANCE.renderCharacter(Game.myCharacter).canvas)
+		characterDiv.style.visibility = "visible"
+		playerPanel.showCharacter(Game.myCharacter, GameSettings.data.render == true)
 	}
 
 	init {
@@ -38,6 +37,7 @@ class StartMenu: UiScreen("start-menu") {
 		hostButton.disabled = true
 		joinButton.disabled = true
 		agreement.checked = GameSettings.data.eula == 1
+		characterDiv.style.visibility = "hidden"
 
 		fun importCharacter(character: PlayerCharacter) {
 			Game.me.char = character

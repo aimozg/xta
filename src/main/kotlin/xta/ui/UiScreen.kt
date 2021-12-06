@@ -4,7 +4,7 @@ import xta.ScreenManager
 import kotlinx.browser.document
 import org.w3c.dom.HTMLTemplateElement
 
-open class UiScreen : UiElement {
+open class UiScreen : UiTemplate {
 	constructor(template: HTMLTemplateElement) : super(template)
 	constructor(templateId: String): super(templateId)
 

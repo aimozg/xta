@@ -4,7 +4,7 @@ import kotlinx.browser.document
 import org.w3c.dom.*
 import xta.utils.trim
 
-open class UiElement(
+open class UiTemplate(
 	template: HTMLTemplateElement
 ) {
 	constructor(templateId: String): this(findTemplate(templateId).trim())

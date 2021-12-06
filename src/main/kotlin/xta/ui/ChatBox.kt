@@ -9,7 +9,7 @@ import xta.Game
 import xta.net.protocol.host.DisplayChatMessage
 import xta.utils.KeyCodes
 
-class ChatBox(chatEnabled:Boolean): UiElement("chat-box") {
+class ChatBox(chatEnabled:Boolean): UiTemplate("chat-box") {
 	private val historyDiv = fragment.ref("history")
 	private val messageInput = fragment.ref<HTMLInputElement>("message-input")
 	private val sendBtn = fragment.ref<HTMLButtonElement>("send-button")

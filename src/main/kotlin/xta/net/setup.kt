@@ -20,6 +20,7 @@ import kotlin.js.Promise
 fun setupHost(host: AbstractHostConnection): Promise<HostProtocol> {
 	val server = GameServer()
 	Game.server = server
+	server.hostGame()
 	return LocalHostProtocol(host, Game.me, server).register()
 }
 

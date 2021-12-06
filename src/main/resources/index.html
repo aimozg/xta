@@ -12,25 +12,32 @@
 <template id="start-menu">
     <div class="start-menu">
         <h1>CoC Xianxia Tournament Arc</h1>
-        Import your CoCX save file: <input type="file" data-ref="savefile">
-        <div class="d-flex start-appearance">
-            <div data-ref="charview" class="float-left"></div>
-            <div data-ref="maintext"></div>
-        </div>
-        <div class="mt-4">
-            <button data-ref="host-btn" type="button">Host game</button>
-            <button data-ref="join-btn" type="button">Join game</button>
-            <label>
-                <input type="checkbox" data-ref="agreement"> I have read the privacy note.
-            </label>
-        </div>
-        <div class="">
-            <div class="mt-4">
-                <strong>Privacy note:</strong>
-                Your communications &ndash; chat messages, choices, uploaded files &ndash; can be seen by game host and may become available to other players.
-                You communicate through a lobby server of your choice that can view and log your game traffic and public IP.
-                <br/>
-                If you don't like it, don't click "Host game" or "Join game".
+        <div class="d-flex">
+            <div data-ref="character" class="flex-grow-0"></div>
+            <div class="flex-grow-1 ml-4">
+                <div>
+                    Import your CoCX save file: <input type="file" data-ref="savefile">
+                </div>
+                <div data-ref="maintext" class="start-appearance mt-4"></div>
+                <div class="flex-grow-1"></div>
+                <div class="mt-4">
+                    <button data-ref="host-btn" type="button">Host game</button>
+                    <button data-ref="join-btn" type="button">Join game</button>
+                </div>
+                <div>
+                    <p>
+                        <label>
+                            <input type="checkbox" data-ref="agreement"> I have read the privacy note.
+                        </label>
+                    </p>
+                    <p>
+                        <strong>Privacy note:</strong>
+                        Your communications &ndash; chat messages, choices, uploaded files &ndash; can be seen by game host and may become available to other players.
+                        You communicate through a lobby server of your choice that can view and log your game traffic and public IP.
+                        <br/>
+                        If you don't like it, don't click "Host game" or "Join game".
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -71,27 +78,79 @@
     </div>
 </template>
 
-<template id="status-panel">
+<template id="bar-gauge">
+    <div class="bar">
+        <div class="bar-fill bar-fill-bg" style="width:100%"></div>
+        <div data-ref="main" class="bar-fill bar-fill-main" style="width:0;display:none"></div>
+        <div data-ref="extra" class="bar-fill bar-fill-extra" style="width:0;display:none"></div>
+        <div data-ref="text" class="bar-text"></div>
+    </div>
+</template>
+
+<template id="char-panel">
     <div class="status-panel d-flex-column">
-        <div class="char-title" data-ref="title"></div>
-        <div class="char-subtitle" data-ref="subtitle"></div>
-        <div class="flex-grow-1"></div>
+        <div class="char-panel">
+            <div class="char-title" data-ref="title">Yuzu</div>
+            <div class="char-subtitle" data-ref="subtitle">Level 5 female goblin</div>
+            <div class="char-xp-bar">
+                <div class="char-xp-bar-fill" data-ref="xpbar" style="width:50%"></div>
+            </div>
+            <div class="flex-grow-1">
+                <div class="char-statgrid mt-4">
+                    <div class="char-statname char-stat-str">Str</div>
+                    <div class="char-statname char-stat-tou">Tou</div>
+                    <div class="char-statname char-stat-spe">Spe</div>
+                    <div class="char-statname char-stat-int">Int</div>
+                    <div class="char-statname char-stat-wis">Wis</div>
+                    <div class="char-statname char-stat-lib">Lib</div>
+                    <div class="char-statname char-stat-sen">Sen</div>
+                    <div class="char-statname char-stat-cor">Cor</div>
+                    <div class="char-statval char-stat-str" data-ref="stat-str">9999</div>
+                    <div class="char-statval char-stat-tou" data-ref="stat-tou">9999</div>
+                    <div class="char-statval char-stat-spe" data-ref="stat-spe">9999</div>
+                    <div class="char-statval char-stat-int" data-ref="stat-int">9999</div>
+                    <div class="char-statval char-stat-wis" data-ref="stat-wis">9999</div>
+                    <div class="char-statval char-stat-lib" data-ref="stat-lib">9999</div>
+                    <div class="char-statval char-stat-sen" data-ref="stat-sen">999</div>
+                    <div class="char-statval char-stat-cor" data-ref="stat-cor">100</div>
+                </div>
+                <div class="char-bargrid mt-2">
+                    <div style="grid-area: hp" class="char-bar-hp" data-ref="bar-hp"></div>
+                    <div style="grid-area: lu" class="char-bar-lust" data-ref="bar-lust"></div>
+                    <div style="grid-area: wp" class="char-bar-wrath bar" data-ref="bar-wrath"></div>
+                    <div style="grid-area: fp" class="char-bar-stamina bar" data-ref="bar-stamina"></div>
+                    <div style="grid-area: mp" class="char-bar-mana bar" data-ref="bar-mana"></div>
+                    <div style="grid-area: sp" class="char-bar-sf bar" data-ref="bar-sf"></div>
+                </div>
+                <div class="char-money mt-2">
+                    <div>Gems: <span data-ref="gems"></span></div>
+                    <div>Spirit Stones: <span data-ref="soulstones"></span></div>
+                </div>
+                <div class="char-effects mt-2">
+                    <!--<div class="char-effect -bad">👁</div>
+                    <div class="char-effect -good">St</div>
+                    <div class="char-effect -neutral">❤</div>-->
+                </div>
+            </div>
+        </div>
         <div class="char-render" data-ref="render"></div>
     </div>
 </template>
 
 <template id="chat-box">
     <div class="chat-box">
-        <div data-ref="history" class="chat-history">
-            <div data-ref="message" class="chat-message">
-                <span data-ref="message-author" class="message-author"></span>
-                <span data-ref="message-content" class="message-content"></span>
+        <div class="mxy-2">
+            <div data-ref="history" class="chat-history">
+                <div data-ref="message" class="chat-message">
+                    <span data-ref="message-author" class="message-author"></span>
+                    <span data-ref="message-content" class="message-content"></span>
+                </div>
             </div>
-        </div>
-        <div class="chat-send-div">
-            <!--<label>Message</label>-->
-            <input type="text" data-ref="message-input">
-            <button type="button" data-ref="send-button">Send</button>
+            <div class="chat-send-div">
+                <!--<label>Message</label>-->
+                <input type="text" data-ref="message-input">
+                <button type="button" data-ref="send-button">Send</button>
+            </div>
         </div>
     </div>
 </template>

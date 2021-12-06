@@ -60,7 +60,7 @@ class GameServer(): LogContext {
 
 	val players = arrayListOf(Game.me)
 
-	init {
+	fun hostGame() {
 		placePlayer(Game.me)
 	}
 
