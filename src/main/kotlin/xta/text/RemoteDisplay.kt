@@ -16,7 +16,8 @@ class RemoteDisplay(
 		scene.content = "You float in nothingness"
 		scene.actions = emptyArray()
 	}
-	val callbacks = HashMap<String,()->Unit>()
+	val callbacks = HashMap<Int,()->Unit>()
+	private var actionId: Int = 0
 
 	override fun rawOutput(text: String) {
 		screen.content += text
@@ -38,6 +39,7 @@ class RemoteDisplay(
 	}
 
 	override fun clearOutput() {
+		actionId = 0
 		screen.content = ""
 		screen.actions = emptyArray()
 		callbacks.clear()
@@ -48,14 +50,14 @@ class RemoteDisplay(
 	}
 
 	// auto-generate action ids?
-	override fun addButton(label: String, actionId: String, hint: String, disabled: Boolean, callback: () -> Unit) {
+	override fun addButton(label: String, hint: String, disabled: Boolean, callback: () -> Unit) {
 		screen.actions.jspush(jsobject {
 			if (disabled) it.disabled = true
 			it.label = parser.parse(label)
-			it.actionId = actionId
+			it.actionId = actionId++
 			if (hint.isNotEmpty()) it.hint = parser.parse(hint)
 			if (!disabled) {
-				callbacks[actionId] = callback
+				callbacks[it.actionId] = callback
 			}
 		})
 	}

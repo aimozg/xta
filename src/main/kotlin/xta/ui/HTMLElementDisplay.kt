@@ -37,7 +37,7 @@ class HTMLElementDisplay(
 		scene.execute(player)
 	}
 
-	override fun addButton(label: String, actionId: String, hint: String, disabled: Boolean, callback: () -> Unit) {
+	override fun addButton(label: String, hint: String, disabled: Boolean, callback: () -> Unit) {
 		outputElement.appendElement("button") {
 			this as HTMLButtonElement
 			addClass("action")

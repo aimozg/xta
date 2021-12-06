@@ -1,6 +1,5 @@
 package xta.game
 
-import xta.Game
 import xta.Player
 import xta.logging.LogManager
 import xta.text.Display
@@ -8,34 +7,24 @@ import xta.text.Display
 /*
  * Created by aimozg on 28.11.2021.
  */
-abstract class Scene(val sceneId: String) {
-	open val updateOnVisit: Boolean get() = false
+abstract class Scene(
+	val sceneId: String
+) {
+	/**
+	 * Scene re-plays when other players leave or enter the location
+	 */
+	open val playersDynamic: Boolean get() = false
 	open fun onLeave(player: Player) {
-		logger.debug(player,"leaves",sceneId)
-		if (updateOnVisit) {
-			for (other in playersHere()) {
-				if (player != other) {
-					Game.server?.updateScene(other)
-				}
-			}
-		}
+		logger.debug(player,"leaves scene",sceneId)
 	}
 
 	fun execute(player: Player) {
-		val isNew = player.scene != this
 		execute(player.display)
 		val oldScene = player.scene
 		if (oldScene != this) {
 			player.scene = this
 			oldScene.onLeave(player)
-			logger.debug(player,"enters",sceneId)
-			if (isNew && updateOnVisit) {
-				for (other in playersHere()) {
-					if (player != other) {
-						Game.server?.updateScene(other)
-					}
-				}
-			}
+			logger.debug(player,"enters scene",sceneId)
 		}
 	}
 
@@ -46,9 +35,6 @@ abstract class Scene(val sceneId: String) {
 	}
 
 	abstract fun Display.doExecute()
-
-	fun allPlayers(): List<Player> = Game.server?.players ?: emptyList()
-	fun playersHere() = allPlayers().filter { it.scene == this }
 
 	companion object {
 		private val logger = LogManager.getLogger("xta.game.Scene")

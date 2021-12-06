@@ -13,12 +13,22 @@ abstract class GameLocation(val id:String) {
 		if (player !in players) {
 			logger.info(player,"player",player.id,"entered location",id)
 			players.add(player)
+			for (other in players) {
+				if (other != player && other.scene.playersDynamic) {
+					other.replayScene()
+				}
+			}
 			onEnter(player)
 		}
 	}
 	fun playerLeft(player: Player) {
 		if (players.remove(player)) {
 			logger.info(player,"player",player.id,"left location",id)
+			for (other in players) {
+				if (other != player && other.scene.playersDynamic) {
+					other.replayScene()
+				}
+			}
 			onLeave(player)
 		}
 	}
@@ -26,7 +36,7 @@ abstract class GameLocation(val id:String) {
 	open fun onEnter(player: Player){}
 	open fun onLeave(player: Player){}
 
-	fun scene(suffix:String,updateOnVisit: Boolean=false,body: Display.()->Unit) =
-		LocationScene(this,suffix, updateOnVisit, body)
+	fun scene(suffix:String, playersDynamic: Boolean=false, body: Display.()->Unit) =
+		LocationScene(this,suffix, playersDynamic, body)
 
 }

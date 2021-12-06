@@ -70,7 +70,7 @@ class StartMenu: UiScreen("start-menu") {
 					importCharacter(character)
 				}.catch { e ->
 					console.error(e)
-					Game.whisperToSelf("Failed to import: "+e.message,"-error")
+					Game.localErrorMessage("Failed to import: "+e.message)
 				}
 			}
 		})

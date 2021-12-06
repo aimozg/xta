@@ -32,7 +32,7 @@ class LocalGuestProtocol(
 			return
 		}
 		message.charRejected?.let {
-			Game.whisperToSelf("Your character was rejected by server: ${it.message}","-error")
+			Game.localErrorMessage("Your character was rejected by server: ${it.message}")
 			return
 		}
 		message.statusUpdate?.let { msg ->

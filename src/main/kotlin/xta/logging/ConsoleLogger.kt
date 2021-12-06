@@ -38,7 +38,7 @@ class ConsoleLogger(id: String) : Logger(id) {
 			Level.CRITICAL,
 			Level.NONE -> {
 				console.error(dt, myname, actualContext, safemessage, obj)
-				Game.whisperToSelf(safemessage+" "+obj.toString(), "-error")
+				Game.localErrorMessage(safemessage+" "+obj.toString())
 			}
 		}
 	}

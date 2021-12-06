@@ -63,20 +63,29 @@ body {
 .message-author {
     font-weight: bold;
 }
-.message-author.-system {
+.chat-message .-system {
     color: #ff00ff;
+    font-weight: bold;
 }
-.message-author.-error {
+.chat-message .-error {
     color: #ee3333;
+    font-weight: bold;
 }
-.message-author.-me {
+.chat-message .-me {
     color: #eeaa33;
+    font-weight: bold;
 }
-.message-author.-host {
+.chat-message .-info {
+    color: #553311;
+    font-weight: bold;
+}
+.chat-message .-host {
     color: #33aaaa;
+    font-weight: bold;
 }
-.message-author.-server {
+.chat-message .-server {
     color: #0080ff;
+    font-weight: bold;
 }
 
 .chat-send-div {

@@ -2,6 +2,7 @@ package xta.text
 
 import xta.Game
 import xta.Player
+import xta.game.LocationScene
 import xta.game.Scene
 
 /*
@@ -25,18 +26,16 @@ abstract class Display {
 	abstract fun clearOutput()
 
 	abstract fun goto(scene: Scene)
-	abstract fun addButton(label: String, actionId: String, hint: String = "", disabled: Boolean = false, callback:()->Unit)
+	abstract fun addButton(label: String, hint: String = "", disabled: Boolean = false, callback:()->Unit)
 	open fun addButtonDisabled(label:String, hint:String="") {
-		addButton(label, "", hint, true){}
+		addButton(label, hint, true){}
 	}
 	open fun addButton(label:String, scene: Scene, actionId: String, hint:String="") {
-		addButton(label,actionId,hint) {
+		addButton(label, hint) {
 			goto(scene)
 		}
 	}
 
-	fun allPlayers() = Game.server?.players?:listOf(player)
-	fun playersHere() = allPlayers().filter{ it.scene.sceneId == sceneId}
-	fun otherPlayers() = playersHere() - player
+	fun otherPlayers() = player.location.players - player
 }
 

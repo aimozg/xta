@@ -23,12 +23,14 @@ object Game {
 	var server: GameServer? = null
 	var hostProtocol: HostProtocol = RemoteHostProtocol(me, DeadConnection())
 
-	fun whisperToSelf(message: String, style: String = "-system", senderName: String ="[System]") {
+	fun localMessage(message: String, style: String = "-system") {
 		ScreenManager.displayChatMessage(jsobject {
-			it.senderName = senderName
-			it.senderStyle = style
 			it.content = message
+			it.contentStyle = style
 		})
+	}
+	fun localErrorMessage(message: String, style:String = "-error") {
+		localMessage(message)
 	}
 
 	fun started() {

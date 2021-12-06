@@ -48,7 +48,7 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 				).catch {
 					connectButton.disabled = false
 					console.error(it)
-					Game.whisperToSelf("Connection error: ${it.message}","-error")
+					Game.localErrorMessage("Connection error: ${it.message}")
 				}
 			} else {
 				setupWsLobbyGuest(
@@ -59,7 +59,7 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 				).catch {
 					connectButton.disabled = false
 					console.error(it)
-					Game.whisperToSelf("Connection error: ${it.message}","-error")
+					Game.localErrorMessage("Connection error: ${it.message}")
 				}
 			}
 			Unit

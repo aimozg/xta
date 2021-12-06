@@ -55,11 +55,14 @@ class Player(
 		set(value) {
 			display.screen = value
 		}
-	fun updateScene() {
-		Game.server?.updateScene(this)
+	fun replayScene() {
+		Game.server?.playScene(this)
 	}
 	fun updateScreen() {
 		Game.server?.updateScreen(this)
+	}
+	fun notify(message:String, style:String="-info") {
+		Game.server?.sendChatNotifiaction(this, message, style)
 	}
 
 	/*

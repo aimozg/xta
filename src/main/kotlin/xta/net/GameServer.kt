@@ -175,10 +175,11 @@ class GameServer(): LogContext {
 		TownLocation.main.execute(player)
 	}
 
-	fun broadcastChatMessage(content:String, senderName:String = "[Server]", senderStyle:String = "-server") {
+	fun broadcastChatMessage(content:String, contentStyle:String?=null, senderName:String? = "[Server]", senderStyle:String? = "-server") {
 		val msg = jsobject<MessageToGuest> { msg ->
 			msg.chat = jsobject {
 				it.content = content
+				it.contentStyle = contentStyle
 				it.senderName = senderName
 				it.senderStyle = senderStyle
 			}
@@ -187,8 +188,21 @@ class GameServer(): LogContext {
 			player.guest.onMessage(msg)
 		}
 	}
+	fun sendChatMessage(receiver:Player, content: String, contentStyle:String?=null, senderName: String? = "[Server]", senderStyle: String? = "-server") {
+		receiver.guest.onMessage(jsobject { msg ->
+			msg.chat = jsobject {
+				it.content = content
+				it.contentStyle = contentStyle
+				it.senderName = senderName
+				it.senderStyle = senderStyle
+			}
+		})
+	}
+	fun sendChatNotifiaction(receiver:Player, content: String, contentStyle:String?="-info") {
+		sendChatMessage(receiver, content,contentStyle, senderName = null, senderStyle = null)
+	}
 
-	fun updateScene(player: Player) {
+	fun playScene(player: Player) {
 		player.scene.execute(player)
 	}
 	fun updateScreen(player: Player) {

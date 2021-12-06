@@ -13,19 +13,20 @@ import xta.logging.Logger
 fun main() {
 	js("""require("res/game.css")""")
 
+	window.asDynamic().game = Game
 	//TODO set onerror
 	ScreenManager.init()
 	LogManager.setLevelForMany("", Logger.Level.DEBUG)
 	LogManager.setLevelForMany("xta.charview.CompositeImage", Logger.Level.INFO)
 //	LogManager.setLevelForMany("xta.text", Logger.Level.ALL)
 	GameSettings.load()
-	Game.whisperToSelf("Welcome to the CoC-XTA")
+	Game.localMessage("Welcome to the CoC-XTA")
 	ScreenManager.showStartMenu()
 	if (GameSettings.data.render == true) {
-		Game.whisperToSelf("Loading images...")
+		Game.localMessage("Loading images...")
 		window.setTimeout({
 			CharViewImage.INSTANCE
-			Game.whisperToSelf("Images loaded!")
+			Game.localMessage("Images loaded!")
 		}, 50)
 	}
 }

@@ -10,7 +10,7 @@ external interface ScreenJson {
 }
 
 external interface ActionJson {
-	var actionId:String
+	var actionId:Int
 	var label:String
 	var hint:String?
 	var disabled:Boolean?

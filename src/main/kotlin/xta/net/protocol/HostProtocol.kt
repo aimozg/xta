@@ -39,7 +39,7 @@ abstract class HostProtocol: LogContext {
 		})
 	}
 
-	fun sendSceneAction(sceneId:String, actionId:String) {
+	fun sendSceneAction(sceneId:String, actionId:Int) {
 		sendMessage(jsobject { msg ->
 			msg.sceneAction = jsobject {
 				it.sceneId = sceneId

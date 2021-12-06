@@ -1,13 +1,13 @@
 package xta.ui
 
-import xta.Game
-import xta.net.protocol.host.DisplayChatMessage
-import xta.utils.KeyCodes
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
+import xta.Game
+import xta.net.protocol.host.DisplayChatMessage
+import xta.utils.KeyCodes
 
 class ChatBox(chatEnabled:Boolean): UiElement("chat-box") {
 	private val historyDiv = fragment.ref("history")
@@ -42,12 +42,27 @@ class ChatBox(chatEnabled:Boolean): UiElement("chat-box") {
 	}
 
 	fun addChatMessage(message: DisplayChatMessage) {
+		val senderName = message.senderName
+		val senderStyle = message.senderStyle
+		val contentStyle = message.contentStyle
+
 		val element = messageItem.cloneNode(true) as Element
-		element.ref("message-author").also {
-			it.addClass(message.senderStyle)
-			it.textContent = message.senderName
+		val authorDiv = element.ref("message-author")
+		val contentDiv = element.ref("message-content")
+
+		if (senderName.isNullOrBlank()) {
+			authorDiv.remove()
+		} else {
+			if (senderStyle != null) authorDiv.addClass(senderStyle)
+			authorDiv.textContent = senderName
 		}
-		element.ref("message-content").textContent = message.content
+		contentDiv.textContent = message.content
+		if (contentStyle != null) contentDiv.addClass(contentStyle)
+
+		val shouldScrollDown = historyDiv.scrollTop + historyDiv.offsetHeight >= historyDiv.scrollHeight
 		historyDiv.append(element)
+		if (shouldScrollDown) {
+			element.scrollIntoView()
+		}
 	}
 }

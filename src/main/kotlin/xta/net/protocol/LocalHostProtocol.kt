@@ -22,24 +22,24 @@ class LocalHostProtocol(
 			player.guest = LocalGuestProtocol(player, null)
 			Game.hostProtocol = this
 			logger.debug(this, "Game hosted")
-			Game.whisperToSelf("Connected! Use invite code ${connection.inviteCode()}")
+			Game.localMessage("Connected! Use invite code ${connection.inviteCode()}")
 			ScreenManager.showGameScreen()
 			Game.started()
 		}
 		connection.onClose { reason ->
 			if (Game.hostProtocol == this) {
-				Game.whisperToSelf("Disconnected: $reason","-error")
+				Game.localErrorMessage("Disconnected: $reason")
 				logger.warn(this, "Game closed", reason)
 				ScreenManager.showStartMenu()
 			}
 		}
 		connection.onGuest { guest ->
 			logger.info(guest, "Guest ", guest.identity, "joined")
-			Game.whisperToSelf("Guest connected: ${guest.identity}","-server","[Server]")
+			Game.localMessage("Guest connected: ${guest.identity}","-server")
 			setupRemoteGuest(guest)
 		}
 		connection.onGuestLeave { guest, reason ->
-			Game.whisperToSelf("Guest ${guest.identity} left ($reason)","-server","[Server]")
+			Game.localMessage("Guest ${guest.identity} left ($reason)","-server")
 			logger.info(guest, "Guest ", guest.identity, "left", reason)
 		}
 	}

@@ -29,7 +29,7 @@ fun setupWsLobbyHost(
 	token: String,
 	roomId: String
 ): Promise<HostProtocol> {
-	Game.whisperToSelf("Connecting to lobby...")
+	Game.localMessage("Connecting to lobby...")
 	return setupHost(WsLobbyGameHostConnection(url, identity, token, roomId))
 }
 
@@ -41,14 +41,14 @@ fun setupGuest(connection: AbstractGuestConnection, invite: String): Promise<Abs
 	Game.me.isHost = false
 	connection.onDisconnect { _, reason ->
 		if (Game.hostProtocol === hostProtocol) {
-			Game.whisperToSelf("Disconnected: $reason", "-error")
+			Game.localErrorMessage("Disconnected: $reason")
 			logger.warn(connection, "Game closed", reason)
 			ScreenManager.showStartMenu()
 		}
 	}
 	connection.onConnect {
 		ScreenManager.showGameScreen()
-		Game.whisperToSelf("Connected!")
+		Game.localMessage("Connected!")
 		Game.started()
 	}
 	connection.onMessage { _, message ->
@@ -57,7 +57,7 @@ fun setupGuest(connection: AbstractGuestConnection, invite: String): Promise<Abs
 		}
 	}
 	return connection.connect(invite).catch { error ->
-		Game.whisperToSelf("Failed to connect: ${error.message}","-error")
+		Game.localErrorMessage("Failed to connect: ${error.message}")
 		logger.warn(connection,"Failed to connect: ${error.message}")
 		throw error
 	}
@@ -69,7 +69,7 @@ fun setupWsLobbyGuest(
 	token: String,
 	invite: String
 ): Promise<WsLobbyGameGuestConnection> {
-	Game.whisperToSelf("Connecting to lobby...")
+	Game.localMessage("Connecting to lobby...")
 	val character = Game.myCharacter
 	// TODO configurable display name
 	val greeting = character.name + ", level " + character.level + " " + character.race()
