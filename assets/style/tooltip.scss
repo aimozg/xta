@@ -1,0 +1,23 @@
+.tooltip-activator {
+	position: relative;
+
+	.tooltip {
+		position: absolute;
+		min-width: calc(50% - 1em);
+		max-width: 300px;
+		padding: 0.5em;
+		transform: translateY(-110%);
+		border: 1px solid black;
+		text-align: left;
+		background: #eee;
+	}
+
+	&:hover .tooltip {
+		top: 0;
+		left: 50%;
+	}
+
+	&:not(:hover) .tooltip {
+		display: none;
+	}
+}

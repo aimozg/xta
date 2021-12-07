@@ -1,0 +1,57 @@
+.main-screen,
+.combat-screen {
+	display: grid;
+	height: calc(100vh - 150px);
+	grid-template-columns: min-content auto min-content;
+	grid-template-rows: min-content auto min-content;
+	grid-template-areas:
+        "menu menu menu"
+        "left text right"
+        "left actions right";
+
+	.mainscreen-topmenu,
+	.combat-topmenu {
+		grid-area: menu;
+	}
+
+	.mainscreen-left,
+	.combat-left {
+		grid-area: left;
+		margin: 1em;
+
+		.status-panel {
+			height: 100%;
+		}
+	}
+	.mainscreen-right,
+	.combat-right {
+		grid-area: right;
+		margin: 1em;
+
+		.status-panel {
+			height: 100%;
+		}
+	}
+
+	.mainscreen-text,
+	.combat-text {
+		grid-area: text;
+		margin: 1em;
+		max-width: 960px;
+		white-space: break-spaces;
+		overflow-y: scroll;
+	}
+
+	.mainscreen-actions,
+	.combat-actions {
+		grid-area: actions;
+		display: flex;
+		flex-direction: column;
+
+		.action {
+			margin: 0.25em 1em;
+		}
+	}
+
+}
+

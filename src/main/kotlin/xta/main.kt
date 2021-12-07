@@ -11,7 +11,7 @@ import xta.logging.Logger
  */
 
 fun main() {
-	js("""require("res/game.css")""")
+	js("""require("game.scss")""")
 
 	window.asDynamic().game = Game
 	//TODO set onerror

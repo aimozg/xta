@@ -1,0 +1,62 @@
+@use "style/utility";
+
+@use "style/bar";
+@use "style/tooltip";
+
+@use "style/character";
+@use "style/chat";
+
+@use "style/connect";
+@use "style/main";
+@use "style/start";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #dddddd;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 0 1em;
+}
+
+@media(min-width: 960px) {
+    #root {
+        margin: 0 auto;
+        padding: 0 2em;
+        min-width: 800px;
+        max-width: 1400px;
+    }
+    .chat-box {
+        min-width: 800px;
+        max-width: 1400px;
+    }
+}
+
+.error {
+    color: #aa3333;
+    font-weight: bold;
+}
+
+.colorbox {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border: 1px solid black;
+}
+
+.text-positive {
+    color: #080;
+}
+.text-negative {
+    color: #c00;
+}
+

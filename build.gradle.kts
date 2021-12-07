@@ -13,6 +13,8 @@ dependencies {
     testImplementation(kotlin("test"))
 
     implementation(npm("protobufjs","6.11.2"))
+    implementation(npm("sass","^1.44.0"))
+    implementation(npm("sass-loader","^12.3.0"))
 
 }
 

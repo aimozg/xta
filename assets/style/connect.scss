@@ -1,0 +1,24 @@
+.connect-screen {
+    margin: 2em 5em 0;
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.25em 0;
+    }
+
+    label {
+        flex-basis: 25%;
+        text-align: right;
+    }
+
+    input {
+        flex-basis: 70%;
+    }
+
+    button {
+        width: 80%;
+        margin: 1em 10%;
+    }
+}
+

@@ -1,0 +1,51 @@
+.float-left {
+	float:left;
+}
+.float-right {
+	float:right;
+}
+.d-flex {
+	display: flex;
+}
+.d-flex-column {
+	display: flex;
+	flex-direction: column;
+}
+.flex-grow-1 {
+	flex-grow: 1;
+}
+.flex-grow-0 {
+	flex-grow: 0;
+}
+.flex-shrink-1 {
+	flex-grow: 1;
+}
+.flex-shrink-0 {
+	flex-grow: 0;
+}
+
+@for $i from 0 through 8 {
+	.mt-#{$i} {
+		margin-top: $i * 0.25em;
+	}
+	.mb-#{$i} {
+		margin-bottom: $i * 0.25em;
+	}
+	.ml-#{$i} {
+		margin-left: $i * 0.25em;
+	}
+	.mr-#{$i} {
+		margin-right: $i * 0.25em;
+	}
+	.mx-#{$i} {
+		margin-left: $i * 0.25em;
+		margin-right: $i * 0.25em;
+	}
+	.my-#{$i} {
+		margin-top: $i * 0.25em;
+		margin-bottom: $i * 0.25em;
+	}
+	.mxy-#{$i} {
+		margin: $i * 0.25em;
+	}
+}
