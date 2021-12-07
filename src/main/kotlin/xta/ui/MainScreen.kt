@@ -7,7 +7,6 @@ import org.w3c.dom.asList
 import xta.Game
 import xta.ScreenManager
 import xta.game.PlayerCharacter
-import xta.game.settings.GameSettings
 import xta.net.protocol.messages.ScreenJson
 
 /*
@@ -50,7 +49,7 @@ class MainScreen: UiScreen("main-screen") {
 	}
 
 	fun showCharacter(char: PlayerCharacter) {
-		playerPanel.showCharacter(char, GameSettings.data.render?:false)
+		playerPanel.showCharacter(char)
 	}
 
 }

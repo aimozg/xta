@@ -1,5 +1,6 @@
 package xta.game.scenes
 
+import xta.Game
 import xta.Player
 import xta.game.GameLocation
 import xta.text.Parser
@@ -16,15 +17,20 @@ object ArenaLocation : GameLocation("Arena") {
 	// TODO chat notifications
 	val challenges = ArrayList<ChallengeRequest>()
 
-	override fun onLeave(player: Player) {
+	fun removePlayerChallenges(player:Player) {
 		challenges.walk { iterator, value ->
 			if (value.target == player || value.sender == player) {
 				iterator.remove()
 			}
 		}
 		for (p in players) {
-			p.replayScene()
+			if (!p.inCombat) {
+				p.replayScene()
+			}
 		}
+	}
+	override fun onLeave(player: Player) {
+		removePlayerChallenges(player)
 	}
 
 	val enterScene = scene("enter", playersDynamic = true) {
@@ -60,8 +66,12 @@ object ArenaLocation : GameLocation("Arena") {
 				outputText(" challenge"+(if (inChallenges.size>1) "" else "s")+" you!\n\n")
 				for (challenge in inChallenges) {
 					addButton("Accept "+challenge.sender.char.name+"'s challenge") {
-						outputText("Not implemented yet!")
-						player.updateScreen()
+						removePlayerChallenges(challenge.sender)
+						removePlayerChallenges(challenge.target)
+						Game.server?.startCombat(
+							challenge.sender,
+							challenge.target
+						)
 					}
 					addButton("Reject "+challenge.sender.char.name+"'s challenge") {
 						if (challenges.remove(challenge)) {

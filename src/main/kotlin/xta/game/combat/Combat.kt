@@ -12,15 +12,18 @@ class Combat(
 	var ongoing = false
 	fun start() {
 		for (player in partyA.players) {
-			player.combat = this
 			player.party = partyA
 		}
 		for (player in partyB.players) {
-			player.combat = this
 			player.party = partyB
 		}
 		ongoing = true
+		for (player in participants) {
+			player.combat = this
+			player.updateCombatStatus()
+		}
 	}
+	val participants = partyA.players + partyB.players
 
 	class Party(val players:List<Player>) {
 		fun isAlive() =

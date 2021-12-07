@@ -17,11 +17,13 @@ import xta.text.RemoteDisplay
  * Created by aimozg on 01.12.2021.
  */
 
+@Suppress("NON_EXPORTABLE_TYPE")
+@JsExport
 class Player(
+	var id:String,
 	val isMe: Boolean
 ) : LogContext {
 	var guest: GuestProtocol = RemoteGuestProtocol(this, DeadConnection())
-	val id:String get() = guest.identity // TODO make connection-independent constant?
 	override fun toLogString(): String =
 		if (isHost && isMe) "[LocalHost]" else guest.toLogString()
 	override fun toString() = "Player($id)"
@@ -60,6 +62,9 @@ class Player(
 	}
 	fun updateScreen() {
 		Game.server?.updateScreen(this)
+	}
+	fun updateCombatStatus() {
+		Game.server?.updateCombatStatus(this)
 	}
 	fun notify(message:String, style:String="-info") {
 		Game.server?.sendChatNotifiaction(this, message, style)

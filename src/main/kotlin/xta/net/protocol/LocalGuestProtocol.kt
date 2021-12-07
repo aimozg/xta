@@ -5,10 +5,12 @@ import xta.Game
 import xta.Player
 import xta.ScreenManager
 import xta.game.PlayerCharacter
+import xta.game.combat.Combat
 import xta.logging.LogManager
 import xta.net.transport.AbstractGuestConnection
 import xta.utils.decodeToJson
 import xta.utils.stringify
+import kotlin.js.Json
 
 class LocalGuestProtocol(
 	override val player: Player,
@@ -27,7 +29,8 @@ class LocalGuestProtocol(
 			ScreenManager.displayChatMessage(it)
 			return
 		}
-		message.charAccepted?.let {
+		message.charAccepted?.let { msg ->
+			Game.setMyPlayerId(msg.yourId)
 			Game.hostProtocol.sendStatusRequest(screen=true)
 			return
 		}
@@ -49,6 +52,39 @@ class LocalGuestProtocol(
 		message.sceneTransition?.let { msg ->
 			Game.me.screen = msg.screen
 			ScreenManager.displayScreen()
+			return
+		}
+		message.combatUpdate?.let { cum -> /* yes, and?*/
+			if (cum.inCombat == true) {
+				for (id in ((cum.partyA?: emptyArray()) + (cum.partyB?: emptyArray()))) {
+					@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+					Game.requireKnownPlayer(id, cum.playerData?.get(id) as Json?)
+				}
+				// TODO consider party change
+				if (!Game.me.inCombat) {
+					Game.me.combat = Combat(
+						Combat.Party(
+							(cum.partyA?: emptyArray()).map {
+								Game.requireKnownPlayer(it)
+							}
+						),
+						Combat.Party(
+							(cum.partyB?: emptyArray()).map {
+								Game.requireKnownPlayer(it)
+							}
+						)
+					)
+					ScreenManager.transitionToCombat()
+				} else {
+					ScreenManager.updateCombatScreen(canChangeScreen=true)
+				}
+			} else {
+				if (Game.me.inCombat) {
+					ScreenManager.transitionOutOfCombat()
+					Game.me.combat?.ongoing = false
+				}
+				Game.me.updateScreen()
+			}
 			return
 		}
 		logger.error(this,"Received bad message "+message.stringify())

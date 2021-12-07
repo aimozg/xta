@@ -5,12 +5,14 @@ import kotlinx.dom.clear
 import kotlinx.dom.removeClass
 import xta.charview.CharViewImage
 import xta.game.PlayerCharacter
+import xta.game.settings.GameSettings
 import kotlin.math.roundToInt
 
 /*
  * Created by aimozg on 02.12.2021.
  */
 class CharacterPanel : UiTemplate("char-panel") {
+	private val container = fragment.ref("container")
 	private val titleDiv = fragment.ref("title")
 	private val subtitleDiv = fragment.ref("subtitle")
 	private val xpBar = fragment.ref("xpbar")
@@ -33,7 +35,18 @@ class CharacterPanel : UiTemplate("char-panel") {
 
 	private val renderDiv = fragment.ref("render")
 
-	fun showCharacter(char: PlayerCharacter, render: Boolean) {
+	fun hide() {
+		container.style.display = "none"
+	}
+	fun show() {
+		container.style.display = ""
+	}
+	fun showCharacter(char: PlayerCharacter?, render: Boolean = GameSettings.data.render?:false) {
+		if (char == null) {
+			hide()
+			return
+		}
+		show()
 		// TODO tooltips!
 		titleDiv.textContent = char.name
 		subtitleDiv.textContent = "Level ${char.level} ${char.race()}"

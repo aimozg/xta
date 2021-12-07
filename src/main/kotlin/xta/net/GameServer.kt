@@ -4,6 +4,7 @@ import org.khronos.webgl.Uint8Array
 import xta.Game
 import xta.Player
 import xta.game.PlayerCharacter
+import xta.game.combat.Combat
 import xta.game.scenes.TownLocation
 import xta.logging.LogContext
 import xta.logging.LogManager
@@ -15,9 +16,8 @@ import xta.net.protocol.guest.SceneActionMessage
 import xta.net.protocol.guest.SendChatMessage
 import xta.net.protocol.guest.StatusRequestMessage
 import xta.net.transport.AbstractConnection
-import xta.utils.decodeToJson
-import xta.utils.jsobject
-import xta.utils.stringify
+import xta.utils.*
+import kotlin.random.Random
 
 /**
  * ```
@@ -60,6 +60,15 @@ class GameServer(): LogContext {
 
 	val players = arrayListOf(Game.me)
 
+	fun player(id:String):Player? {
+		return players.find { it.id == id }
+	}
+	fun newPlayerId():String {
+		while (true) {
+			val id = Random.Default.randomString(8)
+			if (player(id) == null) return id
+		}
+	}
 	fun hostGame() {
 		placePlayer(Game.me)
 	}
@@ -115,7 +124,9 @@ class GameServer(): LogContext {
 		val oldChar = if (sender.charLoaded) sender.char.chatName else null
 		sender.char = PlayerCharacter().apply { deserializeFromJson(request.char) }
 		sender.guest.onMessage(jsobject { msg ->
-			msg.charAccepted = jsobject {  }
+			msg.charAccepted = jsobject {
+				it.yourId = sender.id
+			}
 		})
 		if (sender.charLoaded) {
 			// local host
@@ -211,6 +222,32 @@ class GameServer(): LogContext {
 				it.screen = player.screen
 			}
 		})
+	}
+	fun updateCombatStatus(player: Player) {
+		player.guest.onMessage(jsobject { msg ->
+			msg.combatUpdate = jsobject { cum -> /* yes, and? */
+				cum.inCombat = player.inCombat
+				val combat = player.combat
+				if (combat?.ongoing == true) {
+					cum.partyA = combat.partyA.players.mapToArray { it.id }
+					cum.partyB = combat.partyB.players.mapToArray { it.id }
+					cum.playerData = buildJson { pd ->
+						for (c in combat.participants) {
+							if (c === player) continue
+							pd[c.id] = c.char.serializeToJson()
+						}
+					}
+				}
+			}
+		})
+	}
+	fun startCombat(playerA:Player, playerB:Player) {
+		if (playerA.inCombat) error("Cannot startCombat: $playerA is in combat")
+		if (playerB.inCombat) error("Cannot startCombat: $playerB is in combat")
+		Combat(
+			Combat.Party(listOf(playerA)),
+			Combat.Party(listOf(playerB))
+		).start()
 	}
 
 	companion object {

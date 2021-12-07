@@ -8,4 +8,5 @@ external interface MessageToGuest {
 	var charRejected: CharRejectedMessage?
 	var statusUpdate: StatusUpdateMessage?
 	var sceneTransition: SceneTransitionMessage?
+	var combatUpdate: CombatUpdateMessage?
 }

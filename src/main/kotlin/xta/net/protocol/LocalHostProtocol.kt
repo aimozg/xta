@@ -51,7 +51,7 @@ class LocalHostProtocol(
 	private fun setupRemoteGuest(guest: AbstractConnection) {
 		logger.info(guest, "Incoming guest ",guest.identity, guest.displayName)
 		// TODO reconnecting
-		val player = Player(false)
+		val player = Player(server.newPlayerId(), false)
 		player.guest = RemoteGuestProtocol(player, guest)
 		server.playerJoined(player)
 		guest.onDisconnect { _, reason ->

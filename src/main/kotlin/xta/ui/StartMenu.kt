@@ -29,7 +29,7 @@ class StartMenu: UiScreen("start-menu") {
 		display.clearOutput()
 		display.outputText(PlayerAppearance(Game.myCharacter).describe())
 		characterDiv.style.visibility = "visible"
-		playerPanel.showCharacter(Game.myCharacter, GameSettings.data.render == true)
+		playerPanel.showCharacter(Game.myCharacter)
 	}
 
 	init {

@@ -13,12 +13,13 @@ body {
 #root {
     overflow-y: auto;
     flex-grow: 1;
+    padding: 0 1em;
 }
 
 @media(min-width: 960px) {
     #root {
         margin: 0 auto;
-        padding: 0 4em;
+        padding: 0 2em;
         min-width: 800px;
         max-width: 1400px;
     }
@@ -29,7 +30,7 @@ body {
 }
 
 .start-menu {
-    margin: 1em 4em;
+    /*margin: 1em 4em;*/
 }
 
 .start-menu h1 {
@@ -213,10 +214,11 @@ body {
     margin: 1em 10%;
 }
 
-.main-screen {
+.main-screen,
+.combat-screen {
     display: grid;
     height: calc(100vh - 150px);
-    grid-template-columns: min-content auto;
+    grid-template-columns: min-content auto min-content;
     grid-template-rows: min-content auto min-content;
     grid-template-areas:
         "menu menu menu"
@@ -224,36 +226,43 @@ body {
         "left actions right";
 }
 
-.mainscreen-topmenu {
+.mainscreen-topmenu,
+.combat-topmenu {
     grid-area: menu;
 }
 
-.mainscreen-left {
+.mainscreen-left,
+.combat-left {
     grid-area: left;
     margin: 1em;
 }
-.mainscreen-right {
+.mainscreen-right,
+.combat-right {
     grid-area: right;
     margin: 1em;
 }
 
-.mainscreen-text {
+.mainscreen-text,
+.combat-text {
     grid-area: text;
     margin: 1em;
     max-width: 960px;
     white-space: break-spaces;
     overflow-y: scroll;
 }
-.mainscreen-left .status-panel {
+.mainscreen-left .status-panel,
+.combat-left .status-panel {
     height: 100%;
 }
 
-.mainscreen-actions {
+.mainscreen-actions,
+.combat-actions {
     grid-area: actions;
     display: flex;
     flex-direction: column;
 }
-.mainscreen-actions .action {
+.mainscreen-actions .action,
+.combat-actions .action {
     margin: 0.25em 1em;
 }
 .char-title {
