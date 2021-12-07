@@ -29,6 +29,7 @@ class Player(
 	override fun toString() = "Player($id)"
 
 	var isHost = false
+	val isConnected get() = isHost || guest.isConnected
 	val chatName
 		get() =
 			if (charLoaded) char.chatName
@@ -67,7 +68,7 @@ class Player(
 		Game.server?.updateCombatStatus(this)
 	}
 	fun notify(message:String, style:String="-info") {
-		Game.server?.sendChatNotifiaction(this, message, style)
+		Game.server?.sendChatNotification(this, message, style)
 	}
 
 	/*

@@ -42,6 +42,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 		container.style.display = ""
 	}
 	fun showCharacter(char: PlayerCharacter?, render: Boolean = GameSettings.data.render?:false) {
+		hideTooltip()
 		if (char == null) {
 			hide()
 			return

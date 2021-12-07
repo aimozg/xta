@@ -8,7 +8,7 @@
 	max-width: 300px;
 	padding: 0.5em;
 	margin-top: 0.5em;
-	visibility: visible;
+	visibility: hidden;
 
 	border: 1px solid black;
 	text-align: left;
@@ -16,10 +16,10 @@
 	background: #eee;
 
 	transition: visibility 0.1s step-end;
-}
-.tooltip.-top {
-	transform: translateY(calc(-100% - 1em));
-}
-.tooltip:not(:hover).-hidden {
-	visibility: hidden;
+	&.-top {
+		transform: translateY(calc(-100% - 1em));
+	}
+	&:hover, &.-visible {
+		visibility: visible;
+	}
 }

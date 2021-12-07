@@ -29,8 +29,9 @@ class MainScreen: UiScreen("main-screen") {
 		}
 	}
 
-	fun displayScene(scene: ScreenJson) {
+	fun dislaySceneContent(scene: ScreenJson) {
 		// TODO sanitize!
+		hideTooltip()
 		textOutputDiv.innerHTML = scene.content
 		actionsDiv.clear()
 		for (action in scene.actions) {

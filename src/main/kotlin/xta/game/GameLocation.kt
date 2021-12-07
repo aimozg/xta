@@ -14,7 +14,7 @@ abstract class GameLocation(val id:String) {
 			logger.info(player,"player",player.id,"entered location",id)
 			players.add(player)
 			for (other in players) {
-				if (other != player && other.scene.playersDynamic) {
+				if (other != player && other.scene.playersDynamic && !other.inCombat) {
 					other.replayScene()
 				}
 			}
@@ -25,7 +25,7 @@ abstract class GameLocation(val id:String) {
 		if (players.remove(player)) {
 			logger.info(player,"player",player.id,"left location",id)
 			for (other in players) {
-				if (other != player && other.scene.playersDynamic) {
+				if (other != player && other.scene.playersDynamic && !other.inCombat) {
 					other.replayScene()
 				}
 			}

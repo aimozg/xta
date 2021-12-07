@@ -6,6 +6,7 @@ import xta.Player
 import xta.ScreenManager
 import xta.game.PlayerCharacter
 import xta.game.combat.Combat
+import xta.game.scenes.Limbo
 import xta.logging.LogManager
 import xta.net.transport.AbstractGuestConnection
 import xta.utils.decodeToJson
@@ -45,13 +46,13 @@ class LocalGuestProtocol(
 			}
 			msg.screen?.let {
 				Game.me.screen = it
-				ScreenManager.displayScreen()
+				ScreenManager.displaySceneContent()
 			}
 			return
 		}
 		message.sceneTransition?.let { msg ->
 			Game.me.screen = msg.screen
-			ScreenManager.displayScreen()
+			ScreenManager.displaySceneContent()
 			return
 		}
 		message.combatUpdate?.let { cum -> /* yes, and?*/
@@ -64,25 +65,25 @@ class LocalGuestProtocol(
 				if (!Game.me.inCombat) {
 					Game.me.combat = Combat(
 						Combat.Party(
-							(cum.partyA?: emptyArray()).map {
+							(cum.partyA?: emptyArray()).mapTo(ArrayList()) {
 								Game.requireKnownPlayer(it)
 							}
 						),
 						Combat.Party(
-							(cum.partyB?: emptyArray()).map {
+							(cum.partyB?: emptyArray()).mapTo(ArrayList()) {
 								Game.requireKnownPlayer(it)
 							}
-						)
+						),
+						Limbo.scene
 					)
 					ScreenManager.transitionToCombat()
 				} else {
 					ScreenManager.updateCombatScreen(canChangeScreen=true)
 				}
 			} else {
-				if (Game.me.inCombat) {
-					ScreenManager.transitionOutOfCombat()
-					Game.me.combat?.ongoing = false
-				}
+				// TODO this conflicts between local host and local guest
+				ScreenManager.transitionOutOfCombat()
+				Game.me.combat?.ongoing = false
 				Game.me.updateScreen()
 			}
 			return

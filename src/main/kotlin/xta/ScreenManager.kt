@@ -3,6 +3,8 @@ package xta
 import kotlinx.browser.document
 import kotlinx.dom.clear
 import org.w3c.dom.Element
+import xta.logging.LogContext
+import xta.logging.LogManager
 import xta.net.protocol.host.DisplayChatMessage
 import xta.net.protocol.messages.ScreenJson
 import xta.ui.*
@@ -11,7 +13,7 @@ import xta.utils.getElementByIdOrThrow
 /*
  * Created by aimozg on 01.12.2021.
  */
-object ScreenManager {
+object ScreenManager: LogContext {
 
 	lateinit var uiRoot: Element
 	var currentScreen: UiScreen = UiScreen.EMPTY
@@ -23,6 +25,7 @@ object ScreenManager {
 
 	fun setScreen(screen:UiScreen) {
 		uiRoot.clear()
+		hideTooltip()
 		screen.insertTo(uiRoot)
 		currentScreen = screen
 	}
@@ -40,56 +43,67 @@ object ScreenManager {
 		chatBox.addChatMessage(message)
 	}
 
-	fun displayScreen(scene: ScreenJson = Game.me.screen) {
+	fun displaySceneContent(scene: ScreenJson = Game.me.screen) {
+		logger.debug(this, "displayScreen")
 		when (val screen = currentScreen) {
-			is MainScreen -> screen.displayScene(scene)
-			else -> Game.localErrorMessage("inappropriate displayScreen call")
+			is MainScreen -> screen.dislaySceneContent(scene)
+			else -> logger.error(this, "inappropriate displayScreen call")
 		}
 	}
 
 	fun updateCharacter() {
+		logger.debug(this, "updateCharacter")
 		when (val screen = currentScreen) {
 			is MainScreen -> screen.showCharacter(Game.myCharacter)
 			is CombatScreen -> screen.updatePlayer()
-			else -> Game.localErrorMessage("inappropriate updateCharacter call")
+			else -> logger.error(this,"inappropriate updateCharacter call")
 		}
 	}
 
 	fun showStartMenu() {
+		logger.debug(this, "showStartMenu")
 		StartMenu().show()
 	}
 
 	fun showConnectMenu(asHost:Boolean) {
+		logger.debug(this, "showConnectMenu")
 		ConnectMenu(asHost).show()
 	}
 
 	fun showGameScreen() {
+		logger.debug(this, "showGameScreen")
 		val screen = MainScreen()
 		screen.show()
 		screen.showCharacter(Game.myCharacter)
 	}
 
 	fun transitionToCombat() {
+		logger.debug(this, "transitionToCombat")
 		val screen = CombatScreen()
 		screen.show()
 		screen.update()
 	}
 
 	fun transitionOutOfCombat() {
+		logger.debug(this, "transitionOutOfCombat")
 		showGameScreen()
 	}
 
 	fun updateCombatScreen(canChangeScreen:Boolean = false){
+		logger.debug(this, "updateCombatScreen")
 		when (val screen = currentScreen) {
 			is CombatScreen -> screen.update()
 			else -> {
 				if (canChangeScreen) {
 					transitionToCombat()
 				} else {
-					Game.localErrorMessage("inappropriate updateCombatScreen call")
+					logger.error(null,"inappropriate updateCombatScreen call")
 				}
 			}
 		}
 	}
 
+	override fun toLogString() = "[ScreenManager]"
+
+	private val logger = LogManager.getLogger("xta.ScreenManager")
 }

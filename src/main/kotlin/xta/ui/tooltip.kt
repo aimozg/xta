@@ -20,8 +20,12 @@ private fun placeTooltip(
 ) {
 	tooltip.style.left = "${mouseX}px"
 	tooltip.style.top = "${mouseY}px"
-	tooltip.toggleClass("-hidden", false)
+	tooltip.toggleClass("-visible", true)
 	tooltip.toggleClass("-top", atTop)
+}
+
+fun hideTooltip() {
+	globalTooltip.toggleClass("-visible", false)
 }
 
 private fun addTooltipActivator(element: HTMLElement) {
@@ -44,7 +48,7 @@ private fun addTooltipActivator(element: HTMLElement) {
 		)
 	})*/
 	element.addEventListener("mouseleave", {
-		globalTooltip.toggleClass("-hidden", true)
+		hideTooltip()
 	})
 }
 
@@ -55,6 +59,6 @@ fun HTMLElement.addTooltip(tooltipHtml:String) {
 	dataset["tooltip"] = tooltipHtml
 }
 
-private val globalTooltip by lazy {
+private val globalTooltip:HTMLElement by lazy {
 	document.getElementById("tooltip") as HTMLElement
 }

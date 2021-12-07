@@ -4,7 +4,9 @@ import org.khronos.webgl.Uint8Array
 import xta.Game
 import xta.Player
 import xta.game.PlayerCharacter
+import xta.game.Scene
 import xta.game.combat.Combat
+import xta.game.scenes.Limbo
 import xta.game.scenes.TownLocation
 import xta.logging.LogContext
 import xta.logging.LogManager
@@ -76,10 +78,13 @@ class GameServer(): LogContext {
 	fun playerJoined(player:Player) {
 		players.add(player)
 	}
-	fun playerLeft(player: Player, reason:String) {
+	fun playerLeft(player: Player, reason: String) {
 		player.scene.onLeave(player)
-		broadcastChatMessage("${player.chatName} left the game ($reason)")
+		player.scene = Limbo.scene
+		player.location = Limbo
 		players.remove(player)
+		broadcastChatMessage("${player.chatName} left the game ($reason)")
+		player.combat?.playerLeft(player)
 	}
 	fun handleRawMessage(sender: AbstractConnection, message: Uint8Array) {
 		val player = players.find {
@@ -209,7 +214,7 @@ class GameServer(): LogContext {
 			}
 		})
 	}
-	fun sendChatNotifiaction(receiver:Player, content: String, contentStyle:String?="-info") {
+	fun sendChatNotification(receiver:Player, content: String, contentStyle:String?="-info") {
 		sendChatMessage(receiver, content,contentStyle, senderName = null, senderStyle = null)
 	}
 
@@ -241,13 +246,10 @@ class GameServer(): LogContext {
 			}
 		})
 	}
-	fun startCombat(playerA:Player, playerB:Player) {
+	fun startCombat(playerA:Player, playerB:Player, returnScene: Scene) {
 		if (playerA.inCombat) error("Cannot startCombat: $playerA is in combat")
 		if (playerB.inCombat) error("Cannot startCombat: $playerB is in combat")
-		Combat(
-			Combat.Party(listOf(playerA)),
-			Combat.Party(listOf(playerB))
-		).start()
+		Combat.oneOnOne(playerA,playerB, returnScene).start()
 	}
 
 	companion object {
