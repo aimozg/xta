@@ -1,5 +1,6 @@
 package xta.ui
 
+import kotlinx.browser.window
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.files.get
@@ -47,14 +48,16 @@ class StartMenu: UiScreen("start-menu") {
 				joinButton.disabled = false
 			}
 		}
-		if (Game.me.charLoaded) {
-			importCharacter(Game.me.char)
-		} else {
-			val ch = GameSettings.loadCharacter()
-			if (ch != null) {
-				importCharacter(ch)
+		window.setTimeout({
+			if (Game.me.charLoaded) {
+				importCharacter(Game.me.char)
+			} else {
+				val ch = GameSettings.loadCharacter()
+				if (ch != null) {
+					importCharacter(ch)
+				}
 			}
-		}
+		}, 0)
 		agreement.onchange = {
 			if (Game.me.charLoaded && agreement.checked) {
 				hostButton.disabled = false

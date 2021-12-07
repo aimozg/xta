@@ -17,26 +17,21 @@
 	.mainscreen-left,
 	.combat-left {
 		grid-area: left;
-		margin: 1em;
-
-		.status-panel {
-			height: 100%;
-		}
+		margin: 0.5em;
+		display: flex;
 	}
 	.mainscreen-right,
 	.combat-right {
 		grid-area: right;
-		margin: 1em;
-
-		.status-panel {
-			height: 100%;
-		}
+		margin: 0.5em;
+		display: flex;
 	}
 
 	.mainscreen-text,
 	.combat-text {
 		grid-area: text;
-		margin: 1em;
+		margin: 0.5em;
+		padding: 0.5em;
 		max-width: 960px;
 		white-space: break-spaces;
 		overflow-y: scroll;

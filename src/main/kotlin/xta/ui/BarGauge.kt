@@ -3,6 +3,7 @@ package xta.ui
 import org.w3c.dom.HTMLElement
 
 class BarGauge: UiTemplate("bar-gauge") {
+	val container = fragment.ref("container")
 	private val mainDiv = fragment.ref("main")
 	private val extraDiv = fragment.ref("extra")
 	private val textDiv = fragment.ref("text")

@@ -1,23 +1,25 @@
-.tooltip-activator {
-	position: relative;
+#tooltip {
+	position: absolute;
+}
 
-	.tooltip {
-		position: absolute;
-		min-width: calc(50% - 1em);
-		max-width: 300px;
-		padding: 0.5em;
-		transform: translateY(-110%);
-		border: 1px solid black;
-		text-align: left;
-		background: #eee;
-	}
+.tooltip {
+	min-width: 150px;
+	width: max-content;
+	max-width: 300px;
+	padding: 0.5em;
+	margin-top: 0.5em;
+	visibility: visible;
 
-	&:hover .tooltip {
-		top: 0;
-		left: 50%;
-	}
+	border: 1px solid black;
+	text-align: left;
+	white-space: break-spaces;
+	background: #eee;
 
-	&:not(:hover) .tooltip {
-		display: none;
-	}
+	transition: visibility 0.1s step-end;
+}
+.tooltip.-top {
+	transform: translateY(calc(-100% - 1em));
+}
+.tooltip:not(:hover).-hidden {
+	visibility: hidden;
 }

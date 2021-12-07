@@ -89,17 +89,17 @@
 </template>
 
 <template id="bar-gauge">
-    <div class="bar">
+    <div class="bar" data-ref="container">
         <div class="bar-fill bar-fill-bg" style="width:100%"></div>
-        <div data-ref="main" class="bar-fill bar-fill-main" style="width:0;display:none"></div>
-        <div data-ref="extra" class="bar-fill bar-fill-extra" style="width:0;display:none"></div>
-        <div data-ref="text" class="bar-text"></div>
+        <div class="bar-fill bar-fill-main" style="width:0;display:none" data-ref="main"></div>
+        <div class="bar-fill bar-fill-extra" style="width:0;display:none" data-ref="extra"></div>
+        <div class="bar-text" data-ref="text"></div>
     </div>
 </template>
 
 <template id="char-panel">
     <div class="char-panel d-flex-column" data-ref="container">
-        <div class="flex-grow-1">
+        <div>
             <div class="char-title" data-ref="title">Yuzu</div>
             <div class="char-subtitle" data-ref="subtitle">Level 5 female goblin</div>
             <div class="char-xp-bar">
@@ -165,6 +165,7 @@
     </div>
 </template>
 
+<div id="tooltip" class="tooltip -hidden"></div>
 
 <script src="cocxta.js"></script>
 </body>

@@ -69,33 +69,56 @@ class CharacterPanel : UiTemplate("char-panel") {
 		hpBar.displayValue(
 			value = char.hp.toDouble(),
 			max = char.maxHp().toDouble(),
-			text = "${char.hp}/${char.maxHp()}"
+			text = char.hp.toString()
 		)
+		hpBar.container.addTooltip(
+			"HP: ${char.hp}/${char.maxHp()}\n" +
+					"(${char.hpRatio.times(100).roundToInt()}%)")
 		lustBar.displayValue(
 			value = char.lust.toDouble(),
 			extra = char.minLust().toDouble(),
 			max = char.maxLust().toDouble(),
-			text = "${char.lust}/${char.maxLust()}"
+			text = char.lust.toString()
+		)
+		lustBar.container.addTooltip(
+			"Lust: ${char.lust}/${char.maxLust()}\n" +
+					"(${char.lustRatio.times(100).roundToInt()}%)"
 		)
 		wrathBar.displayValue(
 			value = char.wrath.toDouble(),
 			max = char.maxWrath().toDouble(),
-			text = "${char.wrath}/${char.maxWrath()}"
+			text = char.wrath.toString()
+		)
+		wrathBar.container.addTooltip(
+			"Wrath: ${char.wrath}/${char.maxWrath()}\n" +
+					"(${char.wrathRatio.times(100).roundToInt()}%)"
 		)
 		staminaBar.displayValue(
 			value = char.stamina.toDouble(),
 			max = char.maxFatigue().toDouble(),
-			text = "${char.stamina}/${char.maxFatigue()}"
+			text = char.stamina.toString()
+		)
+		staminaBar.container.addTooltip(
+			"Stamina: ${char.stamina}/${char.maxFatigue()}\n" +
+					"(${char.staminaRatio.times(100).roundToInt()}%)"
 		)
 		manaBar.displayValue(
 			value = char.mana.toDouble(),
 			max = char.maxMana().toDouble(),
-			text = "${char.mana}/${char.maxMana()}"
+			text = char.mana.toString()
+		)
+		manaBar.container.addTooltip(
+			"Mana: ${char.mana}/${char.maxMana()}\n" +
+					"(${char.manaRatio.times(100).roundToInt()}%)"
 		)
 		sfBar.displayValue(
 			value = char.soulforce.toDouble(),
 			max = char.maxSoulforce().toDouble(),
-			text = "${char.soulforce}/${char.maxSoulforce()}"
+			text = char.soulforce.toString()
+		)
+		sfBar.container.addTooltip(
+			"Soulforce: ${char.soulforce}/${char.maxSoulforce()}\n" +
+					"(${char.sfRatio.times(100).roundToInt()}%)"
 		)
 		gemsValue.textContent = char.gems.toString()
 		ssValue.textContent = "0" // TODO soulstones

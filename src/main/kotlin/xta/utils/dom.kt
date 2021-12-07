@@ -3,6 +3,10 @@ package xta.utils
 import kotlinx.browser.document
 import org.w3c.dom.*
 
+fun HTMLElement.toggleClass(className:String, condition:Boolean) {
+	classList.toggle(className, condition)
+}
+
 fun Document.getElementByIdOrThrow(elementId:String) =
 	getElementById(elementId) ?: error("Element #$elementId not found in document")
 

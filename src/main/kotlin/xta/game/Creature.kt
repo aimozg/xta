@@ -50,6 +50,37 @@ abstract class Creature: AbstractCreature() {
 	val sens get() = sensStat.value
 
 	val isAlive get() = hp > 0
+	var hpRatio
+		get() = hp.toDouble()/maxHp()
+		set(value) {
+			hp = (maxHp()*value).roundToInt()
+		}
+	var lustRatio
+		get() = lust.toDouble()/maxLust()
+		set(value) {
+			lust = (maxLust()*value).roundToInt()
+		}
+	var wrathRatio
+		get() = wrath.toDouble()/maxWrath()
+		set(value) {
+			wrath = (maxWrath()*value).roundToInt()
+		}
+	val staminaRatio get() = 1.0-fatigueRatio
+	var fatigueRatio
+		get() = fatigue.toDouble()/maxFatigue()
+		set(value) {
+			fatigue = (maxFatigue()*value).roundToInt()
+		}
+	var manaRatio
+		get() = mana.toDouble()/maxMana()
+		set(value) {
+			mana = (maxMana()*value).roundToInt()
+		}
+	var sfRatio
+		get() = soulforce.toDouble()/maxSoulforce()
+		set(value) {
+			soulforce = (maxSoulforce()*value).roundToInt()
+		}
 
 	fun xpToLevelUp(): Int {
 		var xpm = 100
