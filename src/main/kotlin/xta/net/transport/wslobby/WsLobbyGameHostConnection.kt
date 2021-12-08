@@ -3,6 +3,7 @@ package xta.net.transport.wslobby
 import org.khronos.webgl.Uint8Array
 import xta.game.settings.GameSettings
 import xta.logging.LogManager
+import xta.logging.Logger
 import xta.net.transport.AbstractConnection
 import xta.net.transport.AbstractHostConnection
 import kotlin.js.Promise
@@ -56,7 +57,7 @@ class WsLobbyGameHostConnection(
 		var resolved = false
 		return Promise { resolve, reject ->
 			val ws = WsLobbyHost(url, this.identity, token, roomId)
-			console.log("Host init",ws)
+			logger.logObject(Logger.Level.DEBUG, this, "Host init",ws)
 			this.ws = ws
 
 			ws.onRoomEntry {

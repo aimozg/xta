@@ -1,6 +1,7 @@
 package xta.game.stats
 
 import xta.net.serialization.JsonSerializable
+import xta.utils.walk
 import kotlin.js.Json
 
 open class BuffableStat(
@@ -51,20 +52,18 @@ open class BuffableStat(
 		show: Boolean = true
 	) {
 		val i = indexOfBuff(tag)
-		val buff = Buff(
-			this,
-			tag,
-			value,
-			text,
-			rate,
-			ticks,
-			save,
-			show
-		)
+		val buff = Buff(this, tag, value, text, rate, ticks, save, show)
 		if (i == -1) {
 			buffs.add(buff)
 		} else {
 			buffs[i] = buff
+		}
+		dirty = true
+	}
+
+	fun removeCombatBuffs() {
+		buffs.walk { iterator, buff ->
+			if (buff.rate == Buff.Rate.ROUNDS) iterator.remove()
 		}
 		dirty = true
 	}

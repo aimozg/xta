@@ -25,10 +25,15 @@ body {
 #root {
     overflow-y: auto;
     flex-grow: 1;
-    padding: 0 1em;
 }
 
-@media(min-width: 960px) {
+@media(min-width: 800px) {
+    #root {
+        padding: 0 1em;
+    }
+}
+
+@media(min-width: 1200px) {
     #root {
         margin: 0 auto;
         padding: 0 2em;

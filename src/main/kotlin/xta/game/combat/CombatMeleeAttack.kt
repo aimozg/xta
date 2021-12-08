@@ -10,7 +10,7 @@ class CombatMeleeAttack(
 ): AbstractCombatAction(actor) {
 	override fun perform() {
 		// TODO port combat math
-		val hitChance = (actor.char.spe - target.char.spe).coerceIn(5.0, 95.0)
+		val hitChance = (actor.char.spe - target.char.spe).coerceIn(25.0, 95.0)
 		if (gamerng.nextDouble(100.0) > hitChance) {
 			// miss
 			display.selectPerson(actor)

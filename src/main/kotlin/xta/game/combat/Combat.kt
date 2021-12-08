@@ -79,6 +79,7 @@ class Combat(
 		ongoing = true
 		for (player in participants) {
 			player.combat = this
+			player.char.clearCombatStatuses()
 			player.display.clearOutput()
 		}
 		nextRound()
@@ -95,6 +96,7 @@ class Combat(
 		for (target in opponentsOf(player)?.players ?: emptyList()) {
 			actions.add(CombatMeleeAttack(player, target))
 		}
+		actions.add(CombatSurrender(player))
 
 		player.combatActions = actions
 	}
@@ -153,6 +155,7 @@ class Combat(
 		ongoing = false
 		for (player in participants) {
 			player.combat = null
+			player.char.clearCombatStatuses()
 			if (player.isConnected) {
 				Game.server?.sendChatNotification(player, "Combat ended")
 				player.sendFullCombatStatus()

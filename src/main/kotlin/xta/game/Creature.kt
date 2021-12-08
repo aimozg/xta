@@ -2,6 +2,7 @@ package xta.game
 
 import xta.game.creature.Gender
 import xta.game.creature.body.SkinCoatType
+import xta.game.stats.BuffableStat
 import kotlin.math.roundToInt
 
 /*
@@ -49,8 +50,6 @@ abstract class Creature: AbstractCreature() {
 	val lib get() = libStat.value
 	val sens get() = sensStat.value
 
-	val isAlive get() = hp > 0
-	val canAct get() = isAlive // TODO and not stunned
 	var hpRatio
 		get() = hp.toDouble()/maxHp()
 		set(value) {
@@ -101,7 +100,7 @@ abstract class Creature: AbstractCreature() {
 		val tou = tou.roundToInt()
 		// TODO account for perks
 
-		max += tou*5+50
+		max += tou*2+50
 		if (tou >= 21) max += tou
 		if (tou >= 41) max += tou
 		if (tou >= 61) max += tou
@@ -208,7 +207,7 @@ abstract class Creature: AbstractCreature() {
 	open fun maxSoulforceBase():Int {
 		var max = 50
 		// TODO perk, cultivation level, item, racial bonuses
-		max += level*5
+		max += level*maxSoulforcePerLevel()
 		if (level <= 6) max += level*5
 		return max
 	}
@@ -289,4 +288,24 @@ abstract class Creature: AbstractCreature() {
 	}
 	fun mf(m:String,f:String) = if (looksFemale()) f else m
 
+	/*
+	 *     ██████  ██████  ███    ███ ██████   █████  ████████     ███████ ███    ██ ███████
+	 *    ██      ██    ██ ████  ████ ██   ██ ██   ██    ██        ██      ████   ██ ██
+	 *    ██      ██    ██ ██ ████ ██ ██████  ███████    ██        █████   ██ ██  ██ ███████
+	 *    ██      ██    ██ ██  ██  ██ ██   ██ ██   ██    ██        ██      ██  ██ ██      ██
+	 *     ██████  ██████  ██      ██ ██████  ██   ██    ██        ██      ██   ████ ███████
+	 *
+	 *
+	 */
+
+	var surrendered = false
+	val isAlive get() = !surrendered && hp > 0 && lust < maxLust()
+	val canAct get() = isAlive // TODO and not stunned
+
+	fun clearCombatStatuses() {
+		surrendered = false
+		allStatsAndSubstats().forEach {
+			(it as? BuffableStat)?.removeCombatBuffs()
+		}
+	}
 }
