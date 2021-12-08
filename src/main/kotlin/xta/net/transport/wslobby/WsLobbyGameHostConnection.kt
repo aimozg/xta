@@ -1,10 +1,10 @@
 package xta.net.transport.wslobby
 
+import org.khronos.webgl.Uint8Array
+import xta.game.settings.GameSettings
+import xta.logging.LogManager
 import xta.net.transport.AbstractConnection
 import xta.net.transport.AbstractHostConnection
-import xta.game.settings.GameSettings
-import org.khronos.webgl.Uint8Array
-import xta.logging.LogManager
 import kotlin.js.Promise
 
 /*
@@ -12,7 +12,7 @@ import kotlin.js.Promise
  */
 class WsLobbyGameHostConnection(
 	val url:String,
-	val identity:String,
+	override val identity:String,
 	val token:String,
 	val roomId:String
 ) : AbstractHostConnection() {
@@ -55,7 +55,7 @@ class WsLobbyGameHostConnection(
 	override fun register():Promise<WsLobbyGameHostConnection> {
 		var resolved = false
 		return Promise { resolve, reject ->
-			val ws = WsLobbyHost(url, identity, token, roomId)
+			val ws = WsLobbyHost(url, this.identity, token, roomId)
 			console.log("Host init",ws)
 			this.ws = ws
 
@@ -95,9 +95,6 @@ class WsLobbyGameHostConnection(
 			ws?.close(reason)
 		}
 	}
-
-	override val address: String
-		get() = identity
 
 	companion object {
 		private val logger = LogManager.getLogger("xta.net.transport.wslobby.WsLobbyGameHostConnection")

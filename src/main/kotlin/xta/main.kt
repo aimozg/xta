@@ -17,7 +17,7 @@ fun main() {
 	//TODO set onerror
 	ScreenManager.init()
 	LogManager.setLevelForMany("", Logger.Level.DEBUG)
-	LogManager.setLevelForMany("xta.charview.CompositeImage", Logger.Level.INFO)
+//	LogManager.setLevelForMany("xta.charview.CompositeImage", Logger.Level.INFO)
 //	LogManager.setLevelForMany("xta.text", Logger.Level.ALL)
 	GameSettings.load()
 	Game.localMessage("Welcome to the CoC-XTA")

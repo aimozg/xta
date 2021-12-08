@@ -7,4 +7,5 @@ external interface MessageToHost {
 	var offerChar: OfferCharMessage?
 	var statusRequest: StatusRequestMessage?
 	var sceneAction: SceneActionMessage?
+	var combatAction: CombatActionMessage?
 }

@@ -41,17 +41,17 @@ class LocalGuestProtocol(
 		}
 		message.statusUpdate?.let { msg ->
 			msg.char?.let {
-				Game.me.char = PlayerCharacter().apply { deserializeFromJson(it) }
+				player.char = PlayerCharacter().apply { deserializeFromJson(it) }
 				ScreenManager.updateCharacter()
 			}
 			msg.screen?.let {
-				Game.me.screen = it
+				player.screen = it
 				ScreenManager.displaySceneContent()
 			}
 			return
 		}
 		message.sceneTransition?.let { msg ->
-			Game.me.screen = msg.screen
+			player.screen = msg.screen
 			ScreenManager.displaySceneContent()
 			return
 		}
@@ -61,9 +61,16 @@ class LocalGuestProtocol(
 					@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 					Game.requireKnownPlayer(id, cum.playerData?.get(id) as Json?)
 				}
-				// TODO consider party change
-				if (!Game.me.inCombat) {
-					Game.me.combat = Combat(
+				cum.myContent?.let { player.screen.content = it }
+				player.screen.actions = cum.myActions ?: emptyArray()
+				if (cum.actingPlayerId != player.id) {
+					for (action in player.screen.actions) {
+						action.disabled = true
+					}
+				}
+				// TODO check if party changes mid-combat
+				if (!player.inCombat) {
+					player.combat = Combat(
 						Combat.Party(
 							(cum.partyA?: emptyArray()).mapTo(ArrayList()) {
 								Game.requireKnownPlayer(it)
@@ -83,8 +90,8 @@ class LocalGuestProtocol(
 			} else {
 				// TODO this conflicts between local host and local guest
 				ScreenManager.transitionOutOfCombat()
-				Game.me.combat?.ongoing = false
-				Game.me.updateScreen()
+				player.combat?.ongoing = false
+				player.sendScreen()
 			}
 			return
 		}

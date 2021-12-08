@@ -31,7 +31,12 @@ fun hideTooltip() {
 private fun addTooltipActivator(element: HTMLElement) {
 	element.addEventListener("mouseenter", {
 		it as MouseEvent
-		globalTooltip.innerHTML = element.dataset["tooltip"] ?: return@addEventListener
+		val html = element.dataset["tooltip"]
+		if (html.isNullOrBlank()) {
+			hideTooltip()
+			return@addEventListener
+		}
+		globalTooltip.innerHTML = html
 		placeTooltip(element,
 			it.pageX.toInt(),
 			it.pageY.toInt(),
@@ -53,7 +58,7 @@ private fun addTooltipActivator(element: HTMLElement) {
 }
 
 fun HTMLElement.addTooltip(tooltipHtml:String) {
-	if (dataset["tooltip"] == null) {
+	if (dataset["tooltip"] == null && tooltipHtml.isNotBlank()) {
 		addTooltipActivator(this)
 	}
 	dataset["tooltip"] = tooltipHtml

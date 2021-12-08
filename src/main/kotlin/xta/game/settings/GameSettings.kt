@@ -2,14 +2,13 @@ package xta.game.settings
 
 import js.Object
 import kotlinx.browser.localStorage
-import xta.Game
+import kotlinx.browser.window
 import xta.game.PlayerCharacter
 import xta.logging.LogManager
 import xta.utils.jsObject
 import xta.utils.jsobject
 import xta.utils.randomString
 import xta.utils.stringify
-import kotlin.js.Json
 import kotlin.random.Random
 
 /*
@@ -26,7 +25,13 @@ object GameSettings {
 	fun reset() {
 		data.eula = 0
 
-		data.wsLobbyUrl = "ws://127.0.0.1:8081/lobby"
+		val location = window.location
+		val port = if (location.port.isEmpty()) "" else ":"+location.port
+		data.wsLobbyUrl = when (location.protocol) {
+			"http:" -> "ws://" + location.hostname + port + "/lobby"
+			"https:" -> "wss://" + location.hostname + port + "/lobby"
+			else -> "ws://127.0.0.1:8081/lobby"
+		}
 		data.wsIdentity = Random.Default.randomString(16)
 		data.wsToken = Random.Default.randomString(16)
 		data.wsHostRoom = Random.Default.randomString(16)

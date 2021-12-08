@@ -1,29 +1,32 @@
 package xta.text
 
-import xta.Game
 import xta.Player
-import xta.game.LocationScene
 import xta.game.Scene
 
 /*
  * Created by aimozg on 28.11.2021.
  */
-abstract class Display {
+abstract class Display: TextOutput {
 	abstract val parser: Parser
 	abstract val player: Player
 	val character get() = player.char
 
-	fun outputText(text: String) {
+	override fun selectSelf() {
+		parser.player = player
+	}
+	override fun selectPerson(person:Player) {
+		parser.player = person
+	}
+	override fun outputText(text: String) {
 		rawOutput(parser.parse(text))
 	}
 	abstract var sceneId: String
 	open fun startScene(sceneId:String) {
 		this.sceneId = sceneId
+		parser.player = player
 		clearOutput()
 	}
 	open fun endScene(){}
-	abstract fun rawOutput(text: String)
-	abstract fun clearOutput()
 
 	abstract fun goto(scene: Scene)
 	abstract fun addButton(label: String, hint: String = "", disabled: Boolean = false, callback:()->Unit)

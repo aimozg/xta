@@ -18,9 +18,8 @@ class LocalHostProtocol(
 
 	init {
 		connection.onReady {
-			player.isHost = true
-			player.guest = LocalGuestProtocol(player, null)
 			Game.hostProtocol = this
+			setupLocalGuest(player)
 			logger.debug(this, "Game hosted")
 			Game.localMessage("Connected! Use invite code ${connection.inviteCode()}")
 			ScreenManager.showGameScreen()
@@ -48,10 +47,15 @@ class LocalHostProtocol(
 		get() = connection.isActive
 
 
+	private fun setupLocalGuest(player: Player) {
+		player.isHost = true
+		player.guest = LocalGuestProtocol(player, null)
+		player.id = connection.identity
+	}
 	private fun setupRemoteGuest(guest: AbstractConnection) {
 		logger.info(guest, "Incoming guest ",guest.identity, guest.displayName)
 		// TODO reconnecting
-		val player = Player(server.newPlayerId(), false)
+		val player = Player(server.newPlayerId(guest), false)
 		player.guest = RemoteGuestProtocol(player, guest)
 		server.playerJoined(player)
 		guest.onDisconnect { _, reason ->

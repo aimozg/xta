@@ -1,12 +1,12 @@
 package xta.ui
 
-import xta.ScreenManager
-import xta.net.setupWsLobbyGuest
-import xta.net.setupWsLobbyHost
-import xta.game.settings.GameSettings
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import xta.Game
+import xta.ScreenManager
+import xta.game.settings.GameSettings
+import xta.net.setupWsLobbyGuest
+import xta.net.setupWsLobbyHost
 
 class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 	private val lobbyInput = fragment.ref<HTMLInputElement>("lobby-url")
@@ -32,6 +32,9 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 			connectButton.disabled = true
 			GameSettings.data.wsLobbyUrl = lobbyInput.value
 			GameSettings.data.wsIdentity = identityInput.value
+			// TODO saving passwords in localStorage is bad
+			//      but at the same time, need to avoid excess configuration or overcomplicating things
+			//      Use session tokens?
 			GameSettings.data.wsToken = tokenInput.value
 			if (asHost) {
 				GameSettings.data.wsHostRoom = roomIdInput.value
@@ -43,7 +46,7 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 				setupWsLobbyHost(
 					GameSettings.data.wsLobbyUrl,
 					GameSettings.data.wsIdentity,
-					GameSettings.data.wsToken,
+					tokenInput.value,
 					GameSettings.data.wsHostRoom
 				).catch {
 					connectButton.disabled = false
@@ -54,7 +57,7 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 				setupWsLobbyGuest(
 					GameSettings.data.wsLobbyUrl,
 					GameSettings.data.wsIdentity,
-					GameSettings.data.wsToken,
+					tokenInput.value,
 					GameSettings.data.wsJoinInvite
 				).catch {
 					connectButton.disabled = false

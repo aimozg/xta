@@ -19,11 +19,16 @@ dependencies {
 }
 
 kotlin {
-    sourceSets.all {
+    /*sourceSets.all {
         languageSettings {
             optIn("kotlin.js.ExperimentalJsExport")
+            optIn("kotlin.time.ExperimentalTime")
         }
-    }
+    }*/
+	tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+		kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.js.ExperimentalJsExport"
+		kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+	}
     js(IR) {
         binaries.executable()
         browser {

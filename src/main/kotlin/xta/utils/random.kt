@@ -11,6 +11,11 @@ import kotlin.random.Random
  */
 val fxrng = Random(Random.Default.nextInt())
 
+/**
+ * Random generator for gameplay effects
+ */
+val gamerng = Random(Random.Default.nextInt())
+
 fun Random.either(vararg options:String) =
 	if (options.isEmpty()) ""
 	else options[nextInt(options.size)]

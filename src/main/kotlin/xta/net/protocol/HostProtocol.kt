@@ -47,5 +47,15 @@ abstract class HostProtocol: LogContext {
 			}
 		})
 	}
+
+	fun sendCombatAction(actionId:Int) {
+		sendMessage(jsobject { msg ->
+			msg.combatAction = jsobject {
+				it.actionId = actionId
+			}
+		})
+	}
+
+
 }
 

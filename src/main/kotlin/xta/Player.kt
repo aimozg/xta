@@ -3,6 +3,7 @@ package xta
 import xta.game.GameLocation
 import xta.game.PlayerCharacter
 import xta.game.Scene
+import xta.game.combat.AbstractCombatAction
 import xta.game.combat.Combat
 import xta.game.scenes.Limbo
 import xta.logging.LogContext
@@ -23,7 +24,8 @@ class Player(
 	var id:String,
 	val isMe: Boolean
 ) : LogContext {
-	var guest: GuestProtocol = RemoteGuestProtocol(this, DeadConnection())
+
+	// BOTH HOST AND GUEST
 	override fun toLogString(): String =
 		if (isHost && isMe) "[LocalHost]" else guest.toLogString()
 	override fun toString() = "Player($id)"
@@ -40,9 +42,15 @@ class Player(
 			charLoaded = true
 		}
 	var charLoaded = false
-
+	var screen: ScreenJson
+		get() = display.screen
+		set(value) {
+			display.screen = value
+		}
 	val isOnline get() = isMe || guest.isConnected
 
+	// HOST
+	var guest: GuestProtocol = RemoteGuestProtocol(this, DeadConnection())
 	val display = RemoteDisplay(this, Parser(this, this))
 	var location: GameLocation = Limbo
 		set(value) {
@@ -53,19 +61,14 @@ class Player(
 			}
 		}
 	var scene: Scene = Limbo.scene
-	var screen: ScreenJson
-		get() = display.screen
-		set(value) {
-			display.screen = value
-		}
 	fun replayScene() {
 		Game.server?.playScene(this)
 	}
-	fun updateScreen() {
-		Game.server?.updateScreen(this)
+	fun sendScreen() {
+		Game.server?.sendScreen(this)
 	}
-	fun updateCombatStatus() {
-		Game.server?.updateCombatStatus(this)
+	fun sendFullCombatStatus() {
+		Game.server?.sendCombatStatus(this, true)
 	}
 	fun notify(message:String, style:String="-info") {
 		Game.server?.sendChatNotification(this, message, style)
@@ -81,9 +84,12 @@ class Player(
 	 *
 	 */
 
+	// BOTH HOST AND GUEST
 	var combat: Combat? = null
-	var party: Combat.Party = Combat.Party(listOf(this))
 	val inCombat get() =
 		combat?.ongoing == true
 
+	// HOST
+	var party: Combat.Party = Combat.Party(listOf(this))
+	var combatActions: List<AbstractCombatAction> = emptyList()
 }

@@ -1,7 +1,12 @@
 package xta.ui
 
+import kotlinx.dom.appendElement
+import kotlinx.dom.clear
+import org.w3c.dom.HTMLButtonElement
+import org.w3c.dom.asList
 import xta.Game
 import xta.ScreenManager
+import xta.game.combat.Combat
 
 /*
  * Created by aimozg on 07.12.2021.
@@ -27,12 +32,45 @@ class CombatScreen: UiScreen("combat-screen") {
 		}
 	}
 
+	fun disableActions() {
+		for (btn in actionsDiv.querySelectorAll("button").asList()) {
+			(btn as HTMLButtonElement).disabled = true
+		}
+	}
+
 	fun update() {
 		val combat = Game.me.combat ?: return
 		// TODO many-on-many battles
-		leftCharPanel.showCharacter(combat.partyA.players.firstOrNull()?.char)
-		rightCharPanel.showCharacter(combat.partyB.players.firstOrNull()?.char)
+		val myParty:Combat.Party
+		val otherParty:Combat.Party
+		if (Game.me in combat.partyA) {
+			myParty = combat.partyA
+			otherParty = combat.partyB
+		} else {
+			myParty = combat.partyB
+			otherParty = combat.partyA
+		}
 
-		textOutputDiv.textContent = "Welcome to the cum zone!"
+		leftCharPanel.showCharacter(myParty.players.firstOrNull()?.char)
+		rightCharPanel.showCharacter(otherParty.players.firstOrNull()?.char)
+
+		// TODO sanitize!
+		textOutputDiv.innerHTML = Game.me.screen.content
+
+		actionsDiv.clear()
+		for (action in Game.me.screen.actions) {
+			actionsDiv.appendElement("button") {
+				this as HTMLButtonElement
+				className = "action"
+				textContent = action.label
+				if (action.disabled == true) disabled = true
+				addTooltip(action.hint?:"")
+				onclick = {
+					hideTooltip()
+					disableActions()
+					Game.hostProtocol.sendCombatAction(action.actionId)
+				}
+			}
+		}
 	}
 }

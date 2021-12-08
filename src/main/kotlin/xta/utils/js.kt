@@ -12,14 +12,6 @@ import kotlin.js.Promise
 /*
  * Created by aimozg on 28.11.2021.
  */
-inline fun <IN, reified OUT> Array<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
-	Array(size) { map(this[it]) }
-fun <IN> Array<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
-	Array<Any?>(size) { map(this[it]) }
-inline fun <IN, reified OUT> List<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
-	Array(size) { map(this[it]) }
-fun <IN> List<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
-	Array<Any?>(size) { map(this[it]) }
 
 suspend fun <T> Promise<T>.await(): T = suspendCoroutine { cont ->
 	then(

@@ -50,6 +50,7 @@ abstract class Creature: AbstractCreature() {
 	val sens get() = sensStat.value
 
 	val isAlive get() = hp > 0
+	val canAct get() = isAlive // TODO and not stunned
 	var hpRatio
 		get() = hp.toDouble()/maxHp()
 		set(value) {

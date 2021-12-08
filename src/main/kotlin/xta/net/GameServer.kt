@@ -13,13 +13,9 @@ import xta.logging.LogManager
 import xta.net.protocol.MessageToGuest
 import xta.net.protocol.MessageToHost
 import xta.net.protocol.RemoteGuestProtocol
-import xta.net.protocol.guest.OfferCharMessage
-import xta.net.protocol.guest.SceneActionMessage
-import xta.net.protocol.guest.SendChatMessage
-import xta.net.protocol.guest.StatusRequestMessage
+import xta.net.protocol.guest.*
 import xta.net.transport.AbstractConnection
 import xta.utils.*
-import kotlin.random.Random
 
 /**
  * ```
@@ -65,11 +61,14 @@ class GameServer(): LogContext {
 	fun player(id:String):Player? {
 		return players.find { it.id == id }
 	}
-	fun newPlayerId():String {
+	fun newPlayerId(guest: AbstractConnection):String {
+		return guest.identity
+		/*
 		while (true) {
 			val id = Random.Default.randomString(8)
 			if (player(id) == null) return id
 		}
+		 */
 	}
 	fun hostGame() {
 		placePlayer(Game.me)
@@ -119,6 +118,10 @@ class GameServer(): LogContext {
 		}
 		message.sceneAction?.let {
 			handleSceneActionMessage(sender, it)
+			return
+		}
+		message.combatAction?.let {
+			handleCombatActionMessage(sender, it)
 			return
 		}
 		logger.error(this, "Received bad message "+message.stringify())
@@ -184,7 +187,19 @@ class GameServer(): LogContext {
 		} else {
 			logger.warn(player, "Inappropriate action $sceneId/$actionId requested (player is in ${player.screen.sceneId})")
 		}
-		updateScreen(player)
+		sendScreen(player)
+	}
+
+	private fun handleCombatActionMessage(player: Player, request: CombatActionMessage) {
+		val id = request.actionId
+		val action = player.combatActions.find { it.uid == request.actionId }
+		val combat = player.combat
+		if (!player.inCombat || combat == null || combat?.currentPlayer != player || action == null) {
+			logger.warn(player, "Inappropriate combat action $id (currentPlayer is ${combat?.currentPlayer})")
+			sendCombatStatus(player, true)
+			return
+		}
+		combat.performCombatAction(action)
 	}
 
 	private fun placePlayer(player: Player) {
@@ -221,14 +236,21 @@ class GameServer(): LogContext {
 	fun playScene(player: Player) {
 		player.scene.execute(player)
 	}
-	fun updateScreen(player: Player) {
+	fun sendStatusUpdate(player: Player, screen:Boolean=false, char:Boolean=false) {
 		player.guest.onMessage(jsobject { msg ->
 			msg.statusUpdate = jsobject {
-				it.screen = player.screen
+				if (screen) it.screen = player.screen
+				if (char) it.char = player.char.serializeToJson()
 			}
 		})
 	}
-	fun updateCombatStatus(player: Player) {
+	fun sendScreen(player: Player) {
+		sendStatusUpdate(player, screen = true)
+	}
+	fun sendCombatStatus(
+		player: Player,
+		chars: Boolean
+	) {
 		player.guest.onMessage(jsobject { msg ->
 			msg.combatUpdate = jsobject { cum -> /* yes, and? */
 				cum.inCombat = player.inCombat
@@ -236,12 +258,21 @@ class GameServer(): LogContext {
 				if (combat?.ongoing == true) {
 					cum.partyA = combat.partyA.players.mapToArray { it.id }
 					cum.partyB = combat.partyB.players.mapToArray { it.id }
-					cum.playerData = buildJson { pd ->
-						for (c in combat.participants) {
-							if (c === player) continue
-							pd[c.id] = c.char.serializeToJson()
+					if (chars) {
+						cum.playerData = buildJson { pd ->
+							for (c in combat.participants) {
+								if (c === player) continue
+								pd[c.id] = c.char.serializeToJson()
+							}
 						}
 					}
+					cum.myActions = player.combatActions.mapToJsonArray { action, json ->
+						json.actionId = action.uid
+						json.label = action.label
+						json.hint = action.tooltip
+					}
+					cum.actingPlayerId = combat.currentPlayer.id
+					cum.myContent = player.screen.content
 				}
 			}
 		})

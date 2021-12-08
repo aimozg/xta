@@ -15,3 +15,28 @@ inline fun<T> MutableList<T>.walk(body:(MutableListIterator<T>,value:T)->Unit) {
 		body(li, ele)
 	}
 }
+
+inline fun <IN, reified OUT> Array<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
+	Array(size) { map(this[it]) }
+inline fun <IN, reified OUT> List<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
+	Array(size) { map(this[it]) }
+
+fun <IN> Array<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
+	Array<Any?>(size) { map(this[it]) }
+fun <IN> List<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
+	Array<Any?>(size) { map(this[it]) }
+
+@Suppress("UNCHECKED_CAST")
+inline fun <IN, OUT> List<IN>.mapToJsonArray(builder: (input:IN, output:OUT) -> Unit): Array<OUT> =
+	Array<Any?>(size) {
+		val json = js("({})") as OUT
+		builder(this[it], json)
+		json
+	} as Array<OUT>
+@Suppress("UNCHECKED_CAST")
+inline fun <IN, OUT> Array<IN>.mapToJsonArray(builder: (input:IN, output:OUT) -> Unit): Array<OUT> =
+	Array<Any?>(size) {
+		val json = js("({})") as OUT
+		builder(this[it], json)
+		json
+	} as Array<OUT>

@@ -42,6 +42,7 @@ class MainScreen: UiScreen("main-screen") {
 				if (action.disabled == true) disabled = true
 				addTooltip(action.hint?:"")
 				onclick = {
+					hideTooltip()
 					disableActions()
 					Game.hostProtocol.sendSceneAction(scene.sceneId, action.actionId)
 				}

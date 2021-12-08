@@ -1,13 +1,13 @@
 package xta.charview
 
+import org.w3c.dom.CanvasRenderingContext2D
 import xta.game.PlayerCharacter
 import xta.game.creature.body.BreastCup
 import xta.game.creature.body.SkinBaseType
 import xta.game.creature.body.SkinCoatType
 import xta.game.creature.body.SkinPart
 import xta.logging.LogManager
-import org.w3c.dom.CanvasRenderingContext2D
-import xta.Game
+import kotlin.js.Date
 
 /*
  * Created by aimozg on 02.12.2021.
@@ -15,7 +15,9 @@ import xta.Game
 class CharViewImage : CompositeImage(200,220) {
 	init {
 		logger.info(null,"Loading images")
-		loadPartsFromJson(sprites_json, charviewImages, originX=15,originY=10)
+		val t0 = Date().getTime()
+		loadPartsFromJson(sprites_json, charviewImages, originX = 15, originY = 10)
+		logger.debug(null, "Loaded images in ${Date().getTime()-t0} ms")
 		setLayerOrder(
 			"fullbody",
 			"full_pattern",

@@ -1,9 +1,16 @@
 package xta.charview
 
-import xta.logging.LogManager
+import js.Object
+import org.khronos.webgl.Uint32Array
+import org.khronos.webgl.get
 import org.w3c.dom.CanvasRenderingContext2D
+import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.Image
 import org.w3c.dom.ImageData
+import xta.logging.LogManager
+import kotlin.js.Date
+import kotlin.js.Json
+import kotlin.js.json
 
 /*
  * Created by aimozg on 02.12.2021.
@@ -18,8 +25,36 @@ open class CompositeImage(val width:Int, val height:Int) {
 	class CompositePart(
 		val layerName:String,
 		val partName:String,
-		val data:ImageData
+		val canvas: HTMLCanvasElement,
+		val data:ImageData,
+		val dx:Double,
+		val dy:Double
 	) {
+		private var index: Json? = null
+		fun recolor(keyColors: dynamic): HTMLCanvasElement {
+			val index = index
+			if (index == null || Object.keys(keyColors).any {
+					index[it] == true
+				}) {
+				return data.recolor(keyColors).toCanvas()
+			}
+			return canvas
+		}
+
+		fun indexColors() {
+			val bytes = Uint32Array(data.data.buffer)
+			val index = json()
+			for (i in 0 until bytes.length) {
+				val abgr = bytes[i]
+				val alpha = abgr shr 24
+				if (alpha != 0) {
+					val bgr = abgr and 0x00ffffff
+					index[bgr.toString()] = true
+				}
+			}
+			this.index = index
+		}
+
 		val fullName = "$layerName/$partName"
 		var visible = true
 	}
@@ -34,20 +69,26 @@ open class CompositeImage(val width:Int, val height:Int) {
 			logger.debug(null,"Loading image",sprite.file)
 			val image = images[sprite.file] ?: error("Missing file ${sprite.file}")
 			for (cell in sprite.cells) {
-				val c2d = createContext2D(width,height)
-				val cellWidth = cell.rect[2] + 0.0
-				val cellHeight = cell.rect[3] + 0.0
+				val cellWidth = cell.rect[2]
+				val cellHeight = cell.rect[3]
+				val c2d = createContext2D(cellWidth,cellHeight)
+				val dx = cell.dx-originX
+				val dy = cell.dy-originY
 				c2d.drawImage(image,
-					cell.rect[0]+0.0, cell.rect[1]+0.0, cellWidth, cellHeight,
-					cell.dx-originX+0.0, cell.dy-originY+0.0, cellWidth, cellHeight
+					cell.rect[0]+0.0, cell.rect[1]+0.0, cellWidth+0.0, cellHeight+0.0,
+					0.0, 0.0, cellWidth+0.0, cellHeight+0.0
 				)
-				loadPart(cell.part, c2d.getImageData(0.0, 0.0, width+0.0, height+0.0))
+				loadPart(cell.part,
+					c2d.canvas,
+					c2d.getImageData(0.0, 0.0, cellWidth+0.0, cellHeight+0.0),
+					dx+0.0, dy+0.0)
 			}
 		}
 	}
-	fun loadPart(name:String, data:ImageData) {
+	fun loadPart(name:String, canvas: HTMLCanvasElement, data:ImageData, dx:Double, dy:Double) {
 		val (layerName,partName) = name.split("/")
-		val part = CompositePart(layerName, partName, data)
+		val part = CompositePart(layerName, partName, canvas, data, dx, dy)
+		part.indexColors()
 		partsByName[name] = part
 		partsLayered.getOrPut(layerName){HashMap()}[partName] = part
 	}
@@ -88,12 +129,20 @@ open class CompositeImage(val width:Int, val height:Int) {
 
 	fun compose():CanvasRenderingContext2D {
 		logger.debug(null,"Composing image")
+		val t0 = Date().getTime()
+		var n = 0
 		val canvas = createContext2D(width, height)
 		for (part in partsOrdered) {
 			if (!part.visible) continue
-			logger.debug(null,"Adding part",part.fullName)
-			canvas.drawImage(part.data.recolor(keyColors).toCanvas(),0.0,0.0)
+			n++
+			logger.trace(null,"Adding part",part.fullName)
+			canvas.drawImage(
+				part.recolor(keyColors),
+				part.dx,
+				part.dy
+			)
 		}
+		logger.debug(null,"Rendered $n layers in ${Date().getTime()-t0} ms")
 		return canvas
 	}
 
