@@ -10,6 +10,9 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 	fun describe() = buildString {
 		append("<h3>"+character.name+", Level "+character.level+" "+character.race()+"</h3>")
 		describeRace()
+
+		append("[pg]")
+		describeSkin()
 	}
 
 	private fun StringBuilder.describeRace() {
@@ -25,5 +28,15 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		} else {
 			append(" tall [race], with [bodytype].");
 		}
+	}
+
+	private fun StringBuilder.describeSkin() {
+		val skinDesc = character.skin.baseType.appearanceDescription()
+		append(skinDesc)
+		/*
+		if (skinDesc.isNotEmpty()) {
+			// TODO pattern
+		}
+		 */
 	}
 }

@@ -46,7 +46,7 @@ abstract class AbstractParser: LogContext {
 							output += evaluateTag(tag, args)
 						} catch (e:Throwable) {
 							logger.warn(this@AbstractParser, e)
-							output += "/!\\${e.message}/!\\"
+							output += "/!\\\\${e.message}/!\\\\"
 						}
 					}/*
 					tryEat(LA_TAGSTART) != null -> {
@@ -58,7 +58,7 @@ abstract class AbstractParser: LogContext {
 						val tag = match.groupValues[1]
 						// TODO sanitize attrs
 						if (tag.lowercase() !in ALLOWED_HTML_TAGS) {
-							output += "/!\\HTML tag $tag not allowed/!\\"
+							output += "/!\\\\HTML tag $tag not allowed/!\\\\"
 						} else {
 							output += match.value
 						}

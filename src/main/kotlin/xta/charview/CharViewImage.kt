@@ -2,10 +2,7 @@ package xta.charview
 
 import org.w3c.dom.CanvasRenderingContext2D
 import xta.game.PlayerCharacter
-import xta.game.creature.body.BreastCup
-import xta.game.creature.body.SkinBaseType
-import xta.game.creature.body.SkinCoatType
-import xta.game.creature.body.SkinPart
+import xta.game.creature.body.*
 import xta.logging.LogManager
 import kotlin.js.Date
 
@@ -213,8 +210,69 @@ class CharViewImage : CompositeImage(200,220) {
 		showPart("ears_bg/human")
 
 		/* EYE AREA */
-		// TODO port model.xml code
-		showPart("eyes/human")
+		when (char.eyePart.type) {
+			EyeType.HUMAN -> {
+				showPart("eyes/human")
+			}
+			EyeType.SPIDER -> {
+				showPart("horns/spider")
+				showPart("eyes/human")
+			}
+			EyeType.BLACK_EYES_SAND_TRAP -> {
+				showPart("eyes/sandtrap")
+			}
+			EyeType.FOX,
+			EyeType.CAT,
+			EyeType.LIZARD,
+			EyeType.SNAKE,
+			EyeType.GORGON,
+			EyeType.DRACONIC,
+			EyeType.ONI,
+			EyeType.ELF,
+			EyeType.VAMPIRE,
+			EyeType.WEASEL,
+			EyeType.FIENDISH -> {
+				showPart("eyes/cat")
+			}
+			EyeType.DEVIL,
+			EyeType.FROSTWYRM,
+			EyeType.DISPLACER -> {
+				showPart("eyes/devil")
+			}
+			EyeType.MANTICORE,
+			EyeType.RAIJU -> {
+				showPart("eyes/raiju")
+			}
+			EyeType.INFERNAL -> {
+				showPart("eyes_fg/infernal")
+			}
+			EyeType.FERAL,
+			EyeType.FENRIR -> {
+				showPart("eyes/yandere")
+			}
+			EyeType.GOAT,
+			EyeType.KRAKEN -> {
+				showPart("eyes/goat")
+			}
+			EyeType.CENTIPEDE -> {
+				showPart("eyes/centipede")
+			}
+			EyeType.CAVE_WYRM -> {
+				showPart("eyes/caveWyrm")
+			}
+			EyeType.GREMLIN -> {
+				showPart("eyes/gremlin")
+			}
+			EyeType.RATATOSKR -> {
+				showPart("eyes/centipede")
+			}
+			EyeType.MONOEYE -> {
+				showPart("eyes/gazer")
+			}
+			else -> {
+				showPart("eyes/human")
+			}
+		}
 
 		/* REARBODY AREA */
 		// TODO port model.xml code

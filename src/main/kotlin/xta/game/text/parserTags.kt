@@ -20,6 +20,38 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
 					"race" -> char.race()
+					"skin" -> when (tagArgs.trim()) {
+						"isare" -> char.skin.isAre()
+						"vs" -> char.skin.isAre("s", "")
+
+						"skin" -> char.skin.describeSkin(noadj = false, nocolor = false)
+						"noadj" -> char.skin.describeSkin(noadj = true, nocolor = false)
+						"notone", "nocolor" -> char.skin.describeSkin(noadj = true, nocolor = false)
+						"type" -> char.skin.describeSkin(noadj = true, nocolor = true)
+						"color" -> char.skin.color
+						"color2" -> char.skin.color2
+
+						"base" -> char.skin.describeBase(noadj = false, nocolor = false)
+						"base.noadj" -> char.skin.describeBase(noadj = true, nocolor = false)
+						"base.notone", "base.nocolor" -> char.skin.describeBase(noadj = true, nocolor = false)
+						"base.type" -> char.skin.describeBase(noadj = true, nocolor = true)
+						"base.color" -> char.skin.baseColor
+						"base.color2" -> char.skin.baseColor2
+
+						"coat" -> char.skin.describeCoat(noadj = false, nocolor = false)
+						"coat.noadj" -> char.skin.describeCoat(noadj = true, nocolor = false)
+						"coat.notone", "coat.nocolor" -> char.skin.describeCoat(noadj = true, nocolor = false)
+						"coat.type" -> char.skin.describeCoat(noadj = true, nocolor = true)
+						"coat.color" -> char.skin.coatColor
+						"coat.color2" -> char.skin.coatColor2
+
+						"full" -> char.skin.describeFull(noadj = false, nocolor = false)
+						"full.noadj" -> char.skin.describeFull(noadj = true, nocolor = false)
+						"full.notone", "full.nocolor" -> char.skin.describeFull(noadj = true, nocolor = false)
+						"full.type" -> char.skin.describeFull(noadj = true, nocolor = true)
+
+						else -> error("Unknown tag $tag$tagArgs")
+					}
 
 					"name" -> char.name
 					"is" -> if (forMe) "are" else "is"
@@ -49,7 +81,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 						}
 					}
 					else -> {
-						error("Unknown tag $tag")
+						error("Unknown tag $tag$tagArgs")
 					}
 				}
 			}

@@ -44,3 +44,22 @@ inline fun <IN, OUT> Array<IN>.mapToJsonArray(builder: (input:IN, output:OUT) ->
 		builder(this[it], json)
 		json
 	} as Array<OUT>
+
+fun List<String>.joinToSentence(separator:String=", ", beforeLast:String=", and ", pair:String=" and "): String {
+	if (any { it.isBlank() }) return filter { it.isNotBlank() }.joinToSentence(separator, beforeLast, pair)
+	val list = this
+	val size = size
+	return buildString {
+		for ((i,s) in list.withIndex()) {
+			when {
+				size == 2 && i == 1 ->
+					append(pair)
+				size > 2 && i == size-1 ->
+					append(beforeLast)
+				i > 0 ->
+					append(separator)
+			}
+			append(s)
+		}
+	}
+}
