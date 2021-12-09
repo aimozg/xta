@@ -5,6 +5,7 @@ import kotlin.js.Json
 
 external interface CombatUpdateMessage {
 	var inCombat: Boolean?
+	var ongoing: Boolean?
 	var partyA: Array<String>?
 	var partyB: Array<String>?
 	var actingPlayerId: String?

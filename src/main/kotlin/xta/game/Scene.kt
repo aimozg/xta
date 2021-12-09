@@ -19,13 +19,13 @@ abstract class Scene(
 	}
 
 	fun execute(player: Player) {
-		execute(player.display)
 		val oldScene = player.scene
+		player.scene = this
 		if (oldScene != this) {
-			player.scene = this
 			oldScene.onLeave(player)
 			logger.debug(player,"enters scene",sceneId)
 		}
+		execute(player.display)
 	}
 
 	fun execute(display: Display) {

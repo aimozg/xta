@@ -86,8 +86,7 @@ class Player(
 
 	// BOTH HOST AND GUEST
 	var combat: Combat? = null
-	val inCombat get() =
-		combat?.ongoing == true
+	val inCombat get() = combat != null
 
 	// HOST
 	var party: Combat.Party = Combat.Party(listOf(this))

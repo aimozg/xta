@@ -194,7 +194,7 @@ class GameServer(): LogContext {
 		val id = request.actionId
 		val action = player.combatActions.find { it.uid == request.actionId }
 		val combat = player.combat
-		if (!player.inCombat || combat == null || combat?.currentPlayer != player || action == null) {
+		if (!player.inCombat || combat == null || action == null || combat.ongoing && combat.currentPlayer != player) {
 			logger.warn(player, "Inappropriate combat action $id (currentPlayer is ${combat?.currentPlayer})")
 			sendCombatStatus(player, true)
 			return
@@ -255,13 +255,13 @@ class GameServer(): LogContext {
 			msg.combatUpdate = jsobject { cum -> /* yes, and? */
 				cum.inCombat = player.inCombat
 				val combat = player.combat
-				if (combat?.ongoing == true) {
+				cum.ongoing = combat?.ongoing?:false
+				if (combat != null) {
 					cum.partyA = combat.partyA.players.mapToArray { it.id }
 					cum.partyB = combat.partyB.players.mapToArray { it.id }
 					if (chars) {
 						cum.playerData = buildJson { pd ->
 							for (c in combat.participants) {
-								if (c === player) continue
 								pd[c.id] = c.char.serializeToJson()
 							}
 						}

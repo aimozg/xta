@@ -9,6 +9,7 @@ abstract class GameLocation(val id:String) {
 
 	protected val logger = LogManager.getLogger("xta.game.GameLocation/$id")
 
+	fun playersInScene(sceneId:String) = players.filter { it.scene.sceneId == sceneId }
 	fun playerEntered(player: Player) {
 		if (player !in players) {
 			logger.info(player,"player",player.id,"entered location",id)

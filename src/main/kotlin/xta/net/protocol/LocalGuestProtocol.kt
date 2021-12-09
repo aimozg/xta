@@ -63,7 +63,7 @@ class LocalGuestProtocol(
 				}
 				cum.myContent?.let { player.screen.content = it }
 				player.screen.actions = cum.myActions ?: emptyArray()
-				if (cum.actingPlayerId != player.id) {
+				if (cum.ongoing == true && cum.actingPlayerId != player.id) {
 					for (action in player.screen.actions) {
 						action.disabled = true
 					}
@@ -91,7 +91,7 @@ class LocalGuestProtocol(
 				// TODO this conflicts between local host and local guest
 				ScreenManager.transitionOutOfCombat()
 				player.combat?.ongoing = false
-				player.sendScreen()
+				// player.sendScreen()
 			}
 			return
 		}

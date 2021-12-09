@@ -39,6 +39,9 @@ abstract class Display: TextOutput {
 		}
 	}
 
-	fun otherPlayers() = player.location.players - player
+	fun otherPlayersHere(sameScene:Boolean): List<Player> {
+		val players = if (sameScene) player.location.playersInScene(sceneId) else player.location.players
+		return players - player
+	}
 }
 

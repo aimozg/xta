@@ -17,6 +17,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 				val forMe = char === myChar
 				when (tag) {
 					"bodytype" -> Appearance.bodyType(char)
+					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
 					"race" -> char.race()
 

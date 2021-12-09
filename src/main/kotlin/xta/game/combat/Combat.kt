@@ -28,6 +28,7 @@ class Combat(
 	val turnQueue = ArrayList<Player>()
 	var roundNumber = 0
 	var currentPlayer: Player = partyA.players.first()
+	var victor: Party? = null
 
 	val display = object:TextOutput {
 		override fun selectSelf() {
@@ -79,6 +80,7 @@ class Combat(
 		ongoing = true
 		for (player in participants) {
 			player.combat = this
+			Game.server?.sendChatNotification(player, "Combat started")
 			player.char.clearCombatStatuses()
 			player.display.clearOutput()
 		}
@@ -92,11 +94,17 @@ class Combat(
 	fun buildCombatActions(player: Player) {
 		val actions = ArrayList<AbstractCombatAction>()
 
-		actions.add(CombatWait(player))
-		for (target in opponentsOf(player)?.players ?: emptyList()) {
-			actions.add(CombatMeleeAttack(player, target))
+		if (player.combat == this) {
+			if (ongoing) {
+				actions.add(CombatWait(player))
+				for (target in opponentsOf(player)?.players ?: emptyList()) {
+					actions.add(CombatMeleeAttack(player, target))
+				}
+				actions.add(CombatSurrender(player))
+			} else {
+				actions.add(CombatFinish(player))
+			}
 		}
-		actions.add(CombatSurrender(player))
 
 		player.combatActions = actions
 	}
@@ -104,15 +112,17 @@ class Combat(
 	fun performCombatAction(action: AbstractCombatAction) {
 		logger.debug(this, "performCombatAction", action)
 		action.perform()
-		if (checkEnd()) {
-			return
+		if (ongoing) {
+			if (checkEnd()) {
+				return
+			}
+			nextPlayer()
+			// TODO partial update
+			for (player in participants) {
+				player.display.outputText("<hr>")
+			}
+			sendUpdateToAll()
 		}
-		nextPlayer()
-		// TODO partial update
-		for (player in participants) {
-			player.display.outputText("<hr>")
-		}
-		sendUpdateToAll()
 	}
 
 	fun sendUpdateToAll() {
@@ -154,19 +164,27 @@ class Combat(
 		logger.info(this, "end()")
 		ongoing = false
 		for (player in participants) {
-			player.combat = null
-			player.char.clearCombatStatuses()
 			if (player.isConnected) {
+				if (player in victor!!) {
+					player.display.outputText("<hr>You won!")
+				} else {
+					player.display.outputText("<hr>You lost!")
+				}
+				buildCombatActions(player)
 				Game.server?.sendChatNotification(player, "Combat ended")
 				player.sendFullCombatStatus()
-				Game.server?.sendStatusUpdate(player, char=true)
-				returnScene.execute(player)
 			}
 		}
 	}
 
 	fun checkEnd(): Boolean {
-		if (!partyA.isAlive() || !partyB.isAlive()) {
+		if (!partyA.isAlive()) {
+			victor = partyB
+			end()
+			return true
+		}
+		if (!partyB.isAlive()) {
+			victor = partyA
 			end()
 			return true
 		}

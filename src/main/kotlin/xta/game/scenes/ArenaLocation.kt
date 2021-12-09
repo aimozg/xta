@@ -39,12 +39,12 @@ object ArenaLocation : GameLocation("Arena") {
 		outputText("\n\n\"<i>Welcome to the Soul Arena. Don't start fights outside of the proper place or you will be thrown out. If you break any rules here you will be kicked out. Go ahead and pick an area where you want to train or instead go to the challenges area. Oh and fights in each section cost some spirit stones so be sure to have enough of them as we not run charity here,</i>\"")
 		outputText(" without wasting time the nekomata overseer of this place explains to you all that you needed to know about the place and walks away.")
 		outputText("\n\n")
-		val others = otherPlayers()
+		val others = otherPlayersHere(sameScene = true)
 		if (others.isNotEmpty()) {
 			outputText("You see ")
 			rawOutput(others.joinToSequence {
 				Parser(player, it).parse(
-					"[name], level ${it.char.level} [malefemaleherm] [race]"
+					"[name], level [level] [malefemaleherm] [race]"
 				)
 			})
 			outputText(" waiting here.\n\n")
@@ -88,7 +88,7 @@ object ArenaLocation : GameLocation("Arena") {
 			if (outChallenge == null) {
 				for (other in others) {
 					if (inChallenges.any { it.sender == other }) continue
-					if (!other.char.isAlive) continue
+					if (!other.char.isAlive || other.inCombat) continue
 					addButton("Challenge " + other.char.name) {
 						challenges.add(ChallengeRequest(player,other))
 						other.notify(player.chatName+" challenges you!")
