@@ -3,9 +3,11 @@ package xta.ui
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
+import org.w3c.dom.HTMLElement
 import xta.charview.CharViewImage
 import xta.game.PlayerCharacter
 import xta.game.settings.GameSettings
+import xta.game.stats.PrimaryStat
 import kotlin.math.roundToInt
 
 /*
@@ -83,11 +85,17 @@ class CharacterPanel : UiTemplate("char-panel") {
 		}
 		// TODO mark buffed/debuffed stats with text-positive/text-negative classses
 		strVal.textContent = char.str.roundToInt().toString()
+		addBuffTooltip(strVal,char.strStat,"Strength")
 		touVal.textContent = char.tou.roundToInt().toString()
+		addBuffTooltip(touVal,char.touStat,"Toughness")
 		speVal.textContent = char.spe.roundToInt().toString()
+		addBuffTooltip(speVal,char.speStat,"Speed")
 		intVal.textContent = char.int.roundToInt().toString()
+		addBuffTooltip(intVal,char.intStat,"Intelligence")
 		wisVal.textContent = char.wis.roundToInt().toString()
+		addBuffTooltip(wisVal,char.wisStat,"Wisdom")
 		libVal.textContent = char.lib.roundToInt().toString()
+		addBuffTooltip(libVal,char.libStat,"Libido")
 		senVal.textContent = char.sens.roundToInt().toString()
 		corVal.textContent = char.cor.toString()
 		hpBar.displayValue(
@@ -152,5 +160,32 @@ class CharacterPanel : UiTemplate("char-panel") {
 		if (render) {
 			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char, renderX2).canvas)
 		}
+	}
+
+	private fun addBuffTooltip(
+		element: HTMLElement,
+		stat: PrimaryStat,
+		fullStatName: String
+	) {
+		var tooltip = fullStatName + "\n"
+		tooltip += "Core: "+stat.core.value+"\n"
+		for (buff in stat.mult.buffs) {
+			val x = buff.value
+			tooltip += buff.text+": "
+			if (x > 0) tooltip += "+"
+			tooltip += (x*100).roundToInt()
+			tooltip += "%"
+
+			tooltip += "\n"
+		}
+		for (buff in stat.bonus.buffs) {
+			val x = buff.value
+			tooltip += buff.text+": "
+			if (x > 0) tooltip += "+"
+			tooltip += x.roundToInt()
+
+			tooltip += "\n"
+		}
+		element.addTooltip(tooltip)
 	}
 }

@@ -18,13 +18,17 @@ inline fun<T> MutableList<T>.walk(body:(MutableListIterator<T>,value:T)->Unit) {
 
 inline fun <IN, reified OUT> Array<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
 	Array(size) { map(this[it]) }
-inline fun <IN, reified OUT> List<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> =
-	Array(size) { map(this[it]) }
+inline fun <IN, reified OUT> Collection<IN>.mapToArray(map: (IN) -> OUT): Array<OUT> {
+	val iter = iterator()
+	return Array(size) { map(iter.next()) }
+}
 
 fun <IN> Array<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
 	Array<Any?>(size) { map(this[it]) }
-fun <IN> List<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> =
-	Array<Any?>(size) { map(this[it]) }
+fun <IN> Collection<IN>.mapToDynamicArray(map: (IN) -> dynamic): Array<dynamic> {
+	val iter = iterator()
+	return Array<Any?>(size) { map(iter.next()) }
+}
 
 @Suppress("UNCHECKED_CAST")
 inline fun <IN, OUT> List<IN>.mapToJsonArray(builder: (input:IN, output:OUT) -> Unit): Array<OUT> =

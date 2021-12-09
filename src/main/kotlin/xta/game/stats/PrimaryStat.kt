@@ -7,6 +7,12 @@ open class PrimaryStat(
 	val host: Creature,
 	final override val statName: String
 ): JsonSerializable(), IStat, IStatHolder {
+	override fun findStat(statName: String): IStat? = when (statName) {
+		core.statName -> core
+		mult.statName -> mult
+		bonus.statName -> bonus
+		else -> null
+	}
 
 	val core: RawStat by nestedProperty(RawStat("$statName.core"))
 	val mult: BuffableStat by nestedProperty(BuffableStat("$statName.mult", baseValue = 1.0, min = 0.0))

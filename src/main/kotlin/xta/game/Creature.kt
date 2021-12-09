@@ -100,7 +100,7 @@ abstract class Creature: AbstractCreature() {
 		val tou = tou.roundToInt()
 		// TODO account for perks
 
-		max += tou*2+50
+		max += tou*2+maxHpBaseStat.value.roundToInt()
 		if (tou >= 21) max += tou
 		if (tou >= 41) max += tou
 		if (tou >= 61) max += tou
@@ -114,7 +114,7 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxHpMult():Double {
 		// TODO scores, green cock socks, mecha
-		return 1.0
+		return maxHpMultStat.value
 	}
 	open fun minLust():Int {
 		// TODO calculations
@@ -187,7 +187,7 @@ abstract class Creature: AbstractCreature() {
 		return (maxManaBase()*maxManaMult()).roundToInt().coerceAtMost(2_499_999)
 	}
 	open fun maxManaBase():Int {
-		var max = 300
+		var max = maxManaBaseStat.value.roundToInt()
 		// TODO perk, race, item bonuses
 		max += level*maxManaPerLevel()
 		if (level <= 6) max += level*10
@@ -195,11 +195,11 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxManaPerLevel():Int {
 		// TODO perk, race, item bonuses
-		return 10
+		return maxManaPerLevelStat.value.roundToInt()
 	}
 	open fun maxManaMult():Double {
 		// TODO perk, race, item bonuses
-		return 1.0
+		return maxManaMultStat.value
 	}
 	open fun maxSoulforce():Int {
 		return (maxSoulforceBase()*maxSoulforceMult()).roundToInt().coerceAtMost(1_499_999)

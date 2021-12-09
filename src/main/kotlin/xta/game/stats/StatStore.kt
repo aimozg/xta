@@ -7,12 +7,6 @@ class StatStore : IStatHolder {
 	fun addStat(stat: IStat) {
 		stats[stat.statName] = stat
 	}
-	fun addStats(vararg stats: IStat) {
-		for (stat in stats) {
-			addStat(stat)
-		}
-	}
-
 
 	override fun findStat(statName: String): IStat? {
 		stats[statName]?.let { return it }

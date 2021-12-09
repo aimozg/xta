@@ -5,6 +5,7 @@ import kotlin.js.Json
 
 sealed class JsonPropertyDescriptor {
 	abstract val fieldName:String
+	abstract val fieldValue:Any?
 	abstract fun serialize():dynamic
 	abstract fun deserialize(input:dynamic)
 
@@ -12,6 +13,7 @@ sealed class JsonPropertyDescriptor {
 		override val fieldName: String,
 		val property: VariableHolder<String>
 	): JsonPropertyDescriptor(){
+		override val fieldValue get() = property.value
 		override fun serialize() = property.value
 
 		override fun deserialize(input: dynamic) {
@@ -23,6 +25,7 @@ sealed class JsonPropertyDescriptor {
 		override val fieldName: String,
 		val property: VariableHolder<Int>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		override fun serialize() = property.value
 
 		override fun deserialize(input: dynamic) {
@@ -34,6 +37,7 @@ sealed class JsonPropertyDescriptor {
 		override val fieldName: String,
 		val property: VariableHolder<Double>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		override fun serialize() = property.value
 
 		override fun deserialize(input: dynamic) {
@@ -45,6 +49,7 @@ sealed class JsonPropertyDescriptor {
 		override val fieldName: String,
 		val property: VariableHolder<Boolean>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		override fun serialize() = property.value
 
 		override fun deserialize(input: dynamic) {
@@ -57,6 +62,7 @@ sealed class JsonPropertyDescriptor {
 		val property: VariableHolder<T>,
 		val values:Array<T>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		// TODO replace with ordinal when https://youtrack.jetbrains.com/issue/KT-45056 goes live
 		override fun serialize() = values.indexOf(property.value)
 
@@ -69,6 +75,7 @@ sealed class JsonPropertyDescriptor {
 		override val fieldName: String,
 		val property: ValueHolder<T>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		override fun serialize(): dynamic {
 			return property.value.serializeToJson()
 		}
@@ -84,6 +91,7 @@ sealed class JsonPropertyDescriptor {
 		val property: ValueHolder<MutableList<T>>,
 		val serializer:JsonSerializer<T>
 	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
 		override fun serialize(): dynamic {
 			return property.get().mapToDynamicArray { serializer.serializeObject(it) }
 		}
@@ -102,6 +110,7 @@ sealed class JsonPropertyDescriptor {
 		val property: ValueHolder<MutableList<T>>,
 		val spawner:(dynamic)->T
 	): JsonPropertyDescriptor(){
+		override val fieldValue get() = property.value
 		override fun serialize(): dynamic {
 			return property.get().mapToDynamicArray { it.serializeToJson() }
 		}

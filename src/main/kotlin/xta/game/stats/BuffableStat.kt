@@ -1,6 +1,8 @@
 package xta.game.stats
 
-import xta.net.serialization.JsonSerializable
+import xta.net.serialization.IJsonSerializable
+import xta.utils.buildJson
+import xta.utils.mapToDynamicArray
 import xta.utils.walk
 import kotlin.js.Json
 
@@ -10,12 +12,26 @@ open class BuffableStat(
 	val baseValue: Double = aggregate.defaultBase,
 	open val min: Double = Double.NEGATIVE_INFINITY,
 	open val max: Double = Double.POSITIVE_INFINITY
-) : JsonSerializable(), IStat {
-	val buffs: MutableList<Buff> by nestedList(Buff.serializer(this))
+) : IJsonSerializable, IStat {
+	val buffs = ArrayList<Buff>()
 
-	override fun deserializeFromJson(input: Json) {
-		super.deserializeFromJson(input)
+	override fun deserializeFromJson(input: dynamic) {
+		@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+		input as Json
+		buffs.clear()
+		val bsz = Buff.serializer(this)
+		@Suppress("UNCHECKED_CAST")
+		for (jbuff in input["buffs"] as Array<Json>) {
+			buffs.add(bsz.deserializeObject(jbuff))
+		}
 		dirty = true
+	}
+
+	override fun serializeToJson(): Json {
+		val bsz = Buff.serializer(this)
+		return buildJson { json ->
+			json["buffs"] = buffs.filter { it.save }.mapToDynamicArray { bsz.serializeObject(it) }
+		}
 	}
 
 	private var dirty = false
@@ -58,6 +74,13 @@ open class BuffableStat(
 		} else {
 			buffs[i] = buff
 		}
+		dirty = true
+	}
+
+	fun removeBuff(tag:String) {
+		val i = indexOfBuff(tag)
+		if (i == -1) return
+		buffs.removeAt(i)
 		dirty = true
 	}
 

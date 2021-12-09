@@ -5,7 +5,7 @@ import xta.utils.jsobject
 import kotlin.js.Json
 
 class Buff(
-	val pool: BuffableStat,
+	val stat: BuffableStat,
 	val tag: String,
 	var value: Double,
 	var text: String,
@@ -27,7 +27,7 @@ class Buff(
 	}
 
 	companion object {
-		fun serializer(pool: BuffableStat) = object: JsonSerializer<Buff> {
+		fun serializer(stat: BuffableStat) = object: JsonSerializer<Buff> {
 			override fun serializeObject(t: Buff) = jsobject<BuffJson> { json ->
 				json.tag = t.tag
 				json.value = t.value
@@ -42,7 +42,7 @@ class Buff(
 				@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 				j as BuffJson
 				return Buff(
-					pool,
+					stat,
 					j.tag,
 					j.value,
 					j.text,

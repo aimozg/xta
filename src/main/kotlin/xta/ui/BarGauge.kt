@@ -13,7 +13,10 @@ class BarGauge: UiTemplate("bar-gauge") {
 			element.style.display = "none"
 		} else {
 			element.style.display = ""
-			element.style.width = "" + (value * 100 / max).coerceIn(0.0, 100.0) + "%"
+			val width =
+				if (value.isFinite() && max.isFinite()) (value * 100 / max).coerceIn(0.0, 100.0)
+				else 100.0
+			element.style.width = "$width%"
 		}
 	}
 

@@ -15,9 +15,18 @@ open class JsonSerializable: IJsonSerializable {
 		return result
 	}
 
-	override fun deserializeFromJson(input: Json) {
+	override fun deserializeFromJson(input: dynamic) {
+		@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+		input as Json
 		for (descriptor in propertyDescriptors) {
-			descriptor.deserialize(input[descriptor.fieldName])
+			try {
+				val data = input[descriptor.fieldName]
+				if (data !== undefined) {
+					descriptor.deserialize(data)
+				}
+			} catch (e:Throwable) {
+				throw Error("Error deserializing field ${descriptor.fieldName}", e)
+			}
 		}
 	}
 

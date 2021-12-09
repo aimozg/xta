@@ -1,14 +1,24 @@
 package xta.game.stats
 
 interface IStatHolder {
-	fun findStat(statName: String): IStat? {
+	fun findStat(statName: String): IStat?
+
+	fun findBuffableStat(statName: String): BuffableStat? {
+		return when (val stat = findStat(statName)) {
+			is BuffableStat -> stat
+			is PrimaryStat -> stat.bonus
+			else -> null
+		}
+	}
+
+	fun removeBuffs(tag:String) {
 		for (stat in allStats()) {
-			if (stat.statName == statName) return stat
-			if (statName.startsWith(stat.statName + ".") && stat is IStatHolder) {
-				return stat.findStat(statName)
+			if (stat is BuffableStat) {
+				stat.removeBuff(tag)
+			} else if (stat is IStatHolder) {
+				stat.removeBuffs(tag)
 			}
 		}
-		return null
 	}
 
 	fun allStatNames(): Collection<String> = allStats().map { it.statName }

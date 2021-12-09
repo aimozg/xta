@@ -1,10 +1,8 @@
 package xta.game
 
+import xta.game.creature.PerkManager
 import xta.game.creature.body.*
-import xta.game.stats.BuffableStat
-import xta.game.stats.IStatHolder
-import xta.game.stats.PrimaryStat
-import xta.game.stats.StatStore
+import xta.game.stats.*
 import xta.net.serialization.JsonSerializable
 
 /**
@@ -32,27 +30,13 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val statStore = StatStore()
 
 	//new stat area
-	val strStat by nestedProperty(PrimaryStat(this as Creature, "str").also {
-		statStore.addStat(it)
-	})
-	val touStat by nestedProperty(PrimaryStat(this as Creature, "tou").also {
-		statStore.addStat(it)
-	})
-	val speStat by nestedProperty(PrimaryStat(this as Creature, "spe").also {
-		statStore.addStat(it)
-	})
-	val intStat by nestedProperty(PrimaryStat(this as Creature, "int").also {
-		statStore.addStat(it)
-	})
-	val wisStat by nestedProperty(PrimaryStat(this as Creature, "wis").also {
-		statStore.addStat(it)
-	})
-	val libStat by nestedProperty(PrimaryStat(this as Creature, "lib").also {
-		statStore.addStat(it)
-	})
-	val sensStat by nestedProperty(BuffableStat("sens", baseValue = 15.0).also {
-		statStore.addStat(it)
-	})
+	val strStat by nestedProperty(PrimaryStat(this as Creature, Stats.STR))
+	val touStat by nestedProperty(PrimaryStat(this as Creature, Stats.TOU))
+	val speStat by nestedProperty(PrimaryStat(this as Creature, Stats.SPE))
+	val intStat by nestedProperty(PrimaryStat(this as Creature, Stats.INT))
+	val wisStat by nestedProperty(PrimaryStat(this as Creature, Stats.WIS))
+	val libStat by nestedProperty(PrimaryStat(this as Creature, Stats.LIB))
+	val sensStat by nestedProperty(BuffableStat(Stats.SENS, baseValue = 15.0))
 
 	//Primary stats
 	var cor:Int by property(0)
@@ -65,10 +49,20 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	var lust:Int by property(0)
 	var wrath:Int by property(0)
 
+	val maxHpBaseStat by nestedProperty(BuffableStat(Stats.HP_MAX_BASE, baseValue = 50.0))
+	val maxHpPerLevelStat by nestedProperty(BuffableStat(Stats.HP_MAX_PERLEVEL, baseValue = 60.0))
+	val maxHpMultStat by nestedProperty(BuffableStat(Stats.HP_MAX_MULT, baseValue = 1.0))
+	val maxManaBaseStat by nestedProperty(BuffableStat(Stats.MANA_MAX_BASE, baseValue = 300.0))
+	val maxManaPerLevelStat by nestedProperty(BuffableStat(Stats.MANA_MAX_PERLEVEL, baseValue = 10.0))
+	val maxManaMultStat by nestedProperty(BuffableStat(Stats.MANA_MAX_MULT, baseValue = 1.0))
+
+
 	//Level Stats
 	var xp: Int by property(0)
 	var level: Int by property(0)
 	var gems: Int by property(0)
+
+	val perks by nestedProperty(PerkManager(this as Creature))
 
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
@@ -131,4 +125,10 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	// nipplelength
 	val breastRows by nestedJsonList { BreastRowPart() }
 
+	init {
+		for (descriptor in propertyDescriptors) {
+			val stat = descriptor.fieldValue as? IStat ?: continue
+			statStore.addStat(stat)
+		}
+	}
 }

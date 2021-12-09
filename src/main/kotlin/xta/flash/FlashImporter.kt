@@ -147,6 +147,11 @@ class FlashImporter {
 			})
 		}
 
+		character.perks.clear()
+		for (jperk in data.perks) {
+			character.perks.loadPerk(jperk.id)
+		}
+
 		logger.logObject(Logger.Level.INFO, null, "Imported",character)
 		return character
 	}
