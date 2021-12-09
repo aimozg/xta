@@ -32,16 +32,39 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val sfBar = BarGauge().also { it.insertTo(fragment.ref("bar-sf")) }
 	private val gemsValue = fragment.ref("gems")
 	private val ssValue = fragment.ref("soulstones")
-
+	private val btnRenderZoom = fragment.ref("render-zoombtn")
+	private val btnRenderShow = fragment.ref("render-showbtn")
 	private val renderDiv = fragment.ref("render")
 
+	private var lastCharacter: PlayerCharacter? = null
+	init {
+		btnRenderZoom.onclick = {
+			GameSettings.data.renderX2 = GameSettings.data.renderX2?.not()?:true
+			GameSettings.save()
+			refresh()
+		}
+		btnRenderShow.onclick = {
+			GameSettings.data.render = GameSettings.data.render?.not()?:true
+			GameSettings.save()
+			refresh()
+		}
+	}
 	fun hide() {
 		container.style.display = "none"
 	}
 	fun show() {
 		container.style.display = ""
 	}
-	fun showCharacter(char: PlayerCharacter?, render: Boolean = GameSettings.data.render?:false) {
+	fun refresh() {
+		showCharacter(lastCharacter)
+	}
+	fun showCharacter(char: PlayerCharacter?,
+	                  render: Boolean = GameSettings.data.render?:false,
+	                  renderX2: Boolean = GameSettings.data.renderX2?:false
+	) {
+		lastCharacter = char
+		btnRenderZoom.textContent = if (renderX2) "zoom_out" else "zoom_in"
+		btnRenderShow.textContent = if (render) "visibility_off" else "visibility"
 		hideTooltip()
 		if (char == null) {
 			hide()
@@ -127,7 +150,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 
 		renderDiv.clear()
 		if (render) {
-			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char).canvas)
+			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char, renderX2).canvas)
 		}
 	}
 }

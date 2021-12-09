@@ -188,7 +188,7 @@ class CharViewImage : CompositeImage(200,220) {
 		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0,25))
 	}
 
-	fun renderCharacter(char: PlayerCharacter): CanvasRenderingContext2D {
+	fun renderCharacter(char: PlayerCharacter, scale:Boolean): CanvasRenderingContext2D {
 		hideAll()
 		setupColors(char)
 
@@ -364,7 +364,13 @@ class CharViewImage : CompositeImage(200,220) {
 		/* FULL BODY AND DRESS AREA */
 		// TODO port model.xml code; consider items defining their own sprites
 
-		return compose()
+		val compose = compose()
+		if (scale) {
+			val x2 = createContext2D(width*2, height*2)
+			x2.drawImage(compose.canvas, 0.0, 0.0, width*2.0, height*2.0)
+			return x2
+		}
+		return compose
 	}
 
 	companion object {

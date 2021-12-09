@@ -109,4 +109,14 @@
 .char-render {
 	display: flex;
 	justify-content: center;
+	position: relative;
+	min-height: 32px;
+
+	&:not(:hover) .char-render-options {
+		visibility: hidden;
+	}
+	.char-render-options {
+		position: absolute;
+		right: 0;
+	}
 }

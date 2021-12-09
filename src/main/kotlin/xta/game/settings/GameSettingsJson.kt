@@ -11,4 +11,5 @@ external interface GameSettingsJson {
 	var wsPingInterval: Int
 
 	var render:Boolean?
+	var renderX2:Boolean?
 }

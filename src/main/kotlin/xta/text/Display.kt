@@ -33,7 +33,7 @@ abstract class Display: TextOutput {
 	open fun addButtonDisabled(label:String, hint:String="") {
 		addButton(label, hint, true){}
 	}
-	open fun addButton(label:String, scene: Scene, actionId: String, hint:String="") {
+	open fun addButton(label:String, scene: Scene, hint:String="") {
 		addButton(label, hint) {
 			goto(scene)
 		}

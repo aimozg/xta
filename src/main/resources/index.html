@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>CoC XTA</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
 </head>
 <body>
 
@@ -143,7 +145,13 @@
                 </div>
             </div>
         </div>
-        <div class="char-render" data-ref="render"></div>
+        <div class="char-render">
+            <div class="char-render-options">
+                <button type="button" data-ref="render-zoombtn" class="material-icons">zoom_in</button>
+                <button type="button" data-ref="render-showbtn" class="material-icons">visibility</button>
+            </div>
+            <div data-ref="render"></div>
+        </div>
     </div>
 </template>
 

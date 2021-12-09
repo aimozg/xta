@@ -39,6 +39,7 @@ object GameSettings {
 		data.wsPingInterval = 15
 
 		data.render = true
+		data.renderX2 = false
 	}
 
 	fun load() {

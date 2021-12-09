@@ -2,8 +2,8 @@
 .combat-screen {
 	display: grid;
 	height: calc(100vh - 150px);
-	grid-template-columns: min-content auto min-content;
-	grid-template-rows: min-content auto min-content;
+	grid-template-columns: min-content 1fr min-content;
+	grid-template-rows: min-content 1fr min-content;
 	grid-template-areas:
         "menu menu menu"
         "left text right"

@@ -67,6 +67,9 @@ class Player(
 	fun sendScreen() {
 		Game.server?.sendScreen(this)
 	}
+	fun sendCharUpdate() {
+		Game.server?.sendStatusUpdate(this, char=true)
+	}
 	fun sendFullCombatStatus() {
 		Game.server?.sendCombatStatus(this, true)
 	}
