@@ -152,6 +152,7 @@ class FlashImporter {
 			character.cocks.add(PenisPart().also { penis ->
 				penis.length = jcock.cockLength.roundToInt()
 				penis.thickness = jcock.cockThickness.roundToInt()
+				// TODO other props
 			})
 		}
 		character.balls = data.balls
@@ -162,6 +163,7 @@ class FlashImporter {
 			character.vaginas.add(VaginaPart().also { vagina ->
 				vagina.type = VaginaType.byId(jvagina.type)
 				vagina.virgin = jvagina.virgin == true
+				// TODO other props
 			})
 		}
 
@@ -169,6 +171,7 @@ class FlashImporter {
 		for (jbreasts in data.breastRows) {
 			character.breastRows.add(BreastRowPart().also { row ->
 				row.breastRating = jbreasts.breastRating.roundToInt()
+				// TODO other props
 			})
 		}
 

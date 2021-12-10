@@ -206,8 +206,107 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* EAR AREA */
-		// TODO port model.xml code
-		showPart("ears_bg/human")
+		when (char.ears.type) {
+			EarType.HUMAN -> {
+				showPart("ears_bg/human")
+			}
+			EarType.COW,
+			EarType.PIG,
+			EarType.RHINO,
+			EarType.ECHIDNA,
+			EarType.GOAT -> {
+				showPart("ears/goat")
+				showPart("ears_bg/goat")
+			}
+			EarType.HORSE,
+			EarType.DEER,
+			EarType.KANGAROO -> {
+				showPart("ears_bg/horse")
+			}
+			EarType.DOG,
+			EarType.WOLF,
+			EarType.RACCOON,
+			EarType.FERRET -> {
+				showPart("ears/wolf")
+				showPart("ears_bg/wolf")
+			}
+			EarType.ELFIN,
+			EarType.ELVEN,
+			EarType.ONI,
+			EarType.VAMPIRE -> {
+				showPart("ears/elfin")
+				showPart("ears_bg/elfin")
+			}
+			EarType.CAT,
+			EarType.LION -> {
+				showPart("ears/cat")
+				showPart("ears_bg/cat")
+			}
+			EarType.LIZARD, EarType.ORCA2 -> {}
+			EarType.BUNNY -> {
+				showPart("ears/bunny")
+				showPart("ears_bg/bunny")
+			}
+			EarType.DRAGON -> {
+				showPart("ears/dragon")
+				showPart("ears_bg/dragon")
+			}
+			EarType.FOX,
+			EarType.BAT -> {
+				showPart("ears/fox")
+				showPart("ears_bg/fox")
+			}
+			EarType.MOUSE -> {
+				showPart("ears/mouse")
+				showPart("ears_bg/mouse")
+			}
+			EarType.YETI -> {
+				showPart("ears/fur")
+			}
+			EarType.ORCA -> {
+				showPart("ears/orca")
+				showPart("ears_bg/orca")
+			}
+			EarType.SNAKE -> {
+				showPart("ears/naga")
+				showPart("ears_bg/naga")
+			}
+			EarType.RAIJU,
+			EarType.GREMLIN -> {
+				showPart("ears/raiju")
+				showPart("ears_bg/raiju")
+			}
+			EarType.PANDA -> {
+				showPart("ears/panda")
+				showPart("ears_bg/panda")
+			}
+			EarType.BEAR,
+			EarType.WEASEL -> {
+				showPart("ears/bear")
+				showPart("ears_bg/bear")
+			}
+			EarType.MELKIE -> {
+				showPart("ears_truebg/melkie")
+			}
+			EarType.DISPLACER -> {
+				showPart("ears/displacer")
+			}
+			EarType.SHARK -> {
+				showPart("ears/shark")
+				showPart("ears_bg/shark")
+			}
+			EarType.CAVE_WYRM -> {
+				showPart("ears/caveWyrm")
+				showPart("ears_bg/caveWyrm")
+			}
+			EarType.SQUIRREL -> {
+				showPart("ears/ratatoskr")
+				showPart("ears_bg/ratatoskrRight")
+			}
+			else -> {
+				showPart("ears_bg/human")
+			}
+		}
 
 		/* EYE AREA */
 		when (char.eyes.type) {
@@ -278,9 +377,70 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* HAIR AREA */
-		// TODO port model.xml code
-		showPart("hair/0")
-		showPart("hair/_bg0")
+		if (char.hairLength > 0) {
+			when (char.hairType) {
+				HairType.FEATHER -> {
+					showPart("hair/feather")
+					showPart("hair_bg/feather")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/02")
+					}
+				}
+				HairType.GORGON -> {
+					showPart("hair/gorgon")
+					showPart("hair_bg/gorgon")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/02")
+					}
+				}
+				HairType.STORM -> {
+					showPart("hair/raiju")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/raiju3")
+					}
+				}
+				HairType.BURNING -> {
+					showPart("hair/hellcat")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/hellcat")
+					}
+				}
+				HairType.GOO -> {
+					showPart("hair/slime")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/slime2")
+					}
+				}
+				HairType.FLUFFY -> {
+					showPart("hair/yeti")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/yeti")
+					}
+				}
+				HairType.CRAZY -> {
+					showPart("hair/gremlin")
+				}
+				HairType.RATATOSKR -> {
+					showPart("hair/ratatoskr")
+					showPart("hair_bg/ratatoskr")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/02")
+					}
+				}
+				HairType.PRISMATIC -> {
+					showPart("hair/rainbow")
+					showPart("hair_bg/rainbow")
+				}
+				else -> {
+					showPart("hair/0")
+					if (char.hairLength >= 16) {
+						showPart("hair_bg/02")
+					} else {
+						showPart("hair_bg/0")
+					}
+				}
+			}
+		}
 
 		/* HAIR STYLE AREA */
 		// TODO port model.xml code
@@ -381,7 +541,123 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* TAIL AREA */
-		// TODO port model.xml code
+		when (char.tail.type) {
+			TailType.NONE -> {}
+			TailType.HORSE,
+			TailType.WENDIGO -> {
+				showPart("tail/horse$taur")
+			}
+			TailType.DEMONIC -> {
+				showPart("tail/demon$taur")
+			}
+			TailType.SPIDER_ADBOMEN -> {
+				showPart("tail/spider$taur")
+			}
+			TailType.BEE_ABDOMEN -> {
+				showPart("tail/bee_abdomen$taur")
+			}
+			TailType.MANTIS_ABDOMEN -> {
+				showPart("tail/mantis$taur")
+			}
+			TailType.SQUIRREL -> {
+				showPart("tail_bg/tatatoskr$taur")
+			}
+			TailType.CAT -> {
+				if (char.tail.count >= 2) {
+					showPart("tail_bg/cat2$taur")
+				} else {
+					showPart("tail_bg/cat$taur")
+				}
+			}
+			TailType.BURNING -> {
+				showPart("tail_bg/hellcat$taur")
+			}
+			TailType.TWINKASHA -> {
+				showPart("tail_bg/kasha$taur")
+			}
+			TailType.CAVE_WYRM,
+			TailType.LIZARD,
+			TailType.BEHEMOTH -> {
+				showPart("tail/reptile$taur")
+			}
+			TailType.DRACONIC -> {
+				showPart("tail/dragon$taur")
+			}
+			TailType.RABBIT -> {
+				showPart("tail/bunny$taur")
+			}
+			TailType.HARPY -> {
+				showPart("tail/harpy$taur")
+			}
+			TailType.FOX,
+			TailType.WOLF,
+			TailType.DOG -> {
+				showPart("tail_bg/fox${char.tail.count}$taur")
+			}
+			TailType.KANGAROO -> {
+				showPart("tail/cat")
+			}
+			TailType.MOUSE -> {
+				showPart("tail/mouse$taur")
+			}
+			TailType.HINEZUMI -> {
+				showPart("tail/mouse_fire$taur")
+			}
+			TailType.COW -> {
+				showPart("tail/cow$taur")
+			}
+			TailType.WEASEL -> {
+				showPart("tail/kamaitachi$taur")
+			}
+			TailType.PIG -> {}
+			TailType.SCORPION -> {}
+			TailType.GOAT -> {
+				showPart("tail/goat$taur")
+			}
+			TailType.RHINO -> {}
+			TailType.ECHIDNA -> {}
+			TailType.DEER -> {}
+			TailType.SALAMANDER -> {
+				showPart("tail/reptile$taur")
+				showPart("tail_fg/reptile_fire$taur")
+			}
+			TailType.KITSHOO -> {}
+			TailType.MANTICORE_PUSSYTAIL -> {
+				showPart("tail/manticore$taur")
+				showPart("tail_front/manticore$taur")
+			}
+			TailType.GARGOYLE -> {
+				showPart("tail/gargoyle_mace")
+			}
+			TailType.GARGOYLE_2 -> {
+				showPart("tail/gargoyle_axe")
+			}
+			TailType.ORCA -> {
+				showPart("tail/orca$taur")
+			}
+			TailType.SHARK -> {
+				showPart("tail/shark$taur")
+			}
+			TailType.RAIJU -> {
+				showPart("tail/weasel$taur")
+			}
+			TailType.THUNDERBIRD -> {
+				showPart("tail/thunderbird$taur")
+			}
+			TailType.RACCOON,
+			TailType.FERRET -> {
+				showPart("tail/raccoon$taur")
+			}
+			TailType.BEAR -> {
+				if (char.ears.type == EarType.PANDA){
+					showPart("tail/panda$taur")
+				} else {
+					showPart("tail/bear$taur")
+				}
+			}
+			TailType.YGGDRASIL -> {}
+			else -> {}
+		}
 
 		/* Penis AREA */
 		// TODO port model.xml code
