@@ -1,10 +1,13 @@
 package xta.game.creature.body
 
+import xta.flash.CocId
+import xta.flash.CocIdLookup
+
 enum class SkinCoatType(
-	val cocID: Int,
+	override val cocID: Int,
 	val displayName: String,
 	val plural: Boolean
-) {
+): CocId {
 	FUR(1, "fur", plural = false),
 	SCALES(2, "scales", plural = true),
 	CHITIN(5, "chitin", plural = false),
@@ -14,7 +17,5 @@ enum class SkinCoatType(
 	MOSS(15, "moss", plural = false),
 	FEATHER(21, "feather", plural = false);
 
-	companion object {
-		fun byId(id: Int) = SkinCoatType.values().find { it.cocID == id }
-	}
+	companion object: CocIdLookup<SkinCoatType>(values())
 }

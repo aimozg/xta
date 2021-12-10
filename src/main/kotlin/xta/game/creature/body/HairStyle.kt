@@ -1,18 +1,19 @@
 package xta.game.creature.body
 
+import xta.flash.CocId
+import xta.flash.CocIdLookup
+
 /*
  * Created by aimozg on 28.11.2021.
  */
 enum class HairStyle(
-	val cocID: Int,
+	override val cocID: Int,
 	val adjective: String
-) {
+): CocId {
 	PLAIN(
 		0,
 		adjective = ""
 	);
 
-	companion object {
-		fun byId(id:Int) = values().find { it.cocID == id }
-	}
+	companion object: CocIdLookup<HairStyle>(values())
 }

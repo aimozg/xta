@@ -19,7 +19,8 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 					"bodytype" -> Appearance.bodyType(char)
 					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
-					"race" -> char.race()
+					"race" -> char.raceName()
+					"racefull" -> char.raceFullName()
 					"skin" -> when (tagArgs.trim()) {
 						"isare" -> char.skin.isAre()
 						"vs" -> char.skin.isAre("s", "")

@@ -1,5 +1,7 @@
 package xta.game.creature.body
 
+import xta.flash.CocId
+import xta.flash.CocIdLookup
 import xta.game.Creature
 import xta.net.serialization.JsonSerializable
 import xta.utils.joinToSentence
@@ -10,17 +12,15 @@ import xta.utils.joinToSentence
 
 class SkinPart(val host: Creature): JsonSerializable() {
 	enum class Coverage(
-		val cocID:Int
-	) {
+		override val cocID:Int
+	): CocId {
 		NONE(0),
 		LOW(1),
 		MEDIUM(2),
 		HIGH(3),
 		COMPLETE(4);
 
-		companion object {
-			fun byId(id: Int) = values().find { it.cocID == id }
-		}
+		companion object: CocIdLookup<Coverage>(values())
 	}
 
 	var coverage by property(Coverage.NONE)
@@ -34,6 +34,7 @@ class SkinPart(val host: Creature): JsonSerializable() {
 		set(value) {
 			baseCustomDesc = if (value == baseType.displayName) "" else value
 		}
+	var basePattern by property(SkinBasePatternType.NONE)
 	var coatType by property(SkinCoatType.FUR)
 	var coatColor by property("")
 	var coatColor2 by property("")
@@ -44,9 +45,11 @@ class SkinPart(val host: Creature): JsonSerializable() {
 		set(value) {
 			coatCustomDesc = if (value == coatType.displayName) "" else value
 		}
+	var coatPattern by property(SkinCoatPatternType.NONE)
 
 	val color get() = skinValue(baseColor, coatColor)
 	val color2 get() = skinValue(baseColor2, coatColor2)
+	val adj get() = skinValue(baseAdj, coatAdj)
 
 	val skinColor get() = baseColor
 	val skinColor2 get() = baseColor2
@@ -72,6 +75,9 @@ class SkinPart(val host: Creature): JsonSerializable() {
 
 	fun hasCoatOfType(coatType: SkinCoatType): Boolean =
 		hasCoat() && this.coatType == coatType
+
+	fun hasPlainSkinOnly(): Boolean =
+		!hasCoat() && baseType == SkinBaseType.PLAIN
 
 	fun describeBase(noadj:Boolean, nocolor:Boolean):String = listOf(
 		if (noadj) "" else baseAdj,

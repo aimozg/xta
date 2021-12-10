@@ -92,22 +92,25 @@ class FlashImporter {
 		character.tallness = data.tallness
 		character.femininity = data.femininity
 
-		character.hairType = HairType.byId(data.hairType) ?: error("Unknown hairType ${data.hairType}")
-		character.hairStyle = HairStyle.byId(data.hairStyle) ?: error("Unknown hairStyle ${data.hairStyle}")
+		character.hairType = HairType.byId(data.hairType)
+		character.hairStyle = HairStyle.byId(data.hairStyle)
 		character.hairColor = data.hairColor
 		character.hairLength = data.hairLength.roundToInt()
-		// TODO load beard
-
+		character.beardStyle = BeardStyle.byId(data.beardStyle)
+		character.beardLength = data.beardLength
 
 		// skin
-		character.skin.coverage = SkinPart.Coverage.byId(data.skin.coverage) ?: error("Unknown skin.coverage ${data.skin.coverage}")
-		character.skin.baseType = SkinBaseType.byId(data.skin.base.type)
+		character.skin.coverage = SkinPart.Coverage.byId(data.skin.coverage)
+		character.skin.baseType = SkinBaseType.byIdOrNull(data.skin.base.type)
 			?: SkinBaseType.PLAIN.also {
 				logger.error(null,"Unknown skin.base.type ${data.skin.base.type}")
 			}
 		character.skin.baseColor = data.skin.base.color
 		character.skin.baseColor2 = data.skin.base.color2
-		character.skin.coatType = SkinCoatType.byId(data.skin.coat.type)
+		character.skin.baseDesc = data.skin.base.desc
+		character.skin.baseAdj = data.skin.base.adj
+		character.skin.basePattern = SkinBasePatternType.byId(data.skin.base.pattern)
+		character.skin.coatType = SkinCoatType.byIdOrNull(data.skin.coat.type)
 			?: SkinCoatType.FUR.also {
 				if (character.skin.coverage > SkinPart.Coverage.NONE) {
 					error("Unknown skin.coat.type ${data.skin.coat.type}")
@@ -115,9 +118,30 @@ class FlashImporter {
 			}
 		character.skin.coatColor = data.skin.coat.color
 		character.skin.coatColor2 = data.skin.coat.color2
-
-		character.eyePart.type = EyeType.byId(data.eyeType) ?: error("Unknown eyeType ${data.eyeType}")
-		character.eyePart.irisColor = data.eyeColor
+		character.skin.coatDesc = data.skin.coat.desc
+		character.skin.coatAdj = data.skin.coat.adj
+		character.skin.coatPattern = SkinCoatPatternType.byId(data.skin.coat.pattern)
+		character.face.type = FaceType.byId(data.facePart.type)
+		character.claws.type = ClawType.byId(data.clawsPart.type)
+		// TODO clawsPart.tone
+		// TODO underbody
+		character.ears.type = EarType.byId(data.earType)
+		character.horns.type = HornType.byId(data.hornType)
+		character.horns.count = data.horns
+		character.wings.type = WingType.byId(data.wingType)
+		// TODO wingDesc
+		character.lowerBody.type = LowerBodyType.byId(data.lowerBodyPart.type)
+		// TODO leg count
+		character.tail.type = TailType.byId(data.tail.type)
+		character.tail.count = data.tail.count
+		// TODO tail venom, recharge
+		character.antennae.type = AntennaeType.byId(data.antennae)
+		character.eyes.type = EyeType.byId(data.eyeType)
+		character.eyes.irisColor = data.eyeColor
+		character.tongue.type = TongueType.byId(data.tongueType)
+		character.arms.type = ArmType.byId(data.armType)
+		character.gills.type = GillType.byId(data.gillType)
+		character.rearBody.type = RearBodyType.byId(data.rearBody)
 
 		character.thickness = data.thickness
 		character.tone = data.tone
@@ -136,6 +160,7 @@ class FlashImporter {
 
 		for (jvagina in data.vaginas) {
 			character.vaginas.add(VaginaPart().also { vagina ->
+				vagina.type = VaginaType.byId(jvagina.type)
 				vagina.virgin = jvagina.virgin == true
 			})
 		}

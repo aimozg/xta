@@ -33,12 +33,14 @@ body {
 @media(min-width: 800px) {
     #root {
         padding: 0 1em;
+        width: calc(100% - 2em);
     }
 }
 
 @media(min-width: 1200px) {
     #root {
         padding: 0 2em;
+        width: calc(100% - 4em);
     }
     .chat-box {
         max-width: 1400px;

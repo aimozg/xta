@@ -73,7 +73,7 @@ fun setupWsLobbyGuest(
 	Game.localMessage("Connecting to lobby...")
 	val character = Game.myCharacter
 	// TODO configurable display name
-	val greeting = character.name + ", level " + character.level + " " + character.race()
+	val greeting = character.name + ", level " + character.level + " " + character.raceFullName()
 	@Suppress("UNCHECKED_CAST")
 	return setupGuest(
 		WsLobbyGameGuestConnection(

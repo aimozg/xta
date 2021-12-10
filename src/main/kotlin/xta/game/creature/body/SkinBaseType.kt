@@ -1,11 +1,14 @@
 package xta.game.creature.body
 
+import xta.flash.CocId
+import xta.flash.CocIdLookup
+
 enum class SkinBaseType(
-	val cocID: Int,
+	override val cocID: Int,
 	val displayName: String,
 	val plural: Boolean,
 	private val appearanceDesc: String = ""
-) {
+): CocId {
 	PLAIN(
 		0, "skin", plural = false,
 		"[Your] [skin full.noadj] has a completely normal texture, at least for [your] original world."
@@ -29,7 +32,6 @@ enum class SkinBaseType(
 
 	open fun appearanceDescription(): String = appearanceDesc
 
-	companion object {
-		fun byId(id: Int) = values().find { it.cocID == id }
-	}
+	companion object: CocIdLookup<SkinBaseType>(values())
 }
+

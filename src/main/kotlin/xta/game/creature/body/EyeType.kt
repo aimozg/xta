@@ -1,13 +1,15 @@
 package xta.game.creature.body
 
+import xta.flash.CocId
+import xta.flash.CocIdLookup
 import xta.game.Creature
 
 enum class EyeType(
-	val cocID: Int,
+	override val cocID: Int,
 	val displayName: String,
 	private val appearanceDesc: String = "",
 	val hasDarkvision: Boolean = false
-) {
+): CocId {
 	HUMAN(0, "human"),
 	SPIDER(
 		1, "six spider",
@@ -204,7 +206,5 @@ enum class EyeType(
 
 	open fun appearanceDescription(creature: Creature): String = appearanceDesc
 
-	companion object {
-		fun byId(id: Int) = values().find { it.cocID == id }
-	}
+	companion object: CocIdLookup<EyeType>(values())
 }

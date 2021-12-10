@@ -1,6 +1,8 @@
 package xta.game
 
 import xta.game.creature.Gender
+import xta.game.creature.body.LowerBodyType
+import xta.game.creature.body.PenisType
 import xta.game.creature.body.SkinCoatType
 import xta.game.stats.BuffableStat
 import kotlin.math.roundToInt
@@ -31,7 +33,8 @@ abstract class Creature: AbstractCreature() {
 	 *
 	 */
 
-	abstract fun race(): String
+	abstract fun raceName(): String // "cat-taur"
+	abstract fun raceFullName(): String // "cat-boy", "female human"
 
 	/*
 	 *    ███████ ████████  █████  ████████     ███████ ███    ██ ███████
@@ -238,7 +241,7 @@ abstract class Creature: AbstractCreature() {
 			else -> Gender.GENDERLESS
 		}
 
-	val eyeColor get() = eyePart.irisColor
+	val eyeColor get() = eyes.irisColor
 	val skinTone get() = skin.color
 	val skinColor get() = skin.skinColor
 	val skinColor2 get() = skin.skinColor2
@@ -249,17 +252,32 @@ abstract class Creature: AbstractCreature() {
 	val chitinColor get() = skin.chitinColor
 	val chitinColor2 get() = skin.chitinColor2
 	// coatColor, coatColor2, nakedCoatColor
-	// hasCoat, hasFullCoat, coatType, hasCoatOfType, hasFullCoatOfType, skinDesc, skinAdj
+	fun hasCoat() = skin.hasCoat()
+	fun hasCoatOfType(coatType: SkinCoatType) = skin.hasCoatOfType(coatType)
+	// hasFullCoat, coatType, hasFullCoatOfType, skinDesc, skinAdj
 	// hasGills
-	// faceType
+	val faceType get() = face.type
 	// clawTone, clawType
 	// lowerBody, legCount
 	val isTaur get() = false // TODO check lower body type/legs count
-	// tailType, tailVenom, tailCount, tailRecharge
+	// tailVenom, tailRecharge
+	val tailType get() = tail.type
+	val tailCount get() = tail.count
 	fun hasFur() = skin.hasCoatOfType(SkinCoatType.FUR)
 
 	fun hasCock() = cocks.isNotEmpty()
 	fun hasVagina() = vaginas.isNotEmpty()
+	fun vaginalCapacity():Int {
+		val vagina = vaginas.firstOrNull() ?: return 0
+		var bonus = 0
+		if (isTaur) bonus += 50
+		else if (lowerBody.type == LowerBodyType.NAGA) bonus += 20
+		// TODO perk bonuses
+		// TODO BonusVCapacity seffect
+		// TOOD port looseness/wetness based calculation calculation
+		return bonus /*+ 8*vagina.looseness*vagina.looseness*(1+vagina.wetness/10.0)*/
+	}
+	fun countCocksOfType(type:PenisType) = cocks.count { it.type == type }
 
 	fun biggestTitSize():Int =
 		if (breastRows.isEmpty()) -1

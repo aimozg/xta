@@ -82,25 +82,24 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	var hairColor by property("no")
 	var hairColor2 by property("")
 	var hairLength by property(0)
-	// TODO body part - beard
-//	var beardStyle = BeardStyle.NORMAL
-//	var beardLength = 0
+	var beardStyle by property(BeardStyle.NORMAL)
+	var beardLength by property(0)
 
 	val skin by nestedProperty(SkinPart(this as Creature))
-	// facePart
-	// clawsPart
-	// underBody
-	// ears
-	// horns
-	// wings
-	// lowerBodyPart
-	// tail
-	// antennae
-	val eyePart by nestedProperty(EyePart(this as Creature))
-	// tongue
-	// arms
-	// gills
-	// rearBody
+	val face by nestedProperty(FacePart(this as Creature))
+	val claws by nestedProperty(ClawsPart(this as Creature))
+	val underBody by nestedProperty(UnderBodyPart(this as Creature))
+	val ears by nestedProperty(EarsPart(this as Creature))
+	val horns by nestedProperty(HornsPart(this as Creature))
+	val wings by nestedProperty(WingsPart(this as Creature))
+	val lowerBody by nestedProperty(LowerBodyPart(this as Creature))
+	val tail by nestedProperty(TailPart(this as Creature))
+	val antennae by nestedProperty(AntennaePart(this as Creature))
+	val eyes by nestedProperty(EyePart(this as Creature))
+	val tongue by nestedProperty(TonguePart(this as Creature))
+	val arms by nestedProperty(ArmsPart(this as Creature))
+	val gills by nestedProperty(GillsPart(this as Creature))
+	val rearBody by nestedProperty(RearBodyPart(this as Creature))
 
 	var thickness by property(0)
 	var tone by property(0)

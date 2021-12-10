@@ -210,7 +210,7 @@ class CharViewImage : CompositeImage(200,220) {
 		showPart("ears_bg/human")
 
 		/* EYE AREA */
-		when (char.eyePart.type) {
+		when (char.eyes.type) {
 			EyeType.HUMAN -> {
 				showPart("eyes/human")
 			}

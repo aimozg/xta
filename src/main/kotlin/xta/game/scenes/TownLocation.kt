@@ -2,6 +2,7 @@ package xta.game.scenes
 
 import xta.game.GameLocation
 import xta.game.Scene
+import xta.game.creature.Race
 
 /*
  * Created by aimozg on 02.12.2021.
@@ -15,6 +16,19 @@ object TownLocation:GameLocation("Town") {
 
 		addButton("Rest", healScene, "Recover your HP and other stats")
 		addButton("Arena", ArenaLocation.enterScene, "Go to arena")
+		addButton("Debug - racial scores", racialScores)
+	}
+
+	val racialScores = scene("racialScores") {
+		for (race in Race.ALL_RACES) {
+			val score = race.score(character)
+			outputText("${race.name}: $score")
+			if (score >= race.minScore) {
+				outputText("("+race.nameOf(character, score)+")")
+			}
+			outputText("\n")
+		}
+		addButton("Back", main)
 	}
 
 	val healScene = scene("heal") {

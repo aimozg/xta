@@ -75,7 +75,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 		show()
 		// TODO tooltips!
 		titleDiv.textContent = char.name
-		subtitleDiv.textContent = "Level ${char.level} ${char.race()}"
+		subtitleDiv.textContent = "Level ${char.level} ${char.raceFullName()}"
 		val xpp = char.xp.toDouble() / char.xpToLevelUp()
 		xpBar.style.width = "" + (xpp * 100).coerceIn(0.0, 100.0) + "%"
 		if (xpp >= 1.0) {
