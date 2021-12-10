@@ -36,8 +36,8 @@ object TownLocation:GameLocation("Town") {
 		val pc = player.char
 		pc.hp = pc.maxHp()
 		pc.lust = pc.minLust()
-		pc.wrath = 0
-		pc.fatigue = 0
+		pc.wrath = 0.0
+		pc.fatigue = 0.0
 		pc.mana = pc.maxMana()
 		pc.soulforce = pc.maxSoulforce()
 		player.sendCharUpdate()

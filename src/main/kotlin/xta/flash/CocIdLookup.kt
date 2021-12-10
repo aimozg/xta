@@ -9,6 +9,6 @@ abstract class CocIdLookup<T : CocId>(private val values: Array<T>) {
 		values.find { it.cocID == id }
 	fun byId(id: Int): T =
 		values.find { it.cocID == id }
-			?: error("Unknown ${values.first()::class.simpleName} type $id")
+			?: error("Unknown ${values.first()::class.simpleName} id = $id")
 }
 

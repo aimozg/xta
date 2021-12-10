@@ -77,13 +77,13 @@ class FlashImporter {
 		importStat(character.sensStat, data.stats.sens)
 
 		character.cor = data.cor.roundToInt()
-		character.fatigue = data.fatigue.roundToInt()
-		character.mana = data.mana.roundToInt()
-		character.soulforce = data.soulforce.roundToInt()
+		character.fatigue = data.fatigue
+		character.mana = data.mana
+		character.soulforce = data.soulforce
 
-		character.hp = data.HP.roundToInt()
-		character.lust = data.lust.roundToInt()
-		character.wrath = data.wrath.roundToInt()
+		character.hp = data.HP
+		character.lust = data.lust
+		character.wrath = data.wrath
 
 		character.xp = data.XP
 		character.level = data.level

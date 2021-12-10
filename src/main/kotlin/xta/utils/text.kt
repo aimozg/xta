@@ -1,5 +1,9 @@
 package xta.utils
 
+import kotlin.math.floor
+import kotlin.math.round
+import kotlin.math.roundToInt
+
 /*
  * Created by aimozg on 04.12.2021.
  */
@@ -22,3 +26,34 @@ fun String.fixedWrap(prefix: String, postfix: String, maxLength: Int, tail: Stri
 			if (length >= maxLength) crop(maxLength, tail)
 			else padEnd(maxLength, ' ')
 			) + postfix
+
+@JsExport
+fun Double.formatBigInt():String {
+	if (this < 0) return "-"+(-this).formatBigInt()
+	if (!isFinite()) return toString()
+	var x = round(this)
+	var s = ""
+	while (x >= 1000) {
+		val spart = (x%1000).roundToInt().toString()
+		s = "," + spart.padStart (3, '0')+s
+		x = floor(x/1000)
+	}
+	s = x.roundToInt().toString() + s
+	return s
+}
+
+@JsExport
+@JsName("formatBigInt2")
+fun Int.formatBigInt():String {
+	if (this < 0) return "-"+(-this).formatBigInt()
+	var x = this
+	var s = ""
+	while (x >= 1000) {
+		// 678
+		val spart = (x%1000).toString()
+		s = "," + spart.padStart (3, '0')+s
+		x /= 1000
+	}
+	s = x.toString() + s
+	return s
+}

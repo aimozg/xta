@@ -3,6 +3,10 @@ package xta.game.combat
 import xta.Game
 import xta.Player
 import xta.game.Scene
+import xta.game.combat.actions.CombatFinish
+import xta.game.combat.actions.CombatMeleeAttack
+import xta.game.combat.actions.CombatSurrender
+import xta.game.combat.actions.CombatWait
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.text.TextOutput

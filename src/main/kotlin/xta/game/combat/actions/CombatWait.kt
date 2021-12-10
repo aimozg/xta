@@ -1,6 +1,7 @@
-package xta.game.combat
+package xta.game.combat.actions
 
 import xta.Player
+import xta.game.combat.AbstractCombatAction
 
 class CombatWait(actor: Player): AbstractCombatAction(actor) {
 	override fun perform() {

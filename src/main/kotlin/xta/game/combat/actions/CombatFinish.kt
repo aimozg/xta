@@ -1,7 +1,8 @@
-package xta.game.combat
+package xta.game.combat.actions
 
 import xta.Game
 import xta.Player
+import xta.game.combat.AbstractCombatAction
 
 /*
  * Created by aimozg on 09.12.2021.

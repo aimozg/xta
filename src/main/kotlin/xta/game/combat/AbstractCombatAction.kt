@@ -7,7 +7,7 @@ import xta.utils.nextUid
 /*
  * Created by aimozg on 08.12.2021.
  */
-sealed class AbstractCombatAction(val actor: Player) {
+abstract class AbstractCombatAction(val actor: Player) {
 	protected val combat = actor.combat!!
 	protected val display:TextOutput get() = combat.display
 	val uid = nextUid()

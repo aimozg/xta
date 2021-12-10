@@ -40,14 +40,14 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 
 	//Primary stats
 	var cor:Int by property(0)
-	var fatigue:Int by property(0)
-	var mana:Int by property(0)
-	var soulforce:Int by property(0)
+	var fatigue:Double by property(0.0)
+	var mana:Double by property(0.0)
+	var soulforce:Double by property(0.0)
 
 	//Combat Stats
-	var hp:Int by property(0)
-	var lust:Int by property(0)
-	var wrath:Int by property(0)
+	var hp:Double by property(0.0)
+	var lust:Double by property(0.0)
+	var wrath:Double by property(0.0)
 
 	val maxHpBaseStat by nestedProperty(BuffableStat(Stats.HP_MAX_BASE, baseValue = 50.0))
 	val maxHpPerLevelStat by nestedProperty(BuffableStat(Stats.HP_MAX_PERLEVEL, baseValue = 60.0))

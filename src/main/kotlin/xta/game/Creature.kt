@@ -1,10 +1,13 @@
 package xta.game
 
+import xta.game.combat.CombatCondition
 import xta.game.creature.Gender
 import xta.game.creature.body.LowerBodyType
 import xta.game.creature.body.PenisType
 import xta.game.creature.body.SkinCoatType
 import xta.game.stats.BuffableStat
+import xta.utils.RandomNumber
+import kotlin.math.round
 import kotlin.math.roundToInt
 
 /*
@@ -56,33 +59,33 @@ abstract class Creature: AbstractCreature() {
 	var hpRatio
 		get() = hp.toDouble()/maxHp()
 		set(value) {
-			hp = (maxHp()*value).roundToInt()
+			hp = (maxHp()*value)
 		}
 	var lustRatio
 		get() = lust.toDouble()/maxLust()
 		set(value) {
-			lust = (maxLust()*value).roundToInt()
+			lust = (maxLust()*value)
 		}
 	var wrathRatio
 		get() = wrath.toDouble()/maxWrath()
 		set(value) {
-			wrath = (maxWrath()*value).roundToInt()
+			wrath = (maxWrath()*value)
 		}
 	val staminaRatio get() = 1.0-fatigueRatio
 	var fatigueRatio
 		get() = fatigue.toDouble()/maxFatigue()
 		set(value) {
-			fatigue = (maxFatigue()*value).roundToInt()
+			fatigue = (maxFatigue()*value)
 		}
 	var manaRatio
 		get() = mana.toDouble()/maxMana()
 		set(value) {
-			mana = (maxMana()*value).roundToInt()
+			mana = (maxMana()*value)
 		}
 	var sfRatio
 		get() = soulforce.toDouble()/maxSoulforce()
 		set(value) {
-			soulforce = (maxSoulforce()*value).roundToInt()
+			soulforce = (maxSoulforce()*value)
 		}
 
 	fun xpToLevelUp(): Int {
@@ -92,15 +95,14 @@ abstract class Creature: AbstractCreature() {
 		if (level >= 180) xpm += 100
 		return (level*xpm).coerceAtMost(74000)
 	}
-	open fun maxHp():Int {
-		return (maxHpBase()*maxHpMult()).roundToInt().coerceAtMost(9_999_999)
+	open fun maxHp():Double {
+		return round(maxHpBase()*maxHpMult()).coerceAtMost(9_999_999.0)
 	}
-	open fun maxHpPerLevel():Int {
-		return 60
+	open fun maxHpPerLevel():Double {
+		return 60.0
 	}
-	open fun maxHpBase():Int {
-		var max = 0
-		val tou = tou.roundToInt()
+	open fun maxHpBase():Double {
+		var max = 0.0
 		// TODO account for perks
 
 		max += tou*2+maxHpBaseStat.value.roundToInt()
@@ -113,47 +115,47 @@ abstract class Creature: AbstractCreature() {
 		max += level * maxHpPerLevel()
 		if (level <= 6) max += level * 60
 
-		return max
+		return round(max)
 	}
 	open fun maxHpMult():Double {
 		// TODO scores, green cock socks, mecha
 		return maxHpMultStat.value
 	}
-	open fun minLust():Int {
+	open fun minLust():Double {
 		// TODO calculations
-		return 0
+		return 0.0
 	}
-	open fun maxLust():Int {
-		return (maxLustBase()*maxLustMult()).roundToInt().coerceAtMost(199_999)
+	open fun maxLust():Double {
+		return round(maxLustBase()*maxLustMult()).coerceAtMost(199_999.0)
 	}
-	open fun maxLustBase():Int {
-		var max = 100
+	open fun maxLustBase():Double {
+		var max = 100.0
 		// TODO perk bonuses
 		max += level*maxLustPerLevel()
 		if (level <= 6) max += level*3
-		return max
+		return round(max)
 	}
-	open fun maxLustPerLevel():Int {
+	open fun maxLustPerLevel():Double {
 		// TODO perk bonuses
-		return 3
+		return 3.0
 	}
 	open fun maxLustMult():Double {
 		// TODO calculate
 		return 1.0
 	}
-	open fun maxWrath():Int {
-		return (maxWrathBase()*maxWrathMult()).roundToInt().coerceAtMost(476_999)
+	open fun maxWrath():Double {
+		return round(maxWrathBase()*maxWrathMult()).coerceAtMost(476_999.0)
 	}
-	open fun maxWrathBase():Int {
-		var max = 500
+	open fun maxWrathBase():Double {
+		var max = 500.0
 		// TODO perk, item, race bonuses
 		max += level*maxWrathPerLevel()
 		if (level <= 6) max += level*5
-		return max
+		return round(max)
 	}
-	open fun maxWrathPerLevel():Int {
+	open fun maxWrathPerLevel():Double {
 		// TODO perk, item, race bonuses
-		return 5
+		return 5.0
 	}
 	open fun maxWrathMult():Double {
 		// TODO perk, item, race bonuses
@@ -163,60 +165,60 @@ abstract class Creature: AbstractCreature() {
 	/**
 	 * Usable fatigue points
 	 */
-	var stamina:Int
+	var stamina:Double
 		get() = maxFatigue() - fatigue
 		set(value) {
 			fatigue = maxFatigue() - value
 		}
-	open fun maxFatigue():Int {
-		return (maxFatigueBase()*maxFatigueMult()).roundToInt().coerceAtMost(1_499_999)
+	open fun maxFatigue():Double {
+		return round(maxFatigueBase()*maxFatigueMult()).coerceAtMost(1_499_999.0)
 	}
-	open fun maxFatigueBase():Int {
-		var max = 150
+	open fun maxFatigueBase():Double {
+		var max = 150.0
 		// TODO racial scores items and perks
 		max += level*maxFatiguePerLevel()
 		if (level <= 6) max += level*5
-		return max
+		return round(max)
 	}
-	open fun maxFatiguePerLevel():Int {
+	open fun maxFatiguePerLevel():Double {
 		// TODO racial scores items and perks
-		return 5
+		return 5.0
 	}
 	open fun maxFatigueMult():Double {
 		// TODO racial scores items and perks
 		return 1.0
 	}
-	open fun maxMana():Int {
-		return (maxManaBase()*maxManaMult()).roundToInt().coerceAtMost(2_499_999)
+	open fun maxMana():Double {
+		return round(maxManaBase()*maxManaMult()).coerceAtMost(2_499_999.0)
 	}
-	open fun maxManaBase():Int {
-		var max = maxManaBaseStat.value.roundToInt()
+	open fun maxManaBase():Double {
+		var max = maxManaBaseStat.value
 		// TODO perk, race, item bonuses
 		max += level*maxManaPerLevel()
 		if (level <= 6) max += level*10
-		return max
+		return round(max)
 	}
-	open fun maxManaPerLevel():Int {
+	open fun maxManaPerLevel():Double {
 		// TODO perk, race, item bonuses
-		return maxManaPerLevelStat.value.roundToInt()
+		return maxManaPerLevelStat.value
 	}
 	open fun maxManaMult():Double {
 		// TODO perk, race, item bonuses
 		return maxManaMultStat.value
 	}
-	open fun maxSoulforce():Int {
-		return (maxSoulforceBase()*maxSoulforceMult()).roundToInt().coerceAtMost(1_499_999)
+	open fun maxSoulforce():Double {
+		return round(maxSoulforceBase()*maxSoulforceMult()).coerceAtMost(1_499_999.0)
 	}
-	open fun maxSoulforceBase():Int {
-		var max = 50
+	open fun maxSoulforceBase():Double {
+		var max = 50.0
 		// TODO perk, cultivation level, item, racial bonuses
 		max += level*maxSoulforcePerLevel()
 		if (level <= 6) max += level*5
-		return max
+		return round(max)
 	}
-	open fun maxSoulforcePerLevel():Int {
+	open fun maxSoulforcePerLevel():Double {
 		// TODO perk, cultivation level, item, racial bonuses
-		return 5
+		return 5.0
 	}
 	open fun maxSoulforceMult():Double {
 		// TODO perk, cultivation level, item, racial bonuses
@@ -325,5 +327,27 @@ abstract class Creature: AbstractCreature() {
 		allStatsAndSubstats().forEach {
 			(it as? BuffableStat)?.removeCombatBuffs()
 		}
+	}
+
+	fun hasCondition(condition: CombatCondition): Boolean {
+		// TODO condition framework
+		return false
+	}
+
+	private fun scalingBonusIwlRoll(stat: Int): RandomNumber {
+		val scale = when {
+			stat > 100_000 -> 50.75
+			stat > 100 -> 1.0 + ((stat-100)/50) * 0.25
+			else -> 2.0/6.0 + (stat/20)/6.0
+		}
+		val rng =
+			if (stat <= 100) stat*(scale+0.25)
+			else stat*(scale+0.5)
+		return RandomNumber(stat*scale, stat*scale + rng)
+	}
+
+	fun scalingBonusStrength(randomize:Boolean=true):Double {
+		val roll = scalingBonusIwlRoll(str.roundToInt())
+		if (randomize) return roll.roll() else return roll.mean()
 	}
 }
