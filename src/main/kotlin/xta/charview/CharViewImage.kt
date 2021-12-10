@@ -525,8 +525,111 @@ class CharViewImage : CompositeImage(200,220) {
 			showPart("forehead/SpecialForeheadShadow")
 		}
 
-		// face type - TODO port model.xml code
-		showPart("face/human")
+		// face type
+		when (char.face.type) {
+			FaceType.HUMAN -> {
+				when {
+					char.skin.baseType == SkinBaseType.GOO ->
+						showPart("face/goo")
+					char.cor >= 100 -> {
+						if (char.lowerBody.type == LowerBodyType.FLOWER_LILIRAUNE) {
+							showPart("face/lilirauneCorruptedSmile")
+							showPart("forehead/lilirauneCorruptedShadow")
+						} else {
+							showPart("face/fairySmile")
+						}
+					}
+					char.cor >= 50 ->
+						showPart("face/demonlewd")
+					else ->
+						showPart("face/human")
+				}
+			}
+			FaceType.HORSE,
+			FaceType.FOX,
+			FaceType.PIG,
+			FaceType.BOAR,
+			FaceType.RHINO,
+			FaceType.ECHIDNA,
+			FaceType.DOG,
+			FaceType.CAT,
+			FaceType.WOLF ->
+				showPart("face/fur")
+			FaceType.KANGAROO,
+			FaceType.MOUSE,
+			FaceType.DEER ->
+				showPart("face/fur")
+			FaceType.SHARK_TEETH ->
+				showPart("face/shark")
+			FaceType.LIZARD,
+			FaceType.DRAGON ->
+				showPart("face/reptile")
+			FaceType.BUNNY,
+			FaceType.BUCKTEETH,
+			FaceType.JABBERWOCKY,
+			FaceType.BUCKTOOTH ->
+				showPart("face/bunny")
+			FaceType.SPIDER_FANGS ->
+				showPart("face/human_gang")
+			FaceType.RACCOON_MASK,
+			FaceType.FERRET_MASK -> {
+				showPart("face/racoon_mask")
+				showPart("face/human_fang")
+			}
+			FaceType.RACCOON,
+			FaceType.FERRET -> {
+				showPart("face/racoon")
+			}
+			FaceType.SALAMANDER_FANGS,
+			FaceType.VAMPIRE,
+			FaceType.YETI_FANGS,
+			FaceType.ONI_TEETH,
+			FaceType.DRAGON_FANGS,
+			FaceType.WEASEL,
+			FaceType.DEVIL_FANGS,
+			FaceType.ANIMAL_TEETH,
+			FaceType.WOLF_FANGS,
+			FaceType.SNAKE_FANGS,
+			FaceType.CAT_CANINES,
+			FaceType.MANTICORE -> {
+				showPart("face/human_fang")
+				if (char.eyes.type === EyeType.CENTIPEDE) {
+					hidePart("face/human_fang")
+					showPart("face/melancholic")
+				}
+				if (char.face.type === FaceType.SALAMANDER_FANGS
+					&& char.tongue.type === TongueType.CAVE_WYRM) {
+					hidePart("face/human_fang")
+					showPart("face/caveWyrm")
+				}
+			}
+			FaceType.FIRE_SNAIL ->
+				showPart("face/goo")
+			FaceType.ORCA ->
+				showPart("face/orca")
+			FaceType.CHESHIRE,
+			FaceType.CHESHIRE_SMILE ->
+				showPart("face/cheshire")
+			FaceType.PANDA ->
+				showPart("face/panda")
+			FaceType.COW_MINOTAUR ->
+				showPart("face/bovine")
+			FaceType.FAIRY,
+			FaceType.CRAZY,
+			FaceType.SMUG,
+			FaceType.ELF ->
+				showPart("face/fairySmile")
+			FaceType.GHOST -> {
+				if (char.tongue.type == TongueType.GHOST) {
+					showPart("face/ghost")
+				} else {
+					showPart("face/human")
+				}
+			}
+			else -> {
+				showPart("face/human")
+			}
+		}
 
 		val breastSize = char.breastRows.firstOrNull()?.breastRating ?: 0
 		when {
