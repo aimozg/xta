@@ -57,33 +57,33 @@ abstract class Creature: AbstractCreature() {
 	val sens get() = sensStat.value
 
 	var hpRatio
-		get() = hp.toDouble()/maxHp()
+		get() = hp /maxHp()
 		set(value) {
 			hp = (maxHp()*value)
 		}
 	var lustRatio
-		get() = lust.toDouble()/maxLust()
+		get() = lust /maxLust()
 		set(value) {
 			lust = (maxLust()*value)
 		}
 	var wrathRatio
-		get() = wrath.toDouble()/maxWrath()
+		get() = wrath /maxWrath()
 		set(value) {
 			wrath = (maxWrath()*value)
 		}
 	val staminaRatio get() = 1.0-fatigueRatio
 	var fatigueRatio
-		get() = fatigue.toDouble()/maxFatigue()
+		get() = fatigue /maxFatigue()
 		set(value) {
 			fatigue = (maxFatigue()*value)
 		}
 	var manaRatio
-		get() = mana.toDouble()/maxMana()
+		get() = mana /maxMana()
 		set(value) {
 			mana = (maxMana()*value)
 		}
 	var sfRatio
-		get() = soulforce.toDouble()/maxSoulforce()
+		get() = soulforce /maxSoulforce()
 		set(value) {
 			soulforce = (maxSoulforce()*value)
 		}

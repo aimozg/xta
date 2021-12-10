@@ -25,7 +25,7 @@ object CombatMath {
 		if (attacker.hasCondition(CombatCondition.BLIND)) {
 			accuracy /= 2
 		}
-		return accuracy/100.0
+		return (accuracy/100.0).coerceIn(0.0,1.0)
 	}
 
 	/**

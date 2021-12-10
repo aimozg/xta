@@ -99,17 +99,17 @@ class CharacterPanel : UiTemplate("char-panel") {
 		senVal.textContent = char.sens.roundToInt().toString()
 		corVal.textContent = char.cor.toString()
 		hpBar.displayValue(
-			value = char.hp.toDouble(),
-			max = char.maxHp().toDouble(),
+			value = char.hp,
+			max = char.maxHp(),
 			text = char.hp.toString()
 		)
 		hpBar.container.addTooltip(
 			"HP: ${char.hp}/${char.maxHp()}\n" +
 					"(${char.hpRatio.times(100).roundToInt()}%)")
 		lustBar.displayValue(
-			value = char.lust.toDouble(),
-			extra = char.minLust().toDouble(),
-			max = char.maxLust().toDouble(),
+			value = char.lust,
+			extra = char.minLust(),
+			max = char.maxLust(),
 			text = char.lust.toString()
 		)
 		lustBar.container.addTooltip(
@@ -117,8 +117,8 @@ class CharacterPanel : UiTemplate("char-panel") {
 					"(${char.lustRatio.times(100).roundToInt()}%)"
 		)
 		wrathBar.displayValue(
-			value = char.wrath.toDouble(),
-			max = char.maxWrath().toDouble(),
+			value = char.wrath,
+			max = char.maxWrath(),
 			text = char.wrath.toString()
 		)
 		wrathBar.container.addTooltip(
@@ -126,8 +126,8 @@ class CharacterPanel : UiTemplate("char-panel") {
 					"(${char.wrathRatio.times(100).roundToInt()}%)"
 		)
 		staminaBar.displayValue(
-			value = char.stamina.toDouble(),
-			max = char.maxFatigue().toDouble(),
+			value = char.stamina,
+			max = char.maxFatigue(),
 			text = char.stamina.toString()
 		)
 		staminaBar.container.addTooltip(
@@ -135,8 +135,8 @@ class CharacterPanel : UiTemplate("char-panel") {
 					"(${char.staminaRatio.times(100).roundToInt()}%)"
 		)
 		manaBar.displayValue(
-			value = char.mana.toDouble(),
-			max = char.maxMana().toDouble(),
+			value = char.mana,
+			max = char.maxMana(),
 			text = char.mana.toString()
 		)
 		manaBar.container.addTooltip(
@@ -144,8 +144,8 @@ class CharacterPanel : UiTemplate("char-panel") {
 					"(${char.manaRatio.times(100).roundToInt()}%)"
 		)
 		sfBar.displayValue(
-			value = char.soulforce.toDouble(),
-			max = char.maxSoulforce().toDouble(),
+			value = char.soulforce,
+			max = char.maxSoulforce(),
 			text = char.soulforce.toString()
 		)
 		sfBar.container.addTooltip(

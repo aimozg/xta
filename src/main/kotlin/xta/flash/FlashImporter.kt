@@ -19,6 +19,7 @@ import xta.utils.component1
 import xta.utils.component2
 import xta.utils.component3
 import kotlin.js.Promise
+import kotlin.math.round
 import kotlin.math.roundToInt
 
 /*
@@ -77,13 +78,13 @@ class FlashImporter {
 		importStat(character.sensStat, data.stats.sens)
 
 		character.cor = data.cor.roundToInt()
-		character.fatigue = data.fatigue
-		character.mana = data.mana
-		character.soulforce = data.soulforce
+		character.fatigue = round(data.fatigue)
+		character.mana = round(data.mana)
+		character.soulforce = round(data.soulforce)
 
-		character.hp = data.HP
-		character.lust = data.lust
-		character.wrath = data.wrath
+		character.hp = round(data.HP)
+		character.lust = round(data.lust)
+		character.wrath = round(data.wrath)
 
 		character.xp = data.XP
 		character.level = data.level
