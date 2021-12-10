@@ -447,7 +447,6 @@ class CharViewImage : CompositeImage(200,220) {
 
 		val skinb:String
 		val skinx:String
-		// TODO port model.xml code
 		when (char.skin.coverage) {
 			SkinPart.Coverage.NONE -> when (char.skin.baseType) {
 				SkinBaseType.GOO -> {
@@ -456,16 +455,23 @@ class CharViewImage : CompositeImage(200,220) {
 				}
 				else -> {
 					skinb = "human"
-					skinx = "human"
+					if (char.skin.basePattern == SkinBasePatternType.ORCA_UNDERBODY) {
+						skinx = "orca"
+					} else if (char.skin.basePattern == SkinBasePatternType.SEA_DRAGON_UNDERBODY) {
+						skinx = "orca"
+						showPart("torso_pattern/Bbioluminescence")
+					} else {
+						skinx = "human"
+					}
 				}
 			}
 			SkinPart.Coverage.LOW,
 			SkinPart.Coverage.MEDIUM -> when (char.skin.coatType) {
-				/*SkinCoatType.SCALES,
+				SkinCoatType.SCALES,
 				SkinCoatType.DRAGON_SCALES -> {
 					skinb = "pscales"
 					skinx = "pscales"
-				}*/
+				}
 				else -> {
 					skinb = "human"
 					skinx = "human"
@@ -474,12 +480,15 @@ class CharViewImage : CompositeImage(200,220) {
 			SkinPart.Coverage.HIGH,
 			SkinPart.Coverage.COMPLETE -> when (char.skin.coatType) {
 				SkinCoatType.FUR -> {
-					// TODO if ears type = panda: set to panda
-					skinb = "fur"
-					skinx = "fur"
+					if (char.ears.type == EarType.PANDA) {
+						skinb = "panda"
+						skinx = "panda"
+					} else {
+						skinb = "fur"
+						skinx = "fur"
+					}
 				}
 				SkinCoatType.AQUA_SCALES -> {
-					// TODO orca pattern
 					skinb = "human"
 					skinx = "human"
 				}
@@ -492,9 +501,12 @@ class CharViewImage : CompositeImage(200,220) {
 					skinx = "dscales"
 				}
 				SkinCoatType.CHITIN -> {
-					// TODO bee pattern
 					skinb = "chitin"
-					skinx = "chitin"
+					if (char.skin.coatPattern == SkinCoatPatternType.BEE_STRIPES) {
+						skinx = "bee"
+					} else {
+						skinx = "chitin"
+					}
 				}
 				else -> {
 					skinb = "human"
@@ -509,8 +521,7 @@ class CharViewImage : CompositeImage(200,220) {
 		showPart("legs/$skinx")
 
 		/* In the event player corruption is maxed enter yandere mode forehead */
-		if (char.cor >= 100) {
-			// TODO and (eyes.type!=Eyes.CENTIPEDE)
+		if (char.cor >= 100 && char.eyes.type != EyeType.CENTIPEDE) {
 			showPart("forehead/SpecialForeheadShadow")
 		}
 
