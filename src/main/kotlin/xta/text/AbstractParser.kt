@@ -48,7 +48,12 @@ abstract class AbstractParser: LogContext {
 							logger.warn(this@AbstractParser, e)
 							output += "/!\\\\${e.message}/!\\\\"
 						}
-					}/*
+					}
+					tryEat(LA_FALSETAG) != null -> {
+						logger.iftrace(this@AbstractParser) { "falsetag '${match.value}'"}
+						output += match.value
+					}
+					/*
 					tryEat(LA_TAGSTART) != null -> {
 						val tag = match.groupValues[1]
 						logger.iftrace(this@AbstractParser) { "tagstart '$tag'" }
@@ -109,6 +114,11 @@ abstract class AbstractParser: LogContext {
 		 * Group 2 = tag arguments
 		 */
 		private val LA_SIMPLETAG = Regex("""^\[(\w+)(\b[^\]]*)\]""")
+
+		/**
+		 * Non-tag text in square brackets like `[1]`
+		 */
+		private val LA_FALSETAG = Regex("""^\[(?:[^\w]|\\.)""")
 
 		/**
 		 * Parser tag start

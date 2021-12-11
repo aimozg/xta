@@ -11,18 +11,6 @@ fun Int.displayInches():String {
 	return "$feet'" + (if (inches > 0) "$inches\"" else "")
 }
 
-inline fun<T> List<T>.joinToSequence(transform:(T)->String):String = buildString {
-	for ((i,v) in this@joinToSequence.withIndex()) {
-		if (i > 0) {
-			if (i == size-1) {
-				append(", and ")
-			} else {
-				append(", ")
-			}
-		}
-		append(transform(v))
-	}
-}
 
 object EmptyMatchResult: MatchResult {
 	override val groupValues: List<String>

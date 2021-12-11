@@ -20,8 +20,8 @@ class Parser(
 	override fun toLogString() = player?.toLogString()?: Game.me.toLogString()
 
 	override fun doEvaluateTag(tag: String, tagArgs: String): String {
-		return when (tag) {
-			"if" -> TODO("If tag is not implemented")
+		return when {
+			tag == "if" -> TODO("If tag is not implemented")
 			else -> evalGameTag(tag, tagArgs)
 		}
 	}

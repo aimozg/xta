@@ -11,6 +11,9 @@ import kotlin.math.roundToInt
 fun String.capitalized() =
 	replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 
+fun String.decapitalized() =
+	replaceFirstChar { if (it.isUpperCase()) it.lowercase() else it.toString() }
+
 fun Int.toHex6() = toString(16).padStart(6, '0')
 
 fun String.crop(maxLength: Int, tail: String = "…"): String =
@@ -26,6 +29,21 @@ fun String.fixedWrap(prefix: String, postfix: String, maxLength: Int, tail: Stri
 			if (length >= maxLength) crop(maxLength, tail)
 			else padEnd(maxLength, ' ')
 			) + postfix
+
+fun StringBuilder.deletePostfix(postfix:String):Boolean {
+	if (endsWith(postfix)) {
+		deleteRange(length-postfix.length,length)
+		return true
+	}
+	return false
+}
+fun StringBuilder.deletePrefix(prefix:String):Boolean {
+	if (startsWith(prefix)) {
+		deleteRange(0,prefix.length)
+		return true
+	}
+	return false
+}
 
 @JsExport
 fun Double.formatBigInt():String {

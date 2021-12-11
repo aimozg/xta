@@ -5,7 +5,7 @@ import xta.Player
 import xta.game.GameLocation
 import xta.game.Scene
 import xta.text.Parser
-import xta.text.joinToSequence
+import xta.utils.joinToSentence
 import xta.utils.walk
 
 /*
@@ -43,7 +43,7 @@ object ArenaLocation : GameLocation("Arena") {
 		val others = otherPlayersHere(sameScene = true)
 		if (others.isNotEmpty()) {
 			outputText("You see ")
-			rawOutput(others.joinToSequence {
+			rawOutput(others.joinToSentence(decapitalize = false) {
 				Parser(player, it).parse(
 					"[name], level [level] [malefemaleherm] [race]"
 				)
@@ -64,7 +64,7 @@ object ArenaLocation : GameLocation("Arena") {
 			}
 
 			if (inChallenges.isNotEmpty()) {
-				outputText(inChallenges.joinToSequence { it.sender.char.name })
+				outputText(inChallenges.joinToSentence(decapitalize = false) { it.sender.char.name })
 				outputText(" challenge"+(if (inChallenges.size>1) "" else "s")+" you!\n\n")
 				for (challenge in inChallenges) {
 					addButton("Accept "+challenge.sender.char.name+"'s challenge") {

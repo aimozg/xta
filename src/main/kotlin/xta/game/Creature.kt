@@ -255,8 +255,14 @@ abstract class Creature: AbstractCreature() {
 	val chitinColor2 get() = skin.chitinColor2
 	// coatColor, coatColor2, nakedCoatColor
 	fun hasCoat() = skin.hasCoat()
+	fun hasFullCoat() = skin.hasFullCoat()
 	fun hasCoatOfType(coatType: SkinCoatType) = skin.hasCoatOfType(coatType)
-	// hasFullCoat, coatType, hasFullCoatOfType, skinDesc, skinAdj
+	fun hasPartialCoatOfType(coatType:SkinCoatType) = skin.hasPartialCoatOfType(coatType)
+	fun hasFullCoatOfType(coatType: SkinCoatType) = skin.hasFullCoatOfType(coatType)
+	fun hasPlainSkinOnly() = skin.hasPlainSkinOnly()
+	fun hasFur() = skin.hasCoatOfType(SkinCoatType.FUR)
+	fun hasScales() = skin.hasCoatOfType(SkinCoatType.SCALES)
+	// coatType, skinDesc, skinAdj
 	// hasGills
 	val faceType get() = face.type
 	// clawTone, clawType
@@ -265,7 +271,6 @@ abstract class Creature: AbstractCreature() {
 	// tailVenom, tailRecharge
 	val tailType get() = tail.type
 	val tailCount get() = tail.count
-	fun hasFur() = skin.hasCoatOfType(SkinCoatType.FUR)
 
 	fun hasCock() = cocks.isNotEmpty()
 	fun hasVagina() = vaginas.isNotEmpty()

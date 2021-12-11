@@ -101,7 +101,7 @@ class FlashImporter {
 		character.beardLength = data.beardLength
 
 		// skin
-		character.skin.coverage = SkinPart.Coverage.byId(data.skin.coverage)
+		character.skin.coverage = SkinCoverage.byId(data.skin.coverage)
 		character.skin.baseType = SkinBaseType.byIdOrNull(data.skin.base.type)
 			?: SkinBaseType.PLAIN.also {
 				logger.error(null,"Unknown skin.base.type ${data.skin.base.type}")
@@ -113,7 +113,7 @@ class FlashImporter {
 		character.skin.basePattern = SkinBasePatternType.byId(data.skin.base.pattern)
 		character.skin.coatType = SkinCoatType.byIdOrNull(data.skin.coat.type)
 			?: SkinCoatType.FUR.also {
-				if (character.skin.coverage > SkinPart.Coverage.NONE) {
+				if (character.skin.coverage > SkinCoverage.NONE) {
 					error("Unknown skin.coat.type ${data.skin.coat.type}")
 				}
 			}

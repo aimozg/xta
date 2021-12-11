@@ -1,7 +1,5 @@
 package xta.game.creature.body
 
-import xta.flash.CocId
-import xta.flash.CocIdLookup
 import xta.game.Creature
 import xta.net.serialization.JsonSerializable
 import xta.utils.joinToSentence
@@ -9,21 +7,10 @@ import xta.utils.joinToSentence
 /*
  * Created by aimozg on 28.11.2021.
  */
-
+@JsExport
 class SkinPart(val host: Creature): JsonSerializable() {
-	enum class Coverage(
-		override val cocID:Int
-	): CocId {
-		NONE(0),
-		LOW(1),
-		MEDIUM(2),
-		HIGH(3),
-		COMPLETE(4);
 
-		companion object: CocIdLookup<Coverage>(values())
-	}
-
-	var coverage by property(Coverage.NONE)
+	var coverage by property(SkinCoverage.NONE)
 	var baseType by property(SkinBaseType.PLAIN)
 	var baseColor by property("")
 	var baseColor2 by property("")
@@ -61,20 +48,30 @@ class SkinPart(val host: Creature): JsonSerializable() {
 	val scaleColor2 get() = coatColor2
 
 	private fun skinValue(baseVal:String, coatVal:String) = when (coverage) {
-		Coverage.NONE,
-		Coverage.LOW ->
+		SkinCoverage.NONE,
+		SkinCoverage.LOW ->
 			baseVal
-		Coverage.MEDIUM ->
+		SkinCoverage.MEDIUM ->
 			"$baseVal and $coatVal"
-		Coverage.HIGH,
-		Coverage.COMPLETE ->
+		SkinCoverage.HIGH,
+		SkinCoverage.COMPLETE ->
 			coatVal
 	}
 
-	fun hasCoat() = coverage != Coverage.NONE
+	fun isCoverLowMid() = coverage == SkinCoverage.LOW || coverage == SkinCoverage.MEDIUM
 
-	fun hasCoatOfType(coatType: SkinCoatType): Boolean =
-		hasCoat() && this.coatType == coatType
+	fun hasCoat() = coverage != SkinCoverage.NONE
+
+	fun hasFullCoat() = coverage >= SkinCoverage.HIGH
+
+	fun hasCoatOfType(vararg types: SkinCoatType): Boolean =
+		hasCoat() && this.coatType in types
+
+	fun hasPartialCoatOfType(vararg types: SkinCoatType): Boolean =
+		coverage == SkinCoverage.LOW && this.coatType in types
+
+	fun hasFullCoatOfType(vararg types: SkinCoatType): Boolean =
+		hasFullCoat() && this.coatType in types
 
 	fun hasPlainSkinOnly(): Boolean =
 		!hasCoat() && baseType == SkinBaseType.PLAIN
@@ -107,11 +104,11 @@ class SkinPart(val host: Creature): JsonSerializable() {
 		val base = describeBase(noadj, nocolor)
 		val coat = describeCoat(noadj, nocolor)
 		return when (coverage) {
-			Coverage.NONE -> base
-			Coverage.LOW -> "$base with patches of $coat"
-			Coverage.MEDIUM -> "$base and $coat"
-			Coverage.HIGH -> "$base under $coat"
-			Coverage.COMPLETE -> coat
+			SkinCoverage.NONE -> base
+			SkinCoverage.LOW -> "$base with patches of $coat"
+			SkinCoverage.MEDIUM -> "$base and $coat"
+			SkinCoverage.HIGH -> "$base under $coat"
+			SkinCoverage.COMPLETE -> coat
 		}
 	}
 

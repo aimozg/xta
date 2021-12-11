@@ -45,7 +45,12 @@ inline fun <IN, OUT> Array<IN>.mapToJsonArray(builder: (input:IN, output:OUT) ->
 		json
 	} as Array<OUT>
 
-fun List<String>.joinToSentence(separator:String=", ", beforeLast:String=", and ", pair:String=" and "): String {
+fun List<String>.joinToSentence(
+	separator:String=", ",
+	beforeLast:String=", and ",
+	pair:String=" and ",
+	decapitalize:Boolean = true
+): String {
 	if (any { it.isBlank() }) return filter { it.isNotBlank() }.joinToSentence(separator, beforeLast, pair)
 	val list = this
 	val size = size
@@ -59,7 +64,19 @@ fun List<String>.joinToSentence(separator:String=", ", beforeLast:String=", and 
 				i > 0 ->
 					append(separator)
 			}
-			append(s)
+			if (decapitalize) {
+				append(s.decapitalized())
+			} else {
+				append(s)
+			}
 		}
 	}
 }
+
+inline fun<T> List<T>.joinToSentence(
+	separator:String=", ",
+	beforeLast:String=", and ",
+	pair:String=" and ",
+	decapitalize:Boolean = true,
+	transform:(T)->String
+): String = map(transform).joinToSentence(separator, beforeLast, pair, decapitalize)

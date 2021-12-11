@@ -448,7 +448,7 @@ class CharViewImage : CompositeImage(200,220) {
 		val skinb:String
 		val skinx:String
 		when (char.skin.coverage) {
-			SkinPart.Coverage.NONE -> when (char.skin.baseType) {
+			SkinCoverage.NONE -> when (char.skin.baseType) {
 				SkinBaseType.GOO -> {
 					skinb = "goo"
 					skinx = "goo"
@@ -465,8 +465,8 @@ class CharViewImage : CompositeImage(200,220) {
 					}
 				}
 			}
-			SkinPart.Coverage.LOW,
-			SkinPart.Coverage.MEDIUM -> when (char.skin.coatType) {
+			SkinCoverage.LOW,
+			SkinCoverage.MEDIUM -> when (char.skin.coatType) {
 				SkinCoatType.SCALES,
 				SkinCoatType.DRAGON_SCALES -> {
 					skinb = "pscales"
@@ -477,8 +477,8 @@ class CharViewImage : CompositeImage(200,220) {
 					skinx = "human"
 				}
 			}
-			SkinPart.Coverage.HIGH,
-			SkinPart.Coverage.COMPLETE -> when (char.skin.coatType) {
+			SkinCoverage.HIGH,
+			SkinCoverage.COMPLETE -> when (char.skin.coatType) {
 				SkinCoatType.FUR -> {
 					if (char.ears.type == EarType.PANDA) {
 						skinb = "panda"

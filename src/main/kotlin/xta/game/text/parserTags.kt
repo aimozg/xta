@@ -19,6 +19,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 					"bodytype" -> Appearance.bodyType(char)
 					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
+					"name" -> char.name
 					"race" -> char.raceName()
 					"racefull" -> char.raceFullName()
 					"skin" -> when (tagArgs.trim()) {
@@ -54,14 +55,16 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 						else -> error("Unknown tag $tag$tagArgs")
 					}
 
-					"name" -> char.name
+					// Tags to address either player itself or other character
 					"is" -> if (forMe) "are" else "is"
 					"he" -> if (forMe) "you" else char.mf("he", "she")
-					"him" -> if (forMe) "your" else char.mf("him", "her")
+					"him" -> if (forMe) "you" else char.mf("him", "her")
 					"his" -> if (forMe) "your" else char.mf("his", "her")
 
 					"you" -> if (forMe) "you" else char.name
-					"your" -> if (forMe) "your" else char.name+"'s"
+					"your" -> if (forMe) "your" else char.mf("his", "her") //char.name+"'s"
+					"youre" -> if (forMe) "you're" else char.mf("he's", "she's") //char.name+"'s"
+					"youve" -> if (forMe) "you've" else char.mf("he's", "she's") //char.name+"'s"
 
 					// You are/do/kiss/walk
 					// He is/does/kisses/walks
@@ -72,13 +75,17 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 							when (verb) {
 								"be", "is", "are" -> "are"
 								"was", "were" -> "were"
+								"has", "have" -> "have"
 								else -> verb
 							}
-						} else when {
-							verb == "be" || verb == "is" || verb == "are" -> "is"
-							verb == "was" || verb == "were" -> "was"
-							verb.endsWith("o") || verb.endsWith("s") -> verb+"es"
-							else -> verb+"s"
+						} else when (verb) {
+							"be", "is", "are" -> "is"
+							"was", "were" -> "was"
+							"has", "have" -> "has"
+							else -> {
+								if (verb.endsWith("o") || verb.endsWith("s")) verb+"es"
+								else verb+"s"
+							}
 						}
 					}
 					else -> {
