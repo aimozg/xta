@@ -4,7 +4,6 @@ import xta.game.PlayerCharacter
 import xta.game.creature.races.CatRace
 import xta.game.creature.races.HumanRace
 import xta.game.creature.races.KitsuneRace
-import xta.game.text.Appearance
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -14,14 +13,6 @@ abstract class Race(
 	val name: String,
 	val minScore: Int
 ) {
-
-	open fun nameOf(creature: PlayerCharacter, score: Int) = name
-	open fun fullNameOf(creature: PlayerCharacter, score: Int): String {
-		val name = nameOf(creature, score)
-		if (creature.gender == Gender.MALE && name.endsWith("-boy")) return name
-		if (creature.gender == Gender.FEMALE && name.endsWith("-girl")) return name
-		return Appearance.maleFemaleHerm(creature)+" "+name
-	}
 
 	open fun score(creature: PlayerCharacter): Int {
 		return finalizeScore(creature, basicScore(creature))
@@ -37,8 +28,24 @@ abstract class Race(
 		return basicScore
 	}
 	abstract fun basicScore(creature: PlayerCharacter):Int
+	open fun scoreAndStage(creature: PlayerCharacter):Pair<Int,RacialStage?> {
+		val score = score(creature)
+		return score to stageForScore(creature, score)
+	}
+	fun scoreAndStageOrNull(creature: PlayerCharacter):Pair<Int,RacialStage>? {
+		val (score,stage) = scoreAndStage(creature)
+		return if (stage == null) null else (score to stage)
+	}
+	abstract fun stageForScore(creature: PlayerCharacter, score: Int):RacialStage?
 
 	companion object {
+		val BUFF_TAG = "Racials"
+		val BUFF_TEXT = "Racials"
+
+		fun clearRacialBonuses(creature: PlayerCharacter) {
+			creature.statStore.removeBuffs(BUFF_TAG)
+		}
+
 		val ALL_RACES: List<Race> = listOf(
 			HumanRace,
 			CatRace,

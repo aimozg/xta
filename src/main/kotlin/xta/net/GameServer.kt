@@ -203,6 +203,7 @@ class GameServer(): LogContext {
 	}
 
 	private fun placePlayer(player: Player) {
+		player.char.updateStats()
 		TownLocation.main.execute(player)
 	}
 

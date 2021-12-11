@@ -2,7 +2,9 @@ package xta.game.creature.races
 
 import xta.game.PlayerCharacter
 import xta.game.creature.Race
+import xta.game.creature.RacialStage
 import xta.game.creature.body.*
+import xta.game.stats.Stats
 
 /*
  * Created by aimozg on 10.12.2021.
@@ -12,21 +14,62 @@ object KitsuneRace: Race(17, "kitsune", 5) {
 	val basicFurColors = listOf("orange and white", "black", "black and white", "red", "red and white", "white")
 	val elderColors = listOf("metallic golden", "golden blonde", "metallic silver", "silver blonde", "snow white", "iridescent gray")
 
-	override fun nameOf(creature: PlayerCharacter, score: Int): String {
-		val taur = if (creature.isTaur) "-taur" else ""
-		if (creature.tail.type == TailType.FOX && creature.tail.count >= 2 && score >= 9) {
-			if (score >= 16 && creature.tail.count >= 9) {
-				if (score >= 21 /* TODO and has perk 9KoB */) {
-					if (score >= 26) return "Inari$taur"
-					return "nine tailed kitsune$taur of balance"
-				}
-				return "nine tailed kitsune$taur"
-			}
-			return "kitsune$taur"
-		} else {
-			return "half kitsune"
-		}
+	object STAGE_INARI:RacialStage(this, "Inari",
+		Stats.STR_MULT to -0.50,
+		Stats.SPE_MULT to +0.50,
+		Stats.INT_MULT to +1.40,
+		Stats.WIS_MULT to +2.00,
+		Stats.LIB_MULT to +1.10,
+		Stats.SENS to +60.0
+	)
+	object STAGE_NINETAIL_OF_BALANCE:RacialStage(this, "nine tailed kitsune of balance",
+		Stats.STR_MULT to -0.45,
+		Stats.SPE_MULT to +0.40,
+		Stats.INT_MULT to +1.25,
+		Stats.WIS_MULT to +1.60,
+		Stats.LIB_MULT to +0.80,
+		Stats.SENS to +45.0
+	) {
+		override fun nameOf(creature: PlayerCharacter) =
+			if (creature.isTaur) "nine tailed kitsune-taur of balance"
+			else "nine tailed kitsune of balance"
 	}
+	object STAGE_NINETAIL: RacialStage(this,"nine tailed kitsune",
+		Stats.STR_MULT to -0.40,
+		Stats.SPE_MULT to +0.30,
+		Stats.INT_MULT to +1.10,
+		Stats.WIS_MULT to +1.25,
+		Stats.LIB_MULT to +0.45,
+		Stats.SENS to +30.0
+	)
+	object STAGE_KITSUNE: RacialStage(this,"kitsune",
+		Stats.STR_MULT to -0.35,
+		Stats.SPE_MULT to +0.25,
+		Stats.INT_MULT to +0.60,
+		Stats.WIS_MULT to +0.75,
+		Stats.LIB_MULT to +0.30,
+		Stats.SENS to +20.0
+	)
+	object STAGE_HALF_KITSUNE: RacialStage(this,"kitsune",
+		Stats.STR_MULT to -0.30,
+		Stats.SPE_MULT to +0.20,
+		Stats.INT_MULT to +0.35,
+		Stats.WIS_MULT to +0.40,
+		Stats.LIB_MULT to +0.25,
+		Stats.SENS to +15.0
+	)
+
+	override fun stageForScore(creature: PlayerCharacter, score: Int) =
+		if (score >= 5) {
+			if (creature.tail.type == TailType.FOX && creature.tail.count >= 2 && score >= 9) {
+				if (score >= 16 && creature.tail.count >= 9) {
+					if (score >= 21 /* TODO and has perk 9KoB */) {
+						if (score >= 26) STAGE_INARI
+						else STAGE_NINETAIL_OF_BALANCE
+					} else STAGE_NINETAIL
+				} else STAGE_KITSUNE
+			} else STAGE_HALF_KITSUNE
+		}else null
 
 	override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
 		var kitsuneCounter = 0

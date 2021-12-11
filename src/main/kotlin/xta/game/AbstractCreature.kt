@@ -127,7 +127,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	init {
 		for (descriptor in propertyDescriptors) {
 			val stat = descriptor.fieldValue as? IStat ?: continue
-			statStore.addStat(stat)
+			statStore.registerStat(stat)
 		}
 	}
 }

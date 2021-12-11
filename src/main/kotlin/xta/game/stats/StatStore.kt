@@ -4,7 +4,7 @@ class StatStore : IStatHolder {
 
 	val stats = HashMap<String, IStat>()
 
-	fun addStat(stat: IStat) {
+	fun registerStat(stat: IStat) {
 		stats[stat.statName] = stat
 	}
 
@@ -22,4 +22,17 @@ class StatStore : IStatHolder {
 		return stats.values
 	}
 
+	fun addOrReplaceBuff(
+		statName:String,
+		tag:String,
+		value:Double,
+		text:String = tag,
+		rate: Buff.Rate = Buff.Rate.PERMANENT,
+		ticks: Int = 0,
+		save: Boolean = true,
+		show: Boolean = true
+	) {
+		val stat = findBuffableStat(statName) ?: error("Stat does not exist '$statName'")
+		stat.addOrReplaceBuff(tag,value,text,rate,ticks,save,show)
+	}
 }

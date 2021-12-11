@@ -2,22 +2,44 @@ package xta.game.creature.races
 
 import xta.game.PlayerCharacter
 import xta.game.creature.Race
+import xta.game.creature.RacialStage
 import xta.game.creature.body.*
+import xta.game.stats.Stats
 
 object CatRace : Race(2, "cat", 4) {
-	override fun nameOf(creature: PlayerCharacter, score: Int): String {
-		return when {
+
+	object STAGE_HALF_CAT: RacialStage(this, "half cat-morph",
+		Stats.SPE_MULT to 0.4,
+		Stats.LIB_MULT to 0.2
+	) {
+		override fun nameOf(creature: PlayerCharacter) = when {
 			creature.isTaur && creature.lowerBody.type == LowerBodyType.CAT ->
-				if (score >= 8) "cat-taur"
-				else if (creature.face.type == FaceType.HUMAN) "half sphinx-morph"
+				if (creature.face.type == FaceType.HUMAN) "half sphinx-morph"
 				else "half cat-taur"
 			creature.face.type == FaceType.HUMAN ->
-				if (score >= 8) creature.mf("cat-boy", "cat-girl")
-				else creature.mf("half cat-boy", "half cat-girl")
+				creature.mf("half cat-boy", "half cat-girl")
 			else ->
-				if (score >= 8) "cat-morph"
-				else "half cat-morph"
+				"half cat-morph"
 		}
+	}
+	object STAGE_CAT: RacialStage(this, "cat-morph",
+		Stats.SPE_MULT to 0.6,
+		Stats.LIB_MULT to 0.6
+	) {
+		override fun nameOf(creature: PlayerCharacter) = when {
+			creature.isTaur && creature.lowerBody.type == LowerBodyType.CAT ->
+				"cat-taur"
+			creature.face.type == FaceType.HUMAN ->
+				creature.mf("cat-boy", "cat-girl")
+			else ->
+				"cat-morph"
+		}
+	}
+
+	override fun stageForScore(creature: PlayerCharacter, score: Int) = when {
+		score >= 8 -> STAGE_CAT
+		score >= 4 -> STAGE_HALF_CAT
+		else -> null
 	}
 
 	override fun basicScore(creature: PlayerCharacter): Int = with(creature) {

@@ -1,6 +1,7 @@
 package xta.game
 
 import xta.game.creature.Race
+import xta.game.creature.RacialStage
 import xta.game.creature.races.HumanRace
 
 /*
@@ -9,27 +10,37 @@ import xta.game.creature.races.HumanRace
 class PlayerCharacter: Creature() {
 	val chatName get() = "[$level] $name"
 
-	fun raceAndScore():Pair<Race,Int> {
-		val data = Race.ALL_RACES.map {
-			it to it.score(this)
+	fun racialScores():List<Pair<Int,RacialStage>> {
+		return Race.ALL_RACES.mapNotNull {
+			it.scoreAndStageOrNull(this)
 		}
+	}
+	fun topRaceAndScore():Pair<Int,RacialStage> {
+		val data = racialScores()
 		val topRace = data.filter {
-			it.first != HumanRace && it.second >= it.first.minScore
-		}.maxByOrNull { it.second }
-		return topRace ?: (HumanRace to HumanRace.score(this))
+			it.second.race != HumanRace
+		}.maxByOrNull { it.first }
+		return topRace ?: (HumanRace.score(this) to HumanRace.STAGE_MAIN)
 	}
 
+	fun topRace():RacialStage {
+		return topRaceAndScore().second
+	}
 	override fun raceName(): String {
-		val (race,score) = raceAndScore()
-		return race.nameOf(this, score)
+		return topRace().nameOf(this)
 	}
 	override fun raceFullName(): String {
-		val (race,score) = raceAndScore()
-		return race.fullNameOf(this, score)
+		return topRace().fullNameOf(this)
 	}
 
 	var startingRace: String = "human"
 
-
+	fun updateStats() {
+		Race.clearRacialBonuses(this)
+		val races = racialScores()
+		for ((_, race) in races) {
+			race.applyBonuses(this)
+		}
+	}
 }
 

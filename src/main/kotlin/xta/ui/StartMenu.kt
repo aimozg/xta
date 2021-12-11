@@ -42,6 +42,7 @@ class StartMenu: UiScreen("start-menu") {
 
 		fun importCharacter(character: PlayerCharacter) {
 			Game.me.char = character
+			character.updateStats()
 			showCharacter()
 			if (agreement.checked) {
 				hostButton.disabled = false

@@ -21,10 +21,10 @@ object TownLocation:GameLocation("Town") {
 
 	val racialScores = scene("racialScores") {
 		for (race in Race.ALL_RACES) {
-			val score = race.score(character)
+			val (score, stage) = race.scoreAndStage(character)
 			outputText("${race.name}: $score")
-			if (score >= race.minScore) {
-				outputText("("+race.nameOf(character, score)+")")
+			if (stage != null) {
+				outputText(" ("+stage.nameOf(character)+")")
 			}
 			outputText("\n")
 		}

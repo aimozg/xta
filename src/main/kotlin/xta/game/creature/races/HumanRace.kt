@@ -2,10 +2,19 @@ package xta.game.creature.races
 
 import xta.game.PlayerCharacter
 import xta.game.creature.Race
+import xta.game.creature.RacialStage
 import xta.game.creature.body.*
 
 object HumanRace : Race(1, "human", 1) {
 
+	val STAGE_MAIN = RacialStage(this, "human")
+
+	override fun stageForScore(creature: PlayerCharacter, score: Int): RacialStage? {
+		return when {
+			score > 0 -> STAGE_MAIN
+			else -> null
+		}
+	}
 
 	override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
 		var score = 0

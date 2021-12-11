@@ -5,6 +5,6 @@ package xta.game.stats
  */
 
 fun<T:IStat> T.addTo(store:StatStore):T {
-	store.addStat(this)
+	store.registerStat(this)
 	return this
 }

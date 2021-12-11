@@ -12,7 +12,8 @@ class SimplePerkWithBuffs(id:String,
 	val buffTag = "perk_$id"
 	override fun onAdd(host: Creature) {
 		for (buff in buffs) {
-			host.statStore.findBuffableStat(buff.first)?.addOrReplaceBuff(
+			host.statStore.addOrReplaceBuff(
+				buff.first,
 				buffTag,
 				buff.second,
 				text = name,
