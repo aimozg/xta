@@ -23,7 +23,7 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		append(".")
 		append("[pg]")
 
-		// TODO hair
+		append(describeHair())
 		// TODO ears
 		// TODO horns
 		// TODO horns
@@ -77,4 +77,6 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 	}
 
 	fun describeFace() = character.face.appearanceDescription()
+
+	fun describeHair() = character.hair.appearanceDescription()
 }

@@ -13,249 +13,180 @@ enum class HairType(
 	override val cocID: Int,
 	val displayName: String,
 	val ignoresStyle: Boolean = false
-): CocId {
+) : CocId {
 	NORMAL(0, "normal") {
 		override fun appearanceDescription(creature: Creature) =
 			"Although not particularly remarkable, your ${hairInfo(creature)} looks good on you, accentuating your features well."
 	},
 	FEATHER(1, "feather", ignoresStyle = true) {
-		override fun appearanceDescription(creature: Creature): String {
-			return "Your ${hairInfo(creature)} is made completely out of feathers rather than actual strands."
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is made completely out of feathers rather than actual strands."
+
+		override fun shortDesc(creature: Creature) =
+			"feather-${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, FEATHER, "FEATHER", {
-	//		shortDesc: "feather-{hair}",
-	//	});
-	//
 	GHOST(2, "ghost") {
-		override fun appearanceDescription(creature: Creature): String {
-			return "Although your ${hairInfo(creature)} technically has the features of normal human hair, it is also completely transparent."
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Although your ${hairInfo(creature)} technically has the features of normal human hair, it is also completely transparent."
+
+		override fun shortDesc(creature: Creature) =
+			"transparent ${hairNoun(creature)}"
+
+		override fun beardDesc(creature: Creature) =
+			"transparent "
 	},
-	//	EnumValue.add(Types, GHOST, "GHOST", {
-	//		shortDesc: "transparent {hair}",
-	//		beardDesc: "transparent "
-	//	});
-	//
 	GOO(3, "goopy") {
-		override fun appearanceDescription(creature: Creature): String {
-			return "Atop your head is a gooey ${hairInfo(creature)}, more like an amorphous blob imitating the familiar shape than the real deal."
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Atop your head is a gooey ${hairInfo(creature)}, more like an amorphous blob imitating the familiar shape than the real deal."
+
+		override fun shortDesc(creature: Creature) =
+			"goo-${hairNoun(creature)}"
+
+		override fun beardDesc(creature: Creature) =
+			"gooey "
 	},
-	//	EnumValue.add(Types, GOO, "GOO", {
-	//		shortDesc: "goo-{hair}",
-	//		beardDesc: "gooey "
-	//	});
-	//
-	ANEMONE(4, "tentacle") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	ANEMONE(4, "tentacle", ignoresStyle = true) {
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is in truth made out of anemone tentacles, only vaguely resembling the real deal."
+
+		override fun shortDesc(creature: Creature) =
+			"tentacle-${hairNoun(creature)}"
+
+		override fun beardDesc(creature: Creature) =
+			"tentacley "
 	},
-	//	EnumValue.add(Types, ANEMONE, "ANEMONE", {
-	//		name:"tentacle",
-	//		shortDesc: "tentacle-{hair}",
-	//		appearanceDesc: "Your {hairInfo} is in truth made out of anemone tentacles, only vaguely resembling the real deal.",
-	//		beardDesc: "tentacley ",
-	//		ignoresStyle: true
-	//	});
-	//
-	QUILL(5, "quill") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	QUILL(5, "quill", ignoresStyle = true) {
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is made completely out of quills rather than actual strands."
+
+		override fun shortDesc(creature: Creature) =
+			"quill-${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, QUILL, "QUILL", {
-	//		name:"quill",
-	//		shortDesc: "quill-{hair}",
-	//		appearanceDesc: "Your {hairInfo} is made completely out of quills rather than actual strands.",
-	//		ignoresStyle: true
-	//	});
-	//
-	GORGON(6, "snake-like") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	GORGON(6, "snake-like", ignoresStyle = true) {
+		override fun appearanceDescription(creature: Creature) =
+			"Atop your head is technically ${hairInfo(creature)}, if one were to ignore that it is made of snakes rather than actual hair."
+
+		override fun shortDesc(creature: Creature) =
+			"snakes-${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, GORGON, "GORGON", {
-	//		name:"snake-like",
-	//		shortDesc: "snakes-{hair}",
-	//		appearanceDesc: "Atop your head is technically {hairInfo}, if one were to ignore that it is made of snakes rather than actual hair.",
-	//		ignoresStyle: true
-	//	});
-	//
 	LEAF(7, "leaf") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Considering how your ${hairInfo(creature)} is made completely out of leaves, you seem to have some sort of connection to nature."
+
+		override fun shortDesc(creature: Creature) =
+			"leaf-${hairNoun(creature)}"
+
+		override fun beardDesc(creature: Creature) =
+			"moss "
 	},
-	//	EnumValue.add(Types, LEAF, "LEAF", {
-	//		name:"leaf",
-	//		shortDesc: "leaf-{hair}",
-	//		appearanceDesc: "Considering how your {hairInfo} is made completely out of leaves, you seem to have some sort of connection to nature.",
-	//		beardDesc: "moss "
-	//	});
-	//
-	FLUFFY(8, "fluffy") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	FLUFFY(8, "fluffy", ignoresStyle = true) {
+		override fun appearanceDescription(creature: Creature) =
+			"You have a white pillowy ${hairNoun(creature)}, very much wooly to the touch and constantly trying to lull you to sleep anytime you lie against a surface."
+
+		override fun shortDesc(creature: Creature) =
+			"fluffy ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, FLUFFY, "FLUFFY", {
-	//		name:"fluffy",
-	//		shortDesc: "fluffy {hair}",
-	//		appearanceDesc: "You have a white pillowy {hair}, very much wooly to the touch and constantly trying to lull you to sleep anytime you lie against a surface.",
-	//		ignoresStyle: true
-	//	});
-	//
 	GRASS(9, "grass") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Rather than normal strands, your ${hairInfo(creature)} is actually made entirely of grass, like some sort of nature spirit's."
+
+		override fun shortDesc(creature: Creature) =
+			"grass-${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, GRASS, "GRASS", {
-	//		name:"grass",
-	//		shortDesc: "grass-{hair}",
-	//		appearanceDesc: "Rather than normal strands, your {hairInfo} is actually made entirely of grass, like some sort of nature spirit's."
-	//	});
-	//
 	SILKEN(10, "silky") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is extremely glossy and smooth, its elvish features so perfect by human standards to the point of feeling unnatural."
+
+		override fun shortDesc(creature: Creature) =
+			"elven ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, SILKEN, "SILKEN", {
-	//		name:"silky",
-	//		shortDesc: "elven {hair}",
-	//		appearanceDesc: "Your {hairInfo} is extremely glossy and smooth, its elvish features so perfect by human standards to the point of feeling unnatural."
-	//	});
-	//
 	STORM(11, "glowing lightning-shaped") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)}'s tips end in glowing lightning-shaped locks, crackling with electricity whenever you will them to."
+
+		override fun shortDesc(creature: Creature) =
+			"lightning ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, STORM, "STORM", {
-	//		name:"glowing lightning-shaped",
-	//		shortDesc: "lightning {hair}",
-	//		appearanceDesc: "Your {hairInfo}'s tips end in glowing lightning-shaped locks, crackling with electricity whenever you will them to."
-	//	});
-	//
 	BURNING(12, "burning") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} has its tips overtaken by a magic flame, burning anything you wish it to and nothing more."
+
+		override fun shortDesc(creature: Creature) =
+			"burning hair"
 	},
-	//	EnumValue.add(Types, BURNING, "BURNING", {
-	//		name:"burning",
-	//		shortDesc: "burning hair",
-	//		appearanceDesc: "Your {hairInfo} has its tips overtaken by a magic flame, burning anything you wish it to and nothing more."
-	//	});
-	//
-	SNOWY(13, "burning") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
+	SNOWY(13, "snowy") {
+		override fun appearanceDescription(creature: Creature) = buildString {
+			append("Your ${hairInfo(creature)} is human in appearance, but cold to the touch and regularly used as a nest by snow flurries")
+			if (creature.rearBody.type == RearBodyType.GLACIAL_AURA) {
+				append(", an effect amplified by your bone-chilling aura")
+			}
+			append(".")
 		}
+
+		override fun shortDesc(creature: Creature) =
+			"snowy ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, SNOWY, "SNOWY", {
-	//		name:"snowy",
-	//		shortDesc: "snowy {hair}",
-	//		appearanceDescFunc: function(creature: *): String {
-	//			var desc: String = "Your {hairInfo} is human in appearance, but cold to the touch and regularly used as a nest by snow flurries";
-	//
-	//			if (creature.rearBody.type == RearBody.GLACIAL_AURA) {
-	//				desc += ", an effect amplified by your bone-chilling aura";
-	//			}
-	//
-	//			desc += "."
-	//
-	//			return desc;
-	//		}
-	//	});
-	//
 	FAIRY(14, "otherworldly silky and almost translucent") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Despite looking almost human, your ${hairInfo(creature)} is otherworldly smooth and almost translucent, its fairy traits easy to notice if not identify."
+
+		override fun shortDesc(creature: Creature) =
+			"silky fairy ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, FAIRY, "FAIRY", {
-	//		name:"otherworldly silky and almost translucent",
-	//		shortDesc: "silky fairy {hair}",
-	//		appearanceDesc: "Despite looking almost human, your {hairInfo} is otherworldly smooth and almost translucent, its fairy traits easy to notice if not identify."
-	//	});
-	//
-	CRAZY(15, "crazy") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	CRAZY(15, "crazy", ignoresStyle = true) {
+		override fun appearanceDescription(creature: Creature) =
+			"Your wild ${hairInfo(creature)} is positively crazy, with spiked tips pointing outwards to your sides."
+
+		override fun shortDesc(creature: Creature) =
+			"crazy ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, CRAZY, "CRAZY", {
-	//		name:"crazy",
-	//		shortDesc: "crazy {hair}",
-	//		appearanceDesc: "Your wild {hairInfo} is positively crazy, with spiked tips pointing outwards to your sides.",
-	//		ignoresStyle: true
-	//	});
-	//
 	WINDSWEPT(16, "windswept") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is quite aerodynamic, shaped as to avoid encumbering you even in a windstorm."
 	},
-	//	EnumValue.add(Types, WINDSWEPT, "WINDSWEPT", {
-	//		name:"windswept",
-	//		appearanceDesc: "Your {hairInfo} is quite aerodynamic, shaped as to avoid encumbering you even in a windstorm."
-	//	});
-	//
-	RATATOSKR(17, "stripped") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+	RATATOSKR(17, "striped") {
+		override fun appearanceDescription(creature: Creature) =
+			"Though your ${hairInfo(creature)} could almost pass for human, it's striped at the center with light tips not unlike the head of a chipmunk."
+
+		override fun shortDesc(creature: Creature) =
+			"striped ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, RATATOSKR, "RATATOSKR", {
-	//		name:"stripped",
-	//		shortDesc: "stripped {hair}",
-	//		appearanceDesc: "Though your {hairInfo} could almost pass for human, it's stripped at the center with light tips not unlike the head of a chipmunk."
-	//	});
-	//
 	PRISMATIC(18, "prismatic") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Although your ${hairInfo(creature)} looks mostly human, that notion is quickly discarded by its prismatic strands, varying in hue along their length to display all the colors of a rainbow."
+
+		override fun shortDesc(creature: Creature) =
+			"prismatic ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, PRISMATIC, "PRISMATIC", {
-	//		name:"prismatic",
-	//		shortDesc: "prismatic {hair}",
-	//		appearanceDesc: "Although your {hairInfo} looks mostly human, that notion is quickly discarded by its prismatic strands, varying in hue along their length to display all the colors of a rainbow."
-	//	});
-	//
 	MINDBREAKER(19, "mindbreaker") {
-		override fun appearanceDescription(creature: Creature): String {
-			TODO("Not yet implemented")
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Your ${hairInfo(creature)} is made out of tentacles, only vaguely resembling the real deal."
+
+		override fun shortDesc(creature: Creature) =
+			"slimy tentacle ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, MINDBREAKER, "MINDBREAKER", {
-	//		name:"mindbreaker",
-	//		shortDesc: "slimy tentacle {hair}",
-	//		appearanceDesc: "Your {hairInfo} is made out of tentacles, only vaguely resembling the real deal."
-	//	});
-	//
 	MINDBREAKERMALE(20, "mindbreaker") {
-		override fun appearanceDescription(creature: Creature): String {
-			return "Smaller webbings frill along the top of your head, forming a crown-like ring. Along these frills are longer hair-like tentacles that reach down to drape past your shoulders, just above your pectorals."
-		}
+		override fun appearanceDescription(creature: Creature) =
+			"Smaller webbings frill along the top of your head, forming a crown-like ring. Along these frills are longer hair-like tentacles that reach down to drape past your shoulders, just above your pectorals."
+
+		override fun shortDesc(creature: Creature) =
+			"slimy tentacle ${hairNoun(creature)}"
 	},
-	//	EnumValue.add(Types, MINDBREAKERMALE, "MINDBREAKERMALE", {
-	//		shortDesc: "slimy tentacle {hair}",
-	//	});
 	;
 
 	abstract fun appearanceDescription(creature: Creature): String
 
+	open fun shortDesc(creature: Creature): String = hairNoun(creature)
+
+	open fun beardDesc(creature: Creature): String = ""
+
+	//If furry and longish hair sometimes call it a mane (50%)
+	open fun hairNoun(creature: Creature): String =
+		if (creature.hasFur() && creature.hairLength > 3 && fxrng.nextInt(2) == 0) "mane"
+		else "hair"
+
 	protected open fun hairInfo(creature: Creature): String {
-		//If furry and longish hair sometimes call it a mane (50%)
-		val hair: String =
-			if (creature.hasFur() && creature.hairLength > 3 && fxrng.nextInt(2) == 0) "mane"
-			else "hair"
+		val hair = hairNoun(creature)
 
 		return (if (ignoresStyle) "" else creature.hairStyle.adjective + " ") +
 				getHairLength(creature) + " " + creature.hairColor + " " + hair
@@ -290,5 +221,5 @@ enum class HairType(
 		}
 	}
 
-	companion object: CocIdLookup<HairType>(values())
+	companion object : CocIdLookup<HairType>(values())
 }

@@ -56,7 +56,8 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 					}
 
 					// Tags to address either player itself or other character
-					"is" -> if (forMe) "are" else "is"
+					"is", "are" -> if (forMe) "are" else "is"
+					"have", "has" -> if (forMe) "have" else "has"
 					"he" -> if (forMe) "you" else char.mf("he", "she")
 					"him" -> if (forMe) "you" else char.mf("him", "her")
 					"his" -> if (forMe) "your" else char.mf("his", "her")

@@ -93,10 +93,10 @@ class FlashImporter {
 		character.tallness = data.tallness
 		character.femininity = data.femininity
 
-		character.hairType = HairType.byId(data.hairType)
-		character.hairStyle = HairStyle.byId(data.hairStyle)
-		character.hairColor = data.hairColor
-		character.hairLength = data.hairLength.roundToInt()
+		character.hair.type = HairType.byId(data.hairType)
+		character.hair.style = HairStyle.byId(data.hairStyle)
+		character.hair.color = data.hairColor
+		character.hair.length = data.hairLength.roundToInt()
 		character.beardStyle = BeardStyle.byId(data.beardStyle)
 		character.beardLength = data.beardLength
 

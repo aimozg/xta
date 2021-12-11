@@ -77,14 +77,10 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	var tallness: Int by property(0)
 	var femininity: Int by property(50)
 
-	var hairType by property(HairType.NORMAL)
-	var hairStyle by property(HairStyle.PLAIN)
-	var hairColor by property("no")
-	var hairColor2 by property("")
-	var hairLength by property(0)
 	var beardStyle by property(BeardStyle.NORMAL)
 	var beardLength by property(0)
 
+	val hair by nestedProperty(HairPart(this as Creature))
 	val skin by nestedProperty(SkinPart(this as Creature))
 	val face by nestedProperty(FacePart(this as Creature))
 	val claws by nestedProperty(ClawsPart(this as Creature))

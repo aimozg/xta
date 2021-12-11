@@ -243,6 +243,11 @@ abstract class Creature: AbstractCreature() {
 			else -> Gender.GENDERLESS
 		}
 
+	val hairType get() = hair.type
+	val hairStyle get() = hair.style
+	val hairColor get() = hair.color
+	val hairColor2 get() = hair.color2
+	val hairLength get() = hair.length
 	val eyeColor get() = eyes.irisColor
 	val skinTone get() = skin.color
 	val skinColor get() = skin.skinColor
