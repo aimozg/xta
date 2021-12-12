@@ -8,9 +8,18 @@ fun Int.displayInches():String {
 	if (this < 0) return "-"+(-this).displayInches()
 	val feet = this/12
 	val inches = this%12
-	return "$feet'" + (if (inches > 0) "$inches\"" else "")
+	return when {
+		feet > 0 && inches > 0 -> "$feet'$inches\""
+		feet > 0 -> "$feet'"
+		else -> "$inches\""
+	}
 }
 
+private val NUMBER_WORDS_NORMAL = arrayOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+
+fun num2text(count:Int):String {
+	return NUMBER_WORDS_NORMAL.getOrNull(count) ?: count.toString()
+}
 
 object EmptyMatchResult: MatchResult {
 	override val groupValues: List<String>

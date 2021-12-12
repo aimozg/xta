@@ -66,6 +66,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 					"your" -> if (forMe) "your" else char.mf("his", "her") //char.name+"'s"
 					"youre" -> if (forMe) "you're" else char.mf("he's", "she's") //char.name+"'s"
 					"youve" -> if (forMe) "you've" else char.mf("he's", "she's") //char.name+"'s"
+					"yourself" -> if (forMe) "yourself" else char.mf("himself", "herself")
 
 					// You are/do/kiss/walk
 					// He is/does/kisses/walks

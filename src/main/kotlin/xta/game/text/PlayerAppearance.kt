@@ -2,6 +2,7 @@ package xta.game.text
 
 import xta.game.PlayerCharacter
 import xta.text.displayInches
+import xta.utils.decapitalized
 import xta.utils.joinToSentence
 
 /*
@@ -29,9 +30,17 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 				describeEars()
 			).joinToSentence(pair = ", while ")
 		)
-		// TODO horns
-		// TODO horns
-		// TODO antennae
+
+		val horns = describeHorns()
+		val antennae = describeAntennae()
+		if (horns.isNotEmpty() || antennae.isNotEmpty()) {
+			append(" Beyond that, ")
+			append(
+				listOf(horns, antennae).joinToSentence().decapitalized(true)
+			)
+		}
+		// TODO eyes
+		// TODO tongue
 		// TODO beard
 		// TODO gills
 		// TODO visage
@@ -79,4 +88,8 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 	fun describeHair() = character.hair.appearanceDescription()
 
 	fun describeEars() = character.ears.appearanceDescription()
+
+	fun describeHorns() = character.horns.appearanceDescription()
+
+	fun describeAntennae() = character.antennae.appearanceDescription()
 }

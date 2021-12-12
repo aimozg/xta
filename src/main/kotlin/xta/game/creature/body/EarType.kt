@@ -39,7 +39,7 @@ enum class EarType(
 	),
 	BUNNY(
 		7, "bunny",
-		appearanceDesc = "A pair of floppy rabbit ears stick up from the top of [your] head, flopping around as [you] walk."
+		appearanceDesc = "A pair of floppy rabbit ears stick up from the top of [your] head, flopping around as [you] [verb walk]."
 	),
 	KANGAROO(8, "kangaroo"),
 	FOX(
