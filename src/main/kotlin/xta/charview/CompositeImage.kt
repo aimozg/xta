@@ -111,11 +111,7 @@ open class CompositeImage(val width:Int, val height:Int) {
 	fun hidePart(fullName:String) {
 		partsByName[fullName]?.visible = false
 	}
-	fun showLayer(layerName:String) {
-		for (part in layer(layerName)) {
-			part.visible = true
-		}
-	}
+
 	fun hideLayer(layerName:String) {
 		for (part in layer(layerName)) {
 			part.visible = false

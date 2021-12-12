@@ -9,12 +9,12 @@ import kotlin.js.Date
 /*
  * Created by aimozg on 02.12.2021.
  */
-class CharViewImage : CompositeImage(200,220) {
+class CharViewImage : CompositeImage(200, 220) {
 	init {
-		logger.info(null,"Loading images")
+		logger.info(null, "Loading images")
 		val t0 = Date().getTime()
 		loadPartsFromJson(sprites_json, charviewImages, originX = 15, originY = 10)
-		logger.debug(null, "Loaded images in ${Date().getTime()-t0} ms")
+		logger.debug(null, "Loaded images in ${Date().getTime() - t0} ms")
 		setLayerOrder(
 			"fullbody",
 			"full_pattern",
@@ -181,11 +181,11 @@ class CharViewImage : CompositeImage(200,220) {
 		setKeyColor(0x221111, skin2.darken(75))
 		setKeyColor(0xFF0000, iris)
 		setKeyColor(0xAA0000, iris.darken(25))
-		setKeyColor(0xFBCAAE, skin.darken(25).saturate(25).shiftTo(0,25))
-		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0,25))
+		setKeyColor(0xFBCAAE, skin.darken(25).saturate(25).shiftTo(0, 25))
+		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0, 25))
 	}
 
-	fun renderCharacter(char: PlayerCharacter, scale:Boolean): CanvasRenderingContext2D = with(char){
+	fun renderCharacter(char: PlayerCharacter, scale: Boolean): CanvasRenderingContext2D = with(char) {
 		hideAll()
 		setupColors(char)
 
@@ -195,6 +195,17 @@ class CharViewImage : CompositeImage(200,220) {
 		val hydraTails = 0 // TODO statusEffectv1(StatusEffects.HydraTailsPlayer)
 		val big = if ((cocks.firstOrNull()?.length ?: 0) >= 12) "_big" else ""
 		/* <set var="CaveWyrmNipples" value="hasStatusEffect(StatusEffects.GlowingNipples)"/> */
+		// TODO CharViewContext.as variables
+		val PlayerHasViewableOutfit = false
+		val armStanceNonBannedList = false
+		val PlayerHasAWeapon = false
+		val PlayerHasAShield = false
+		val PlayerHasADualWeapon = false
+		val showClothing = false
+		val playerWearsAStanceBannedDress = false
+		val playerWearsAStanceBannedArmor = false
+		val sleevelessList = false
+		val CancerCrabStance = false
 
 		/* WEAPON AREA */
 		// TODO use sprite ids from weapons
@@ -510,7 +521,15 @@ class CharViewImage : CompositeImage(200,220) {
 		/* HAIR STYLE AREA */
 		if (hairLength > 0) {
 			if (hairType !in arrayOf(HairType.FLUFFY, HairType.GORGON, HairType.ANEMONE, HairType.GOO)) {
-				if (hairType !in arrayOf(HairType.STORM,HairType.BURNING,HairType.QUILL,HairType.CRAZY,HairType.RATATOSKR,HairType.PRISMATIC)) {
+				if (hairType !in arrayOf(
+						HairType.STORM,
+						HairType.BURNING,
+						HairType.QUILL,
+						HairType.CRAZY,
+						HairType.RATATOSKR,
+						HairType.PRISMATIC
+					)
+				) {
 					if (hairStyle != HairStyle.PLAIN) {
 						hidePart("hair/0")
 						hidePart("hair_bg/02")
@@ -565,7 +584,16 @@ class CharViewImage : CompositeImage(200,220) {
 						showPart("hair_bg/02")
 					}
 					else -> {
-						if (hairType !in arrayOf(HairType.STORM, HairType.BURNING, HairType.QUILL, HairType.FEATHER, HairType.CRAZY, HairType.RATATOSKR, HairType.PRISMATIC)) {
+						if (hairType !in arrayOf(
+								HairType.STORM,
+								HairType.BURNING,
+								HairType.QUILL,
+								HairType.FEATHER,
+								HairType.CRAZY,
+								HairType.RATATOSKR,
+								HairType.PRISMATIC
+							)
+						) {
 							if (hairLength < 16) {
 								hideLayer("hair")
 								hideLayer("hair_bg")
@@ -583,8 +611,8 @@ class CharViewImage : CompositeImage(200,220) {
 			}
 		}
 
-		val skinb:String
-		val skinx:String
+		val skinb: String
+		val skinx: String
 		when (skin.coverage) {
 			SkinCoverage.NONE -> when (skin.baseType) {
 				SkinBaseType.GOO -> {
@@ -736,7 +764,8 @@ class CharViewImage : CompositeImage(200,220) {
 					showPart("face/melancholic")
 				}
 				if (face.type === FaceType.SALAMANDER_FANGS
-					&& tongue.type === TongueType.CAVE_WYRM) {
+					&& tongue.type === TongueType.CAVE_WYRM
+				) {
 					hidePart("face/human_fang")
 					showPart("face/caveWyrm")
 				}
@@ -784,7 +813,410 @@ class CharViewImage : CompositeImage(200,220) {
 		// nipple colors  - TODO port model.xml code
 
 		/* ARMS AREA */
-		// TODO port model.xml code
+		when (arms.type) {
+			ArmType.HUMAN, ArmType.KITSUNE, ArmType.ELF, ArmType.RAIJU, ArmType.CENTIPEDE -> {
+				if (PlayerHasViewableOutfit) {
+					if (armStanceNonBannedList) {
+						if (cor >= 50) {
+							if (skin.coverage == SkinCoverage.NONE) {
+								hideLayer("hands")
+								hideLayer("arms")
+								if (PlayerHasAWeapon) {
+									showPart("arms_bg/human")
+								} else {
+									hideLayer("arms_bg")
+									hideLayer("hands_bg")
+									showPart("arms_bg/demonlewd")
+								}
+								if (PlayerHasAShield or PlayerHasADualWeapon) {
+									showPart("arms/human")
+								} else {
+									hideLayer("arms")
+									hideLayer("hands")
+									showPart("arms/demonlewd")
+									showPart("arms_fg/demonlewd")
+								}
+							}
+						}
+					} else {
+						if (femininity >= 40) {
+							if (cor >= 50) {
+								if (skin.coverage == SkinCoverage.NONE) {
+									if (showClothing) {
+										hideLayer("hands")
+										hideLayer("arms")
+										if (PlayerHasAWeapon) {
+											showPart("arms_bg/human")
+										} else {
+											hideLayer("arms_bg")
+											hideLayer("hands_bg")
+											showPart("arms_bg/demonlewd")
+										}
+										if (PlayerHasAShield || PlayerHasADualWeapon) {
+											showPart("arms/human")
+										} else {
+											hideLayer("arms")
+											hideLayer("hands")
+											showPart("arms/demonlewd")
+											showPart("arms_fg/demonlewd")
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			ArmType.ONI -> {}
+			ArmType.HARPY, ArmType.PHOENIX -> {
+				showPart("hands/harpy")
+				showPart("hands_bg/harpy")
+			}
+			ArmType.GHOST -> {
+				if (femininity >= 40) {
+					hideLayer("hands")
+					hideLayer("hands_bg")
+					hideLayer("arms")
+					hideLayer("arms_bg")
+					showPart("arms/demonlewd")
+					if (PlayerHasAWeapon) {
+						showPart("arms_bg/human")
+					} else {
+						hideLayer("arms_bg")
+						hideLayer("hands_bg")
+						showPart("arms_bg/demonlewd")
+					}
+					if (PlayerHasAShield || PlayerHasADualWeapon) {
+						showPart("arms/human")
+					} else {
+						hideLayer("arms")
+						hideLayer("hands")
+						showPart("arms/demonlewd")
+						showPart("arms_fg/demonlewd")
+					}
+				}
+			}
+			ArmType.SPIDER -> {
+				showPart("hands/chitin2")
+				showPart("hands_bg/chitin2")
+			}
+			ArmType.MANTIS -> {
+				showPart("hands/chitin2")
+				showPart("hands/blade-kamaitachiMantis")
+				showPart("hands_bg/chitin2")
+				showPart("hands_bg/blade-kamaitachiMantis")
+			}
+			ArmType.KAMAITACHI -> {
+				showPart("hands/furracoon")
+				showPart("hands/blade-kamaitachiMantis")
+				showPart("hands_bg/furracoon")
+				showPart("hands_bg/blade-kamaitachiMantis")
+			}
+			ArmType.SQUIRREL -> {
+				showPart("hands/furracoon")
+				showPart("hands_bg/furracoon")
+				showPart("overhands/ratatoskrRight")
+				showPart("overhands/ratatoskrLeft")
+			}
+			ArmType.BEE -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				hideLayer("hands_bg")
+				showPart("arms/bee")
+				showPart("arms_bg/bee")
+			}
+			ArmType.SALAMANDER, ArmType.CAVE_WYRM -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				showPart("arms/pscales")
+				showPart("arms_bg/pscales")
+				showPart("hands/scales")
+				showPart("hands_bg/scales")
+			}
+			ArmType.PLANT, ArmType.PLANT2 -> {
+				showPart("hands/alraune")
+				showPart("hands_bg/alraune")
+			}
+			ArmType.SHARK -> {
+				showPart("hands/fins-orca")
+				showPart("hands_bg/fins-orca")
+			}
+			ArmType.GARGOYLE, ArmType.GARGOYLE_2 -> {
+				if (PlayerHasAWeapon || PlayerHasAShield || PlayerHasADualWeapon) {
+					showPart("arms/human")
+					showPart("arms_bg/human")
+				} else {
+					hideLayer("arms")
+					hideLayer("arms_bg")
+					showPart("arms/gargoyle_sit")
+				}
+			}
+			ArmType.YETI -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				showPart("arms/yeti")
+				showPart("hands/yeti")
+			}
+			ArmType.CAT, ArmType.BEAR, ArmType.MELKIE -> {
+				showPart("hands/fur")
+				showPart("hands_bg/fur")
+				if (ears.type == EarType.PANDA) {
+					hidePart("hands/fur")
+					hidePart("hands_bg/fur")
+					showPart("hands/panda")
+					showPart("hands_bg/panda")
+				}
+			}
+			ArmType.LION -> {
+				showPart("hands/fur")
+				showPart("hands_bg/fur")
+				if (legCount == 2) {
+					if (lowerBody.type == LowerBodyType.LION) {
+						hideLayer("arms")
+						hideLayer("arms_bg")
+						hideLayer("hands")
+						hideLayer("hands_bg")
+						hideLayer("weapon")
+						hideLayer("shield")
+						when {
+							hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								showPart("arms/manticore_sit_pscales")
+								showPart("arms_fg/manticore_sit")
+							}
+							hasFullCoatOfType(SkinCoatType.FUR) -> {
+								showPart("arms/manticore_sit_fur")
+								showPart("arms_fg/manticore_sit")
+							}
+							hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+								showPart("arms/manticore_sit_chitin")
+								showPart("arms_fg/manticore_sit")
+							}
+							hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								showPart("arms/manticore_sit_scales")
+								showPart("arms_fg/manticore_sit")
+							}
+							else -> {
+								showPart("arms/manticore_sit")
+								showPart("arms_fg/manticore_sit")
+							}
+						}
+					}
+				}
+			}
+			ArmType.WOLF -> {
+				showPart("hands/fur")
+				showPart("hands_bg/fur")
+				if (legCount == 2) {
+					if (lowerBody.type == LowerBodyType.WOLF && !playerWearsAStanceBannedDress && !playerWearsAStanceBannedArmor) {
+						hideLayer("arms")
+						hideLayer("arms_bg")
+						hideLayer("hands")
+						hideLayer("hands_bg")
+						hideLayer("weapon")
+						hideLayer("shield")
+						showPart("arms/feral_human")
+						showPart("arms_bg/feral_human")
+						when {
+							hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								showPart("arms_overlay/feral_pscales")
+								showPart("arms_overlay_bg/feral_pscales")
+							}
+							hasFullCoatOfType(SkinCoatType.FUR) -> {
+								showPart("arms_overlay/feral_fur")
+								showPart("arms_overlay_bg/feral_fur")
+							}
+							hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+								showPart("arms_overlay/feral_chitin")
+								showPart("arms_overlay_bg/feral_chitin")
+							}
+							hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								showPart("arms_overlay/feral_scales")
+								showPart("arms_overlay_bg/feral_scales")
+							}
+						}
+					}
+				}
+			}
+			ArmType.DRACONIC -> {
+				showPart("hands/scale")
+				showPart("hands_bg/scale")
+				if (PlayerHasViewableOutfit) {
+					if (sleevelessList) {
+						if (legCount == 2) {
+							if (lowerBody.type == LowerBodyType.DRAGON) {
+								hideLayer("arms")
+								hideLayer("arms_bg")
+								hideLayer("hands")
+								hideLayer("hands_bg")
+								hideLayer("weapon")
+								hideLayer("shield")
+								showPart("arms/feral_dragon")
+								showPart("arms_bg/feral_dragon")
+								when {
+									hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+										showPart("arms_overlay/feral_pscales")
+										showPart("arms_overlay_bg/feral_pscales")
+									}
+									hasFullCoatOfType(SkinCoatType.FUR) -> {
+										showPart("arms_overlay/feral_fur")
+										showPart("arms_overlay_bg/feral_fur")
+									}
+									hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+										showPart("arms_overlay/feral_chitin")
+										showPart("arms_overlay_bg/feral_chitin")
+									}
+									hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+										showPart("arms_overlay/feral_scales")
+										showPart("arms_overlay_bg/feral_scales")
+									}
+								}
+							}
+						}
+					}
+				} else {
+					if (legCount == 2) {
+						if (lowerBody.type == LowerBodyType.DRAGON) {
+							hideLayer("arms")
+							hideLayer("arms_bg")
+							hideLayer("hands")
+							hideLayer("hands_bg")
+							hideLayer("weapon")
+							hideLayer("shield")
+							showPart("arms/feral_dragon")
+							showPart("arms_bg/feral_dragon")
+							when {
+								hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+									showPart("arms_overlay/feral_pscales")
+									showPart("arms_overlay_bg/feral_pscales")
+								}
+								hasFullCoatOfType(SkinCoatType.FUR) -> {
+									showPart("arms_overlay/feral_fur")
+									showPart("arms_overlay_bg/feral_fur")
+								}
+								hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+									showPart("arms_overlay/feral_chitin")
+									showPart("arms_overlay_bg/feral_chitin")
+								}
+								hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+									showPart("arms_overlay/feral_scales")
+									showPart("arms_overlay_bg/feral_scales")
+								}
+							}
+						}
+					}
+
+				}
+			}
+			ArmType.DISPLACER -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				hideLayer("hands")
+				hideLayer("hands_bg")
+				when {
+					hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+						showPart("arms/displacerquad_pscales")
+						showPart("arms_bg/displacerquad_pscales")
+					}
+					hasFullCoatOfType(SkinCoatType.FUR) -> {
+						showPart("arms/displacerquad_fur")
+						showPart("arms_bg/displacerquad_fur")
+					}
+					hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+						showPart("arms/displacerquad_chitin")
+						showPart("arms_bg/displacerquad_chitin")
+					}
+					hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+						showPart("arms/displacerquad_scales")
+						showPart("arms_bg/displacerquad_scales")
+					}
+					else -> {
+						showPart("arms/displacerquad_human")
+						showPart("arms_bg/displacerquad_human")
+					}
+				}
+			}
+			ArmType.LIZARD, ArmType.HYDRA -> {
+				showPart("hands/scales")
+				showPart("hands_bg/scales")
+			}
+			ArmType.ORCA, ArmType.SEA_DRAGON -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				showPart("arms_bg/orca")
+				showPart("arms/orca")
+				showPart("hands/fins-orca")
+				showPart("hands_bg/fins-orca")
+			}
+			ArmType.DEVIL, ArmType.RAIJU_PAWS -> {
+				showPart("hands/devil")
+				showPart("hands_bg/devil")
+			}
+			ArmType.HINEZUMI -> {
+				if (lowerBody.type == LowerBodyType.HINEZUMI && !playerWearsAStanceBannedDress && !playerWearsAStanceBannedArmor) {
+					hideLayer("arms")
+					hideLayer("arms_bg")
+					hideLayer("weapon")
+					hideLayer("shield")
+					when {
+						hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							showPart("arms/hinezumistanced_pscales")
+						}
+						hasFullCoatOfType(SkinCoatType.FUR) -> {
+							showPart("arms/hinezumistanced_fur")
+						}
+						hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+							showPart("arms/hinezumistanced_chitin")
+						}
+						hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							showPart("arms/hinezumistanced_scales")
+						}
+						else -> {
+							showPart("arms/hinezumistanced_human")
+						}
+					}
+				} else {
+					showPart("overhands/fire")
+					showPart("hands/fur")
+					showPart("overhands_bg/fire")
+					showPart("hands_bg/fur")
+
+				}
+			}
+			ArmType.RACCOON, ArmType.FOX, ArmType.SPHINX, ArmType.WEASEL -> {
+				showPart("hands/furracoon")
+				showPart("hands_bg/furracoon")
+			}
+			ArmType.KRAKEN -> {
+				showPart("hands/kraken")
+				showPart("hands_bg/kraken")
+			}
+			ArmType.FROSTWYRM -> {
+				showPart("hands/frostWyrmright")
+				showPart("hands_bg/frostWyrmleft")
+			}
+			ArmType.WENDIGO -> {
+				showPart("hands/wendigo")
+				showPart("hands_bg/wendigo")
+			}
+			ArmType.GAZER -> {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				showPart("arms/gazer")
+				showPart("arms_bg/gazer")
+			}
+			else -> {
+				/* use skintype defaults */
+			}
+		}
+		if (CancerCrabStance) {
+			if (!playerWearsAStanceBannedDress && !playerWearsAStanceBannedArmor) {
+				hideLayer("arms")
+				hideLayer("arms_bg")
+				hideLayer("hands")
+				hideLayer("hands_bg")
+				showPart("arms/crabStance")
+			}
+		}
 
 		/* LEGS AREA */
 		// TODO port model.xml code
@@ -901,7 +1333,7 @@ class CharViewImage : CompositeImage(200,220) {
 				showPart("tail/raccoon$taur")
 			}
 			TailType.BEAR -> {
-				if (ears.type == EarType.PANDA){
+				if (ears.type == EarType.PANDA) {
 					showPart("tail/panda$taur")
 				} else {
 					showPart("tail/bear$taur")
@@ -952,8 +1384,8 @@ class CharViewImage : CompositeImage(200,220) {
 
 		val compose = compose()
 		if (scale) {
-			val x2 = createContext2D(width*2, height*2)
-			x2.drawImage(compose.canvas, 0.0, 0.0, width*2.0, height*2.0)
+			val x2 = createContext2D(width * 2, height * 2)
+			x2.drawImage(compose.canvas, 0.0, 0.0, width * 2.0, height * 2.0)
 			return x2
 		}
 		return compose

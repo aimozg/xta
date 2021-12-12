@@ -261,9 +261,9 @@ abstract class Creature: AbstractCreature() {
 	// coatColor, coatColor2, nakedCoatColor
 	fun hasCoat() = skin.hasCoat()
 	fun hasFullCoat() = skin.hasFullCoat()
-	fun hasCoatOfType(coatType: SkinCoatType) = skin.hasCoatOfType(coatType)
-	fun hasPartialCoatOfType(coatType:SkinCoatType) = skin.hasPartialCoatOfType(coatType)
-	fun hasFullCoatOfType(coatType: SkinCoatType) = skin.hasFullCoatOfType(coatType)
+	fun hasCoatOfType(vararg types: SkinCoatType) = skin.hasCoatOfType(*types)
+	fun hasPartialCoatOfType(vararg types:SkinCoatType) = skin.hasPartialCoatOfType(*types)
+	fun hasFullCoatOfType(vararg types: SkinCoatType) = skin.hasFullCoatOfType(*types)
 	fun hasPlainSkinOnly() = skin.hasPlainSkinOnly()
 	fun hasFur() = skin.hasCoatOfType(SkinCoatType.FUR)
 	fun hasScales() = skin.hasCoatOfType(SkinCoatType.SCALES)
@@ -271,7 +271,7 @@ abstract class Creature: AbstractCreature() {
 	// hasGills
 	val faceType get() = face.type
 	// clawTone, clawType
-	// lowerBody, legCount
+	val legCount get() = lowerBody.legCount
 	val isTaur get() = lowerBody.isTaur
 	val isBiped get() = lowerBody.isBiped
 	val isNaga get() = lowerBody.isNaga
