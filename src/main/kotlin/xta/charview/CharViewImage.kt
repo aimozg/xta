@@ -206,6 +206,7 @@ class CharViewImage : CompositeImage(200, 220) {
 		val playerWearsAStanceBannedArmor = false
 		val sleevelessList = false
 		val CancerCrabStance = false
+		val playerHasLargeLowerBody = false
 
 		/* WEAPON AREA */
 		// TODO use sprite ids from weapons
@@ -979,7 +980,11 @@ class CharViewImage : CompositeImage(200, 220) {
 						hideLayer("weapon")
 						hideLayer("shield")
 						when {
-							hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							hasPartialCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("arms/manticore_sit_pscales")
 								showPart("arms_fg/manticore_sit")
 							}
@@ -991,7 +996,11 @@ class CharViewImage : CompositeImage(200, 220) {
 								showPart("arms/manticore_sit_chitin")
 								showPart("arms_fg/manticore_sit")
 							}
-							hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							hasFullCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("arms/manticore_sit_scales")
 								showPart("arms_fg/manticore_sit")
 							}
@@ -1017,7 +1026,11 @@ class CharViewImage : CompositeImage(200, 220) {
 						showPart("arms/feral_human")
 						showPart("arms_bg/feral_human")
 						when {
-							hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							hasPartialCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("arms_overlay/feral_pscales")
 								showPart("arms_overlay_bg/feral_pscales")
 							}
@@ -1029,7 +1042,11 @@ class CharViewImage : CompositeImage(200, 220) {
 								showPart("arms_overlay/feral_chitin")
 								showPart("arms_overlay_bg/feral_chitin")
 							}
-							hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+							hasFullCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("arms_overlay/feral_scales")
 								showPart("arms_overlay_bg/feral_scales")
 							}
@@ -1053,7 +1070,11 @@ class CharViewImage : CompositeImage(200, 220) {
 								showPart("arms/feral_dragon")
 								showPart("arms_bg/feral_dragon")
 								when {
-									hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+									hasPartialCoatOfType(
+										SkinCoatType.SCALES,
+										SkinCoatType.AQUA_SCALES,
+										SkinCoatType.DRAGON_SCALES
+									) -> {
 										showPart("arms_overlay/feral_pscales")
 										showPart("arms_overlay_bg/feral_pscales")
 									}
@@ -1065,7 +1086,11 @@ class CharViewImage : CompositeImage(200, 220) {
 										showPart("arms_overlay/feral_chitin")
 										showPart("arms_overlay_bg/feral_chitin")
 									}
-									hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+									hasFullCoatOfType(
+										SkinCoatType.SCALES,
+										SkinCoatType.AQUA_SCALES,
+										SkinCoatType.DRAGON_SCALES
+									) -> {
 										showPart("arms_overlay/feral_scales")
 										showPart("arms_overlay_bg/feral_scales")
 									}
@@ -1085,7 +1110,11 @@ class CharViewImage : CompositeImage(200, 220) {
 							showPart("arms/feral_dragon")
 							showPart("arms_bg/feral_dragon")
 							when {
-								hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								hasPartialCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
 									showPart("arms_overlay/feral_pscales")
 									showPart("arms_overlay_bg/feral_pscales")
 								}
@@ -1097,7 +1126,11 @@ class CharViewImage : CompositeImage(200, 220) {
 									showPart("arms_overlay/feral_chitin")
 									showPart("arms_overlay_bg/feral_chitin")
 								}
-								hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+								hasFullCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
 									showPart("arms_overlay/feral_scales")
 									showPart("arms_overlay_bg/feral_scales")
 								}
@@ -1158,7 +1191,11 @@ class CharViewImage : CompositeImage(200, 220) {
 					hideLayer("weapon")
 					hideLayer("shield")
 					when {
-						hasPartialCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+						hasPartialCoatOfType(
+							SkinCoatType.SCALES,
+							SkinCoatType.AQUA_SCALES,
+							SkinCoatType.DRAGON_SCALES
+						) -> {
 							showPart("arms/hinezumistanced_pscales")
 						}
 						hasFullCoatOfType(SkinCoatType.FUR) -> {
@@ -1167,7 +1204,11 @@ class CharViewImage : CompositeImage(200, 220) {
 						hasFullCoatOfType(SkinCoatType.CHITIN) -> {
 							showPart("arms/hinezumistanced_chitin")
 						}
-						hasFullCoatOfType(SkinCoatType.SCALES, SkinCoatType.AQUA_SCALES, SkinCoatType.DRAGON_SCALES) -> {
+						hasFullCoatOfType(
+							SkinCoatType.SCALES,
+							SkinCoatType.AQUA_SCALES,
+							SkinCoatType.DRAGON_SCALES
+						) -> {
 							showPart("arms/hinezumistanced_scales")
 						}
 						else -> {
@@ -1222,7 +1263,102 @@ class CharViewImage : CompositeImage(200, 220) {
 		// TODO port model.xml code
 
 		/* WING AREA */
-		// TODO port model.xml code
+		when (wings.type) {
+			WingType.NONE -> {}
+			WingType.BEE_SMALL, WingType.BEE_LARGE -> {
+				showPart("wings/bee")
+			}
+			WingType.HARPY, WingType.FEATHERED_SPHINX, WingType.FEATHERED_ALICORN, WingType.FEATHERED_PHOENIX, WingType.FEATHERED_AVIAN, WingType.FEATHERED_LARGE -> {
+				showPart("wings/feather_large")
+				showPart("wings_bg/feather_large")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/feather_large")
+				}
+			}
+			WingType.IMP, WingType.BAT_LIKE_TINY, WingType.BAT_LIKE_LARGE, WingType.BAT_LIKE_LARGE_2, WingType.GARGOYLE_LIKE_LARGE -> {
+				showPart("wings/demon")
+				showPart("wings_bg/demon")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/demon")
+				}
+			}
+			WingType.NIGHTMARE -> {
+				showPart("wings/nightmare")
+				showPart("wings_bg/nightmare")
+				if (isTaur) {
+					showPart("wings_front/nightmare")
+				}
+			}
+			WingType.DRACONIC_SMALL, WingType.DRACONIC_LARGE -> {
+				showPart("wings_bg/scales")
+				showPart("wings/scales")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/scales")
+				}
+			}
+			WingType.DRACONIC_HUGE -> {
+				showPart("wings_bg/greatDragonLeft")
+				showPart("wings_bg/greatDragonRight")
+			}
+			WingType.GIANT_DRAGONFLY, WingType.MANTIS_SMALL, WingType.MANTIS_LARGE, WingType.MANTIS_LARGE_2 -> {
+				showPart("wings/bee")
+			}
+			WingType.MANTICORE_SMALL, WingType.MANTICORE_LARGE -> {
+				showPart("wings/mantibig")
+				showPart("wings_bg/mantibig")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/mantibig")
+				}
+			}
+			WingType.FEY_DRAGON -> {
+				showPart("wings/fairy")
+				showPart("wings_bg/fairy")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/fairy")
+				}
+			}
+			WingType.FAIRY -> {
+				showPart("wings/fairy")
+				showPart("wings_bg/fairy")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/fairy")
+				}
+				if (!PlayerHasViewableOutfit) {
+					hideLayer("arms")
+					showPart("arms/demonlewd")
+					showPart("arms_fg/demonlewd")
+					hideLayer("arms_bg")
+					showPart("arms_bg/human")
+					hideLayer("legs")
+					showPart("legs/fairyFlying")
+				}
+			}
+			WingType.DEVILFEATHER -> {
+				showPart("wings/devilfeather")
+				showPart("wings_bg/devilfeather")
+				if (playerHasLargeLowerBody) {
+					showPart("wings_front/devilfeather")
+				}
+			}
+			WingType.ETHEREAL -> {
+				showPart("wings/ghost")
+			}
+			WingType.THUNDEROUS_AURA -> {
+				showPart("aura/thunderaura")
+			}
+			WingType.WINDY_AURA -> {
+				showPart("aura/windyaura")
+			}
+			WingType.SEA_DRAGON -> {
+				showPart("wings_bg/seaDragonLeft")
+				showPart("wings_bg/seaDragonRight")
+			}
+			WingType.VAMPIRE -> {
+				showPart("overclothe/vampire")
+				showPart("wings_bg/vampire_bg")
+			}
+			else -> {}
+		}
 
 		/* TAIL AREA */
 		when (tail.type) {
