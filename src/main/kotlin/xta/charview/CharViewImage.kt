@@ -185,22 +185,22 @@ class CharViewImage : CompositeImage(200,220) {
 		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0,25))
 	}
 
-	fun renderCharacter(char: PlayerCharacter, scale:Boolean): CanvasRenderingContext2D {
+	fun renderCharacter(char: PlayerCharacter, scale:Boolean): CanvasRenderingContext2D = with(char){
 		hideAll()
 		setupColors(char)
 
-		val taur = if (char.isTaur) "_taur" else ""
+		val taur = if (isTaur) "_taur" else ""
 
 		/* VARIABLES AREA */
-		val hydraTails = 0 // TODO char.statusEffectv1(StatusEffects.HydraTailsPlayer)
-		val big = if ((char.cocks.firstOrNull()?.length ?: 0) >= 12) "_big" else ""
+		val hydraTails = 0 // TODO statusEffectv1(StatusEffects.HydraTailsPlayer)
+		val big = if ((cocks.firstOrNull()?.length ?: 0) >= 12) "_big" else ""
 		/* <set var="CaveWyrmNipples" value="hasStatusEffect(StatusEffects.GlowingNipples)"/> */
 
 		/* WEAPON AREA */
 		// TODO use sprite ids from weapons
 
 		/* ANTENNAE AREA */
-		when (char.antennae.type) {
+		when (antennae.type) {
 			AntennaeType.NONE -> {}
 			AntennaeType.MANTIS,
 			AntennaeType.BEE,
@@ -214,7 +214,7 @@ class CharViewImage : CompositeImage(200,220) {
 		}
 
 		/* HORN AREA */
-		when (char.horns.type) {
+		when (horns.type) {
 			HornType.NONE -> {}
 			HornType.DEMON -> {
 				showPart("horns_bg/demon")
@@ -271,7 +271,7 @@ class CharViewImage : CompositeImage(200,220) {
 		}
 
 		/* EAR AREA */
-		when (char.ears.type) {
+		when (ears.type) {
 			EarType.HUMAN -> {
 				showPart("ears_bg/human")
 			}
@@ -374,7 +374,7 @@ class CharViewImage : CompositeImage(200,220) {
 		}
 
 		/* EYE AREA */
-		when (char.eyes.type) {
+		when (eyes.type) {
 			EyeType.HUMAN -> {
 				showPart("eyes/human")
 			}
@@ -442,43 +442,43 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* HAIR AREA */
-		if (char.hairLength > 0) {
-			when (char.hairType) {
+		if (hairLength > 0) {
+			when (hairType) {
 				HairType.FEATHER -> {
 					showPart("hair/feather")
 					showPart("hair_bg/feather")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/02")
 					}
 				}
 				HairType.GORGON -> {
 					showPart("hair/gorgon")
 					showPart("hair_bg/gorgon")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/02")
 					}
 				}
 				HairType.STORM -> {
 					showPart("hair/raiju")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/raiju3")
 					}
 				}
 				HairType.BURNING -> {
 					showPart("hair/hellcat")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/hellcat")
 					}
 				}
 				HairType.GOO -> {
 					showPart("hair/slime")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/slime2")
 					}
 				}
 				HairType.FLUFFY -> {
 					showPart("hair/yeti")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/yeti")
 					}
 				}
@@ -488,7 +488,7 @@ class CharViewImage : CompositeImage(200,220) {
 				HairType.RATATOSKR -> {
 					showPart("hair/ratatoskr")
 					showPart("hair_bg/ratatoskr")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/02")
 					}
 				}
@@ -498,7 +498,7 @@ class CharViewImage : CompositeImage(200,220) {
 				}
 				else -> {
 					showPart("hair/0")
-					if (char.hairLength >= 16) {
+					if (hairLength >= 16) {
 						showPart("hair_bg/02")
 					} else {
 						showPart("hair_bg/0")
@@ -508,21 +508,94 @@ class CharViewImage : CompositeImage(200,220) {
 		}
 
 		/* HAIR STYLE AREA */
-		// TODO port model.xml code
+		if (hairLength > 0) {
+			if (hairType !in arrayOf(HairType.FLUFFY, HairType.GORGON, HairType.ANEMONE, HairType.GOO)) {
+				if (hairType !in arrayOf(HairType.STORM,HairType.BURNING,HairType.QUILL,HairType.CRAZY,HairType.RATATOSKR,HairType.PRISMATIC)) {
+					if (hairStyle != HairStyle.PLAIN) {
+						hidePart("hair/0")
+						hidePart("hair_bg/02")
+						showPart("hair/feather")
+						showPart("hair_bg/feather")
+					}
+				}
+				when (hairStyle) {
+					HairStyle.WILD ->
+						if (hairLength >= 16) {
+							if (hairType !in arrayOf(HairType.STORM, HairType.BURNING)) {
+								hideLayer("hair_bg")
+								showPart("hair_bg/02")
+							}
+						}
+					HairStyle.PONYTAIL -> {
+						showPart("hair_bg/ponytail")
+						hidePart("hair_bg/raiju3")
+						hidePart("hair_bg/hellcat")
+					}
+					HairStyle.LONGTRESSES -> {
+						showPart("hair_bg/longTresse")
+						hidePart("hair_bg/raiju3")
+						hidePart("hair_bg/hellcat")
+					}
+					HairStyle.TWINTAILS -> {
+						showPart("hair_bg/twinPigtail")
+						hidePart("hair_bg/raiju3")
+						hidePart("hair_bg/hellcat")
+					}
+					HairStyle.DWARVEN -> {
+						showPart("hair_bg/dwarven")
+						hidePart("hair_bg/raiju3")
+						hidePart("hair_bg/hellcat")
+					}
+					HairStyle.SNOWLILY -> {
+						hideLayer("hair")
+						hideLayer("hair_bg")
+						showPart("hair/yukionna")
+						showPart("hair_bg/yukionna")
+					}
+					HairStyle.FOURWIND -> {
+						hideLayer("hair")
+						hideLayer("hair_bg")
+						showPart("hair/fourWindBraid")
+						showPart("hair_bg/fourWindBraid")
+					}
+					HairStyle.FOURWINDL -> {
+						hideLayer("hair")
+						hideLayer("hair_bg")
+						showPart("hair/fourWindBraid")
+						showPart("hair_bg/02")
+					}
+					else -> {
+						if (hairType !in arrayOf(HairType.STORM, HairType.BURNING, HairType.QUILL, HairType.FEATHER, HairType.CRAZY, HairType.RATATOSKR, HairType.PRISMATIC)) {
+							if (hairLength < 16) {
+								hideLayer("hair")
+								hideLayer("hair_bg")
+								showPart("hair/0")
+								showPart("hair_bg/0")
+							} else {
+								hideLayer("hair")
+								hideLayer("hair_bg")
+								showPart("hair/0")
+								showPart("hair_bg/02")
+							}
+						}
+					}
+				}
+			}
+		}
 
 		val skinb:String
 		val skinx:String
-		when (char.skin.coverage) {
-			SkinCoverage.NONE -> when (char.skin.baseType) {
+		when (skin.coverage) {
+			SkinCoverage.NONE -> when (skin.baseType) {
 				SkinBaseType.GOO -> {
 					skinb = "goo"
 					skinx = "goo"
 				}
 				else -> {
 					skinb = "human"
-					if (char.skin.basePattern == SkinBasePatternType.ORCA_UNDERBODY) {
+					if (skin.basePattern == SkinBasePatternType.ORCA_UNDERBODY) {
 						skinx = "orca"
-					} else if (char.skin.basePattern == SkinBasePatternType.SEA_DRAGON_UNDERBODY) {
+					} else if (skin.basePattern == SkinBasePatternType.SEA_DRAGON_UNDERBODY) {
 						skinx = "orca"
 						showPart("torso_pattern/Bbioluminescence")
 					} else {
@@ -531,7 +604,7 @@ class CharViewImage : CompositeImage(200,220) {
 				}
 			}
 			SkinCoverage.LOW,
-			SkinCoverage.MEDIUM -> when (char.skin.coatType) {
+			SkinCoverage.MEDIUM -> when (skin.coatType) {
 				SkinCoatType.SCALES,
 				SkinCoatType.DRAGON_SCALES -> {
 					skinb = "pscales"
@@ -543,9 +616,9 @@ class CharViewImage : CompositeImage(200,220) {
 				}
 			}
 			SkinCoverage.HIGH,
-			SkinCoverage.COMPLETE -> when (char.skin.coatType) {
+			SkinCoverage.COMPLETE -> when (skin.coatType) {
 				SkinCoatType.FUR -> {
-					if (char.ears.type == EarType.PANDA) {
+					if (ears.type == EarType.PANDA) {
 						skinb = "panda"
 						skinx = "panda"
 					} else {
@@ -567,7 +640,7 @@ class CharViewImage : CompositeImage(200,220) {
 				}
 				SkinCoatType.CHITIN -> {
 					skinb = "chitin"
-					if (char.skin.coatPattern == SkinCoatPatternType.BEE_STRIPES) {
+					if (skin.coatPattern == SkinCoatPatternType.BEE_STRIPES) {
 						skinx = "bee"
 					} else {
 						skinx = "chitin"
@@ -586,25 +659,25 @@ class CharViewImage : CompositeImage(200,220) {
 		showPart("legs/$skinx")
 
 		/* In the event player corruption is maxed enter yandere mode forehead */
-		if (char.cor >= 100 && char.eyes.type != EyeType.CENTIPEDE) {
+		if (cor >= 100 && eyes.type != EyeType.CENTIPEDE) {
 			showPart("forehead/SpecialForeheadShadow")
 		}
 
 		// face type
-		when (char.face.type) {
+		when (face.type) {
 			FaceType.HUMAN -> {
 				when {
-					char.skin.baseType == SkinBaseType.GOO ->
+					skin.baseType == SkinBaseType.GOO ->
 						showPart("face/goo")
-					char.cor >= 100 -> {
-						if (char.lowerBody.type == LowerBodyType.FLOWER_LILIRAUNE) {
+					cor >= 100 -> {
+						if (lowerBody.type == LowerBodyType.FLOWER_LILIRAUNE) {
 							showPart("face/lilirauneCorruptedSmile")
 							showPart("forehead/lilirauneCorruptedShadow")
 						} else {
 							showPart("face/fairySmile")
 						}
 					}
-					char.cor >= 50 ->
+					cor >= 50 ->
 						showPart("face/demonlewd")
 					else ->
 						showPart("face/human")
@@ -658,12 +731,12 @@ class CharViewImage : CompositeImage(200,220) {
 			FaceType.CAT_CANINES,
 			FaceType.MANTICORE -> {
 				showPart("face/human_fang")
-				if (char.eyes.type === EyeType.CENTIPEDE) {
+				if (eyes.type === EyeType.CENTIPEDE) {
 					hidePart("face/human_fang")
 					showPart("face/melancholic")
 				}
-				if (char.face.type === FaceType.SALAMANDER_FANGS
-					&& char.tongue.type === TongueType.CAVE_WYRM) {
+				if (face.type === FaceType.SALAMANDER_FANGS
+					&& tongue.type === TongueType.CAVE_WYRM) {
 					hidePart("face/human_fang")
 					showPart("face/caveWyrm")
 				}
@@ -685,7 +758,7 @@ class CharViewImage : CompositeImage(200,220) {
 			FaceType.ELF ->
 				showPart("face/fairySmile")
 			FaceType.GHOST -> {
-				if (char.tongue.type == TongueType.GHOST) {
+				if (tongue.type == TongueType.GHOST) {
 					showPart("face/ghost")
 				} else {
 					showPart("face/human")
@@ -696,7 +769,7 @@ class CharViewImage : CompositeImage(200,220) {
 			}
 		}
 
-		val breastSize = char.breastRows.firstOrNull()?.breastRating ?: 0
+		val breastSize = breastRows.firstOrNull()?.breastRating ?: 0
 		when {
 			breastSize <= BreastCup.FLAT ->
 				showPart("breasts/0") // FLAT
@@ -720,7 +793,7 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* TAIL AREA */
-		when (char.tail.type) {
+		when (tail.type) {
 			TailType.NONE -> {}
 			TailType.HORSE,
 			TailType.WENDIGO -> {
@@ -742,7 +815,7 @@ class CharViewImage : CompositeImage(200,220) {
 				showPart("tail_bg/tatatoskr$taur")
 			}
 			TailType.CAT -> {
-				if (char.tail.count >= 2) {
+				if (tail.count >= 2) {
 					showPart("tail_bg/cat2$taur")
 				} else {
 					showPart("tail_bg/cat$taur")
@@ -771,7 +844,7 @@ class CharViewImage : CompositeImage(200,220) {
 			TailType.FOX,
 			TailType.WOLF,
 			TailType.DOG -> {
-				showPart("tail_bg/fox${char.tail.count}$taur")
+				showPart("tail_bg/fox${tail.count}$taur")
 			}
 			TailType.KANGAROO -> {
 				showPart("tail/cat")
@@ -828,7 +901,7 @@ class CharViewImage : CompositeImage(200,220) {
 				showPart("tail/raccoon$taur")
 			}
 			TailType.BEAR -> {
-				if (char.ears.type == EarType.PANDA){
+				if (ears.type == EarType.PANDA){
 					showPart("tail/panda$taur")
 				} else {
 					showPart("tail/bear$taur")
@@ -845,11 +918,11 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO port model.xml code
 
 		/* BALLS AREA */
-		if (char.balls > 0) {
+		if (balls > 0) {
 			val ballsz = when {
-				char.ballSize >= 8 -> "sillyhuge"
-				char.ballSize >= 6 -> "huge"
-				char.ballSize >= 4 -> "large"
+				ballSize >= 8 -> "sillyhuge"
+				ballSize >= 6 -> "huge"
+				ballSize >= 4 -> "large"
 				else -> "small"
 			}
 			showPart("balls$taur/B$skinx$ballsz$taur")
