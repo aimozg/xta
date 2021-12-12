@@ -141,9 +141,9 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 
 	fun describeAntennae() = character.antennae.appearanceDescription()
 
-	fun describeEyes() = "" // TODO
+	fun describeEyes() = character.eyes.appearanceDescription()
 
-	fun describeTongue() = "" // TODO
+	fun describeTongue() = character.tongue.appearanceDescription()
 
 	fun describeBeard() = "" // TODO
 

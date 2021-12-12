@@ -86,7 +86,7 @@ object ArenaLocation : GameLocation("Arena") {
 				}
 			}
 
-			if (outChallenge == null) {
+			if (outChallenge == null && character.isAlive) {
 				for (other in others) {
 					if (inChallenges.any { it.sender == other }) continue
 					if (!other.char.isAlive || other.inCombat) continue

@@ -17,6 +17,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 				val forMe = char === myChar // TODO consider "enforce third person" option
 				when (tag) {
 					"bodytype" -> Appearance.bodyType(char)
+					"eyecolor" -> char.eyes.irisColor
 					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
 					"name" -> char.name
