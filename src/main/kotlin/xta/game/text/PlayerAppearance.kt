@@ -60,7 +60,7 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 			)
 		}
 
-		append(describeVisage())
+		append(describeVisage().prependIfNotEmpty("[pg]"))
 
 		append("[pg]")
 		append(
@@ -162,9 +162,17 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		}
 	}
 
-	fun describeGills() = "" // TODO
+	fun describeGills() = character.gills.appearanceDescription()
 
-	fun describeVisage() = "" // TODO
+	fun describeVisage() = buildString {
+		if (false) {// TODO if player.hasPerk(PerkLib.DarkenedKitsune)
+			if (character.cor >= 75) {
+				append("The corruption has turned you into an inhuman being; With your head tilted to 35 degrees and ears twitching erratically every so often, it would almost be cute if not for your gesugao expression.")
+			} else {
+				append("The corruption has turned you into a different being; With your head slightly off-center and ears constantly moving at the slightest sound every so often, it would almost be considered cute, if not for your paranoid expression.")
+			}
+		}
+	}
 
 	fun describeArms() = "" // TODO
 
