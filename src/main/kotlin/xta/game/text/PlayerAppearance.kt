@@ -174,7 +174,7 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		}
 	}
 
-	fun describeArms() = "" // TODO
+	fun describeArms() = character.arms.appearanceDescription()
 
 	fun describeLowerBody() = "" // TODO
 
