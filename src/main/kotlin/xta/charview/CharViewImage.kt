@@ -200,10 +200,75 @@ class CharViewImage : CompositeImage(200,220) {
 		// TODO use sprite ids from weapons
 
 		/* ANTENNAE AREA */
-		// TODO port model.xml code
+		when (char.antennae.type) {
+			AntennaeType.NONE -> {}
+			AntennaeType.MANTIS,
+			AntennaeType.BEE,
+			AntennaeType.FIRE_SNAIL,
+			AntennaeType.CENTIPEDE ->
+				showPart("antennae/bee")
+			AntennaeType.SEA_DRAGON ->
+				showPart("neck/seaDragonWhisker")
+			else ->
+				showPart("antennae/bee")
+		}
 
 		/* HORN AREA */
-		// TODO port model.xml code
+		when (char.horns.type) {
+			HornType.NONE -> {}
+			HornType.DEMON -> {
+				showPart("horns_bg/demon")
+			}
+			HornType.COW_MINOTAUR -> {
+				showPart("horns_bg/cow")
+				showPart("horns/cow")
+			}
+			HornType.GOAT -> {
+				showPart("horns/devil")
+				showPart("horns_bg/devil")
+			}
+			HornType.ORCHID -> {
+				showPart("horns/orchid")
+				showPart("horns_bg/orchid")
+			}
+			HornType.DRACONIC_X4_12_INCH_LONG -> {
+				showPart("horns_bg/dragon")
+			}
+			HornType.UNICORN,
+			HornType.ONI -> {
+				showPart("horns/unicorn")
+			}
+			HornType.BICORN -> {
+				showPart("horns/bicorn")
+			}
+			HornType.ONI_X2 -> {
+				showPart("horns/2oni")
+			}
+			HornType.GOATQUAD -> {
+				showPart("horns_bg/devilquad")
+			}
+			HornType.GHOSTLY_WISPS -> {
+				showPart("horns_bg/ghost")
+			}
+			HornType.KRAKEN -> {
+				showPart("horns_bg/kraken")
+			}
+			HornType.FROSTWYRM -> {
+				showPart("horns/frostWyrm")
+				showPart("horns/frostWyrmLeft")
+				showPart("horns_bg/frostWyrm")
+				showPart("horns_bg/frostWyrmLeft")
+			}
+			HornType.ANTLERS -> {
+				showPart("horns_overclothe/deer")
+			}
+			HornType.SEA_DRAGON -> {
+				showPart("horns_bg/seaDragon")
+			}
+			else -> {
+				showPart("horns/2large")
+			}
+		}
 
 		/* EAR AREA */
 		when (char.ears.type) {
