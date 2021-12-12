@@ -132,7 +132,7 @@ class FlashImporter {
 		character.wings.type = WingType.byId(data.wingType)
 		// TODO wingDesc
 		character.lowerBody.type = LowerBodyType.byId(data.lowerBodyPart.type)
-		// TODO leg count
+		character.lowerBody.legCount = data.lowerBodyPart.legCount
 		character.tail.type = TailType.byId(data.tail.type)
 		character.tail.count = data.tail.count
 		// TODO tail venom, recharge

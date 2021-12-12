@@ -17,7 +17,9 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 				val forMe = char === myChar // TODO consider "enforce third person" option
 				when (tag) {
 					"bodytype" -> Appearance.bodyType(char)
+					"butt" -> Appearance.buttDescript(char)
 					"eyecolor" -> char.eyes.irisColor
+					"hips" -> Appearance.hipDescript(char)
 					"level" -> char.level.toString()
 					"malefemaleherm" -> Appearance.maleFemaleHerm(char)
 					"name" -> char.name
@@ -86,7 +88,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 							"was", "were" -> "was"
 							"has", "have" -> "has"
 							else -> {
-								if (verb.endsWith("o") || verb.endsWith("s")) verb+"es"
+								if (verb.endsWith("o") || verb.endsWith("s") || verb.endsWith("ch")) verb+"es"
 								else verb+"s"
 							}
 						}

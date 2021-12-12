@@ -207,4 +207,331 @@ object Appearance {
 			append(creature.beardStyle.noun)
 		}
 	}
+
+	fun buttDescript(creature: Creature) = buildString {
+		when {
+			creature.buttRating <= 1 ->
+				if (creature.tone >= 60) {
+					append("incredibly tight, perky ")
+				} else {
+					append(fxrng.either("tiny",
+						"very small",
+						"dainty"))
+					//Soft PC's buns!
+					if (creature.tone <= 30 && fxrng.nextInt(3) == 0) append(" yet soft")
+					append(" ")
+				}
+			creature.buttRating < 4 -> when {
+				creature.tone >= 65 ->
+					append(fxrng.either("perky, muscular ",
+						"tight, toned ",
+						"compact, muscular ",
+						"tight ",
+						"muscular, toned "))
+				//Nondescript
+				creature.tone >= 30 ->
+					append(fxrng.either("tight ",
+						"firm ",
+						"compact ",
+						"petite "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("small, heart-shaped ",
+						"soft, compact ",
+						"soft, heart-shaped ",
+						"small, cushy ",
+						"small ",
+						"petite ",
+						"snug "))
+			}
+			creature.buttRating < 6 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("nicely muscled ",
+						"nice, toned ",
+						"muscly ",
+						"nice toned ",
+						"toned ",
+						"fair "))
+				//Nondescript
+				creature.tone >= 30 ->
+					append(fxrng.either("nice ",
+						"fair "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("nice, cushiony ",
+						"soft ",
+						"nicely-rounded, heart-shaped ",
+						"cushy ",
+						"soft, squeezable "))
+			}
+			creature.buttRating < 8 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("full, toned ",
+						"muscly handful of ",
+						"shapely, toned ",
+						"muscular, hand-filling ",
+						"shapely, chiseled ",
+						"full ",
+						"chiseled "))
+				//Nondescript
+				creature.tone >= 65 ->
+					append(fxrng.either("handful of ",
+						"full ",
+						"shapely ",
+						"hand-filling "))
+				//FLABBAH
+				else -> {
+					if (fxrng.nextInt(8) == 0) return "supple, handful of ass"
+					append(
+						fxrng.either(
+							"somewhat jiggly ",
+							"soft, hand-filling ",
+							"cushiony, full ",
+							"plush, shapely ",
+							"full ",
+							"soft, shapely ",
+							"rounded, spongy "
+						)
+					)
+				}
+			}
+			creature.buttRating < 10 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("large, muscular ",
+						"substantial, toned ",
+						"big-but-tight ",
+						"squeezable, toned ",
+						"large, brawny ",
+						"big-but-fit ",
+						"powerful, squeezable ",
+						"large "))
+				//Nondescript
+				creature.tone >= 65 ->
+					append(fxrng.either("squeezable ",
+						"large ",
+						"substantial "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("large, bouncy ",
+						"soft, eye-catching ",
+						"big, slappable ",
+						"soft, pinchable ",
+						"large, plush ",
+						"squeezable ",
+						"cushiony ",
+						"plush ",
+						"pleasantly plump "))
+			}
+			creature.buttRating < 13 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("thick, muscular ",
+						"big, burly ",
+						"heavy, powerful ",
+						"spacious, muscular ",
+						"toned, cloth-straining ",
+						"thick ",
+						"thick, strong "))
+				//Nondescript
+				creature.tone >= 65 ->
+					append(fxrng.either("jiggling ",
+						"spacious ",
+						"heavy ",
+						"cloth-straining "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("super-soft, jiggling ",
+						"spacious, cushy ",
+						"plush, cloth-straining ",
+						"squeezable, over-sized ",
+						"spacious ",
+						"heavy, cushiony ",
+						"slappable, thick ",
+						"jiggling ",
+						"spacious ",
+						"soft, plump "))
+			}
+			creature.buttRating < 16 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("expansive, muscled ",
+						"voluminous, rippling ",
+						"generous, powerful ",
+						"big, burly ",
+						"well-built, voluminous ",
+						"powerful ",
+						"muscular ",
+						"powerful, expansive "))
+				//Nondescript
+				creature.tone >= 65 ->
+					append(fxrng.either("expansive ",
+						"generous ",
+						"voluminous ",
+						"wide "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("pillow-like ",
+						"generous, cushiony ",
+						"wide, plush ",
+						"soft, generous ",
+						"expansive, squeezable ",
+						"slappable ",
+						"thickly-padded ",
+						"wide, jiggling ",
+						"wide ",
+						"voluminous ",
+						"soft, padded "))
+			}
+			creature.buttRating < 20 -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 ->
+					append(fxrng.either("huge, toned ",
+						"vast, muscular ",
+						"vast, well-built ",
+						"huge, muscular ",
+						"strong, immense ",
+						"muscle-bound "))
+				//Nondescript
+				creature.tone >= 65 -> {
+					if (fxrng.nextInt(5) == 0) return "jiggling expanse of ass"
+					if (fxrng.nextInt(5) == 0) return "copious ass-flesh"
+					append(
+						fxrng.either(
+							"huge ",
+							"vast ",
+							"giant "
+						)
+					)
+				}
+				//FLABBAH
+				else ->
+					append(fxrng.either("vast, cushiony ",
+						"huge, plump ",
+						"expansive, jiggling ",
+						"huge, cushiony ",
+						"huge, slappable ",
+						"seam-bursting ",
+						"plush, vast ",
+						"giant, slappable ",
+						"giant ",
+						"huge ",
+						"swollen, pillow-like "))
+			}
+			else -> when {
+				//TOIGHT LIKE A TIGER
+				creature.tone >= 65 -> {
+					if (fxrng.nextInt(7) == 0) return "colossal, muscly ass"
+					append(fxrng.either("ginormous, muscle-bound ",
+						"colossal yet toned ",
+						"strong, tremdously large ",
+						"tremendous, muscled ",
+						"ginormous, toned ",
+						"colossal, well-defined "))
+				}
+				//Nondescript
+				creature.tone >= 65 ->
+					append(fxrng.either("ginormous ",
+						"colossal ",
+						"tremendous ",
+						"gigantic "))
+				//FLABBAH
+				else ->
+					append(fxrng.either("ginormous, jiggly ",
+						"plush, ginormous ",
+						"seam-destroying ",
+						"tremendous, rounded ",
+						"bouncy, colossal ",
+						"thong-devouring ",
+						"tremendous, thickly padded ",
+						"ginormous, slappable ",
+						"gigantic, rippling ",
+						"gigantic ",
+						"ginormous ",
+						"colossal ",
+						"tremendous "))
+			}
+		}
+		append(fxrng.either("butt",
+			"butt",
+			"butt",
+			"butt",
+			"ass",
+			"ass",
+			"ass",
+			"ass",
+			"backside",
+			"backside",
+			"derriere",
+			"rump",
+			"bottom"))
+	}
+
+	fun hipDescript(creature: Creature) = buildString {
+		when {
+			creature.hipRating <= 1 -> {
+				append(fxrng.either("tiny ",
+					"narrow ",
+					"boyish "))
+			}
+			creature.hipRating < 4 -> {
+				if (creature.thickness < 30) {
+					append(fxrng.either("slightly-flared ", "curved "))
+				} else {
+					append(fxrng.either("slender ",
+						"narrow ",
+						"thin "))
+				}
+			}
+			creature.hipRating < 6 -> {
+				if (creature.thickness < 30) {
+					append(fxrng.either("flared ", "curvy "))
+				} else {
+					append(fxrng.either("well-formed ",
+						"pleasant "))
+				}
+			}
+			creature.hipRating < 10 -> {
+				if (creature.thickness < 30) {
+					append(fxrng.either("flared ", "waspish "))
+				} else {
+					append(fxrng.either("ample ",
+						"noticeable ",
+						"girly "))
+				}
+			}
+			creature.hipRating < 15 -> {
+				if (creature.thickness < 30) {
+					append(fxrng.either("flared ", "waspish "))
+				} else {
+					append(fxrng.either("flared ",
+						"curvy ",
+						"wide "))
+				}
+			}
+			creature.hipRating < 20 -> {
+				if (creature.thickness < 40) {
+					append(fxrng.either("flared, ", "waspish, "))
+				}
+				append(fxrng.either("fertile ",
+					"child-bearing ",
+					"voluptuous "))
+			}
+			else -> {
+				if (creature.thickness < 30) {
+					append(fxrng.either("flaring, ", "incredibly waspish, "))
+				}
+				append(fxrng.either("broodmother-sized ",
+					"cow-like ",
+					"inhumanly-wide "))
+			}
+		}
+		when {
+			creature.isTaur && fxrng.nextInt(3) == 0 -> append("flanks")
+			creature.isNaga && fxrng.nextInt(3) == 0 -> append("sides")
+			else -> append(fxrng.either("hips", "thighs"))
+		}
+	}
 }

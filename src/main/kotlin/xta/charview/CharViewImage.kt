@@ -122,8 +122,8 @@ class CharViewImage : CompositeImage(200,220) {
 	fun setupColors(char: PlayerCharacter) {
 		val hairColor = colordb.find("hair", char.hairColor)
 		val hair2 = colordb.find("hair", char.hairColor)
-		val skin = colordb.find("skin", char.skinColor)
-		val skin2 = colordb.find("skin", char.skinColor2)
+		val skin = colordb.find("skin", char.skin.color)
+		val skin2 = colordb.find("skin", char.skin.color2)
 		val fur = colordb.find("fur", char.furColor)
 		val fur2 = colordb.find("fur", char.furColor2)
 		val scales = colordb.find("scales", char.scaleColor)

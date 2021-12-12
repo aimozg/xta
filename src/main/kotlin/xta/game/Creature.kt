@@ -272,7 +272,9 @@ abstract class Creature: AbstractCreature() {
 	val faceType get() = face.type
 	// clawTone, clawType
 	// lowerBody, legCount
-	val isTaur get() = false // TODO check lower body type/legs count
+	val isTaur get() = lowerBody.isTaur
+	val isBiped get() = lowerBody.isBiped
+	val isNaga get() = lowerBody.isNaga
 	// tailVenom, tailRecharge
 	val tailType get() = tail.type
 	val tailCount get() = tail.count
