@@ -1,8 +1,11 @@
 package xta.game.text
 
-import xta.game.creature.Gender
+import xta.game.Creature
 import xta.game.PlayerCharacter
+import xta.game.creature.Gender
 import xta.game.creature.body.BreastCup
+import xta.utils.either
+import xta.utils.fxrng
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -158,5 +161,50 @@ object Appearance {
 			}
 		}
 		return desc
+	}
+
+	fun beardDescsript(creature: Creature): String {
+		if (creature.beardLength == 0) {
+			return fxrng.either(
+				"shaved",
+				"bald",
+				"smooth",
+				"hairless",
+				"glabrous"
+			) + " chin and cheeks"
+		}
+		return buildString {
+			//
+			// LENGTH ADJECTIVE!
+			//
+			when {
+				creature.beardLength < 0.2 ->
+					append(fxrng.either(
+						"close-cropped, ",
+						"trim, "
+					))
+				creature.beardLength < 0.5 -> append("short, ")
+				creature.beardLength < 1.5 -> append("medium, ")
+				creature.beardLength < 3.0 -> append("moderately long, ")
+				creature.beardLength < 6.0 -> append(fxrng.either(
+					"long, ",
+					"neck-length, "
+				))
+				else -> append(fxrng.either(
+					"very long, ",
+					"chest-length, "
+				))
+			}
+			//
+			// COLORS
+			//
+			append(creature.hairColor)
+			append(" ")
+			//
+			// BEARD WORDS
+			// Follows hair type.
+			append(creature.hairType.beardDesc(creature))
+			append(creature.beardStyle.noun)
+		}
 	}
 }

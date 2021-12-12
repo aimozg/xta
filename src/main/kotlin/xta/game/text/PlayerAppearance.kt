@@ -2,8 +2,10 @@ package xta.game.text
 
 import xta.game.PlayerCharacter
 import xta.game.creature.Gender
+import xta.game.creature.body.BeardStyle
 import xta.text.displayInches
 import xta.utils.decapitalized
+import xta.utils.fxrng
 import xta.utils.joinToSentence
 import xta.utils.prependIfNotEmpty
 
@@ -145,7 +147,20 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 
 	fun describeTongue() = character.tongue.appearanceDescription()
 
-	fun describeBeard() = "" // TODO
+	fun describeBeard() = buildString {
+		if (character.beardLength > 0) {
+			append("You have a ")
+			append(Appearance.beardDescsript(character))
+			if (character.beardStyle != BeardStyle.GOATEE) {
+				append(" covering your")
+				if (fxrng.nextBoolean()) append("jaw")
+				else append("chin and cheeks")
+			} else {
+				append(" protruding from your chin")
+			}
+			append(".")
+		}
+	}
 
 	fun describeGills() = "" // TODO
 
