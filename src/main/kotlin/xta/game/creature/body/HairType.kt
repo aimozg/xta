@@ -16,18 +16,18 @@ enum class HairType(
 ) : CocId {
 	NORMAL(0, "normal") {
 		override fun appearanceDescription(creature: Creature) =
-			"Although not particularly remarkable, your ${hairInfo(creature)} looks good on you, accentuating your features well."
+			"Although not particularly remarkable, [your] ${hairInfo(creature)} looks good on [you], accentuating [your] features well."
 	},
 	FEATHER(1, "feather", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is made completely out of feathers rather than actual strands."
+			"[Your] ${hairInfo(creature)} is made completely out of feathers rather than actual strands."
 
 		override fun shortDesc(creature: Creature) =
 			"feather-${hairNoun(creature)}"
 	},
 	GHOST(2, "ghost") {
 		override fun appearanceDescription(creature: Creature) =
-			"Although your ${hairInfo(creature)} technically has the features of normal human hair, it is also completely transparent."
+			"Although [your] ${hairInfo(creature)} technically has the features of normal human hair, it is also completely transparent."
 
 		override fun shortDesc(creature: Creature) =
 			"transparent ${hairNoun(creature)}"
@@ -37,7 +37,7 @@ enum class HairType(
 	},
 	GOO(3, "goopy") {
 		override fun appearanceDescription(creature: Creature) =
-			"Atop your head is a gooey ${hairInfo(creature)}, more like an amorphous blob imitating the familiar shape than the real deal."
+			"Atop [your] head is a gooey ${hairInfo(creature)}, more like an amorphous blob imitating the familiar shape than the real deal."
 
 		override fun shortDesc(creature: Creature) =
 			"goo-${hairNoun(creature)}"
@@ -47,7 +47,7 @@ enum class HairType(
 	},
 	ANEMONE(4, "tentacle", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is in truth made out of anemone tentacles, only vaguely resembling the real deal."
+			"[Your] ${hairInfo(creature)} is in truth made out of anemone tentacles, only vaguely resembling the real deal."
 
 		override fun shortDesc(creature: Creature) =
 			"tentacle-${hairNoun(creature)}"
@@ -57,21 +57,21 @@ enum class HairType(
 	},
 	QUILL(5, "quill", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is made completely out of quills rather than actual strands."
+			"[Your] ${hairInfo(creature)} is made completely out of quills rather than actual strands."
 
 		override fun shortDesc(creature: Creature) =
 			"quill-${hairNoun(creature)}"
 	},
 	GORGON(6, "snake-like", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"Atop your head is technically ${hairInfo(creature)}, if one were to ignore that it is made of snakes rather than actual hair."
+			"Atop [your] head is technically ${hairInfo(creature)}, if one were to ignore that it is made of snakes rather than actual hair."
 
 		override fun shortDesc(creature: Creature) =
 			"snakes-${hairNoun(creature)}"
 	},
 	LEAF(7, "leaf") {
 		override fun appearanceDescription(creature: Creature) =
-			"Considering how your ${hairInfo(creature)} is made completely out of leaves, you seem to have some sort of connection to nature."
+			"Considering how [your] ${hairInfo(creature)} is made completely out of leaves, [you] [verb seem] to have some sort of connection to nature."
 
 		override fun shortDesc(creature: Creature) =
 			"leaf-${hairNoun(creature)}"
@@ -81,42 +81,42 @@ enum class HairType(
 	},
 	FLUFFY(8, "fluffy", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"You have a white pillowy ${hairNoun(creature)}, very much wooly to the touch and constantly trying to lull you to sleep anytime you lie against a surface."
+			"[You] [have] a white pillowy ${hairNoun(creature)}, very much wooly to the touch and constantly trying to lull [you] to sleep anytime you lie against a surface."
 
 		override fun shortDesc(creature: Creature) =
 			"fluffy ${hairNoun(creature)}"
 	},
 	GRASS(9, "grass") {
 		override fun appearanceDescription(creature: Creature) =
-			"Rather than normal strands, your ${hairInfo(creature)} is actually made entirely of grass, like some sort of nature spirit's."
+			"Rather than normal strands, [your] ${hairInfo(creature)} is actually made entirely of grass, like some sort of nature spirit's."
 
 		override fun shortDesc(creature: Creature) =
 			"grass-${hairNoun(creature)}"
 	},
 	SILKEN(10, "silky") {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is extremely glossy and smooth, its elvish features so perfect by human standards to the point of feeling unnatural."
+			"[Your] ${hairInfo(creature)} is extremely glossy and smooth, its elvish features so perfect by human standards to the point of feeling unnatural."
 
 		override fun shortDesc(creature: Creature) =
 			"elven ${hairNoun(creature)}"
 	},
 	STORM(11, "glowing lightning-shaped") {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)}'s tips end in glowing lightning-shaped locks, crackling with electricity whenever you will them to."
+			"[Your] ${hairInfo(creature)}'s tips end in glowing lightning-shaped locks, crackling with electricity whenever [you] [verb will] them to."
 
 		override fun shortDesc(creature: Creature) =
 			"lightning ${hairNoun(creature)}"
 	},
 	BURNING(12, "burning") {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} has its tips overtaken by a magic flame, burning anything you wish it to and nothing more."
+			"[Your] ${hairInfo(creature)} has its tips overtaken by a magic flame, burning anything [you] [verb wish] it to and nothing more."
 
 		override fun shortDesc(creature: Creature) =
 			"burning hair"
 	},
 	SNOWY(13, "snowy") {
 		override fun appearanceDescription(creature: Creature) = buildString {
-			append("Your ${hairInfo(creature)} is human in appearance, but cold to the touch and regularly used as a nest by snow flurries")
+			append("[Your] ${hairInfo(creature)} is human in appearance, but cold to the touch and regularly used as a nest by snow flurries")
 			if (creature.rearBody.type == RearBodyType.GLACIAL_AURA) {
 				append(", an effect amplified by your bone-chilling aura")
 			}
@@ -128,46 +128,46 @@ enum class HairType(
 	},
 	FAIRY(14, "otherworldly silky and almost translucent") {
 		override fun appearanceDescription(creature: Creature) =
-			"Despite looking almost human, your ${hairInfo(creature)} is otherworldly smooth and almost translucent, its fairy traits easy to notice if not identify."
+			"Despite looking almost human, [your] ${hairInfo(creature)} is otherworldly smooth and almost translucent, its fairy traits easy to notice if not identify."
 
 		override fun shortDesc(creature: Creature) =
 			"silky fairy ${hairNoun(creature)}"
 	},
 	CRAZY(15, "crazy", ignoresStyle = true) {
 		override fun appearanceDescription(creature: Creature) =
-			"Your wild ${hairInfo(creature)} is positively crazy, with spiked tips pointing outwards to your sides."
+			"[Your] wild ${hairInfo(creature)} is positively crazy, with spiked tips pointing outwards to [your] sides."
 
 		override fun shortDesc(creature: Creature) =
 			"crazy ${hairNoun(creature)}"
 	},
 	WINDSWEPT(16, "windswept") {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is quite aerodynamic, shaped as to avoid encumbering you even in a windstorm."
+			"[Your] ${hairInfo(creature)} is quite aerodynamic, shaped as to avoid encumbering you even in a windstorm."
 	},
 	RATATOSKR(17, "striped") {
 		override fun appearanceDescription(creature: Creature) =
-			"Though your ${hairInfo(creature)} could almost pass for human, it's striped at the center with light tips not unlike the head of a chipmunk."
+			"Though [your] ${hairInfo(creature)} could almost pass for human, it's striped at the center with light tips not unlike the head of a chipmunk."
 
 		override fun shortDesc(creature: Creature) =
 			"striped ${hairNoun(creature)}"
 	},
 	PRISMATIC(18, "prismatic") {
 		override fun appearanceDescription(creature: Creature) =
-			"Although your ${hairInfo(creature)} looks mostly human, that notion is quickly discarded by its prismatic strands, varying in hue along their length to display all the colors of a rainbow."
+			"Although [your] ${hairInfo(creature)} looks mostly human, that notion is quickly discarded by its prismatic strands, varying in hue along their length to display all the colors of a rainbow."
 
 		override fun shortDesc(creature: Creature) =
 			"prismatic ${hairNoun(creature)}"
 	},
 	MINDBREAKER(19, "mindbreaker") {
 		override fun appearanceDescription(creature: Creature) =
-			"Your ${hairInfo(creature)} is made out of tentacles, only vaguely resembling the real deal."
+			"[Your] ${hairInfo(creature)} is made out of tentacles, only vaguely resembling the real deal."
 
 		override fun shortDesc(creature: Creature) =
 			"slimy tentacle ${hairNoun(creature)}"
 	},
 	MINDBREAKERMALE(20, "mindbreaker") {
 		override fun appearanceDescription(creature: Creature) =
-			"Smaller webbings frill along the top of your head, forming a crown-like ring. Along these frills are longer hair-like tentacles that reach down to drape past your shoulders, just above your pectorals."
+			"Smaller webbings frill along the top of [your] head, forming a crown-like ring. Along these frills are longer hair-like tentacles that reach down to drape past [your] shoulders, just above [your] pectorals."
 
 		override fun shortDesc(creature: Creature) =
 			"slimy tentacle ${hairNoun(creature)}"
@@ -194,7 +194,7 @@ enum class HairType(
 	}
 
 	protected fun getHairLength(creature: Creature): String {
-		val hairScale = ((creature.hairLength / creature.tallness) * 100).toInt() / 100.0
+		val hairScale = ((creature.hairLength.toDouble() / creature.tallness) * 100) / 100.0
 		return when {
 			hairScale == 0.0 ->
 				fxrng.either("shaved", "bald", "smooth", "hairless", "glabrous")

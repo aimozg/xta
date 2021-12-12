@@ -2,7 +2,7 @@ package xta.game.text
 
 import xta.game.PlayerCharacter
 import xta.text.displayInches
-import xta.utils.decapitalized
+import xta.utils.joinToSentence
 
 /*
  * Created by aimozg on 05.12.2021.
@@ -18,13 +18,17 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		append(" ")
 		append(describeFace())
 
-		append(" Your features are adorned by ")
+		append(" [Your] features are adorned by ")
 		append(character.face.describeMF(true))
 		append(".")
 		append("[pg]")
 
-		append(describeHair())
-		// TODO ears
+		append(
+			listOf(
+				describeHair(),
+				describeEars()
+			).joinToSentence(pair = ", while ")
+		)
 		// TODO horns
 		// TODO horns
 		// TODO antennae
@@ -50,7 +54,7 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 
 	fun describeRace() = buildString {
 		//Discuss race
-		if (character.raceName() != character.startingRace) append("[He] began [his] journey as a " + character.startingRace + ", but gave that up as [he] explored the dangers of this realm. ")
+		if (character.raceName() != character.startingRace) append("[You] began [your] journey as a " + character.startingRace + ", but gave that up as [he] explored the dangers of this realm. ")
 		//Height and race.
 		append("[He] [is] a ")
 		append(character.tallness.displayInches())
@@ -64,19 +68,15 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 //		}
 	}
 
-	fun describeSkin() = buildString {
-		val skinDesc = character.skin.baseType.appearanceDescription()
-		val patternDesc = character.skin.basePattern.appearanceDescription()
-		append(skinDesc)
-		if (skinDesc.isNotEmpty() && patternDesc.isNotEmpty()) {
-			append(", while ")
-			append(patternDesc.decapitalized())
-		} else {
-			append(patternDesc)
-		}
-	}
+	fun describeSkin() =
+		listOf(
+			character.skin.baseType.appearanceDescription(),
+			character.skin.basePattern.appearanceDescription()
+		).joinToSentence(pair = ", while ")
 
 	fun describeFace() = character.face.appearanceDescription()
 
 	fun describeHair() = character.hair.appearanceDescription()
+
+	fun describeEars() = character.ears.appearanceDescription()
 }

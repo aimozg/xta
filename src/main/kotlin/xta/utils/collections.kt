@@ -49,7 +49,8 @@ fun List<String>.joinToSentence(
 	separator:String=", ",
 	beforeLast:String=", and ",
 	pair:String=" and ",
-	decapitalize:Boolean = true
+	decapitalize:Boolean = true,
+	dropPeriods:Boolean = true
 ): String {
 	if (any { it.isBlank() }) return filter { it.isNotBlank() }.joinToSentence(separator, beforeLast, pair)
 	val list = this
@@ -64,10 +65,11 @@ fun List<String>.joinToSentence(
 				i > 0 ->
 					append(separator)
 			}
-			if (decapitalize) {
-				append(s.decapitalized())
+			val s2 = if (dropPeriods && i < size-1) s.removeSuffix(".") else s
+			if (decapitalize && i > 0) {
+				append(s2.decapitalized(true))
 			} else {
-				append(s)
+				append(s2)
 			}
 		}
 	}
@@ -78,5 +80,6 @@ inline fun<T> List<T>.joinToSentence(
 	beforeLast:String=", and ",
 	pair:String=" and ",
 	decapitalize:Boolean = true,
+	dropPeriods:Boolean = true,
 	transform:(T)->String
-): String = map(transform).joinToSentence(separator, beforeLast, pair, decapitalize)
+): String = map(transform).joinToSentence(separator, beforeLast, pair, decapitalize, dropPeriods)

@@ -2,20 +2,21 @@ package xta.game.creature.body
 
 import xta.game.Creature
 import xta.net.serialization.JsonSerializable
+import xta.utils.decapitalized
 
 @JsExport
 class FacePart(val creature: Creature): JsonSerializable() {
 	var type: FaceType by property(FaceType.HUMAN)
 
-	fun appearanceDescription() = buildString {
+	fun appearanceDescription()  = buildString {
 		if (type.isHumanShaped) {
 			if (creature.skin.coverage < SkinCoverage.COMPLETE) {
-				append("Your face is human in shape and structure")
+				append("[Your] face is human in shape and structure")
 				if (creature.skin.isCoverLowMid()) {
-					append(", and on your cheeks you have [skin coat]")
+					append(", and on [your] cheeks [you] [have] [skin coat]")
 				}
 			} else {
-				append("Under your [skin coat], you have a face which is human in shape and structure")
+				append("Under [your] [skin coat], [you] [have] a face which is human in shape and structure")
 			}
 		}
 
@@ -23,10 +24,7 @@ class FacePart(val creature: Creature): JsonSerializable() {
 		if (isNotEmpty()) {
 			if (desc.isNotEmpty()) {
 				append("; however, ")
-				// .decapitalized() doesn't work because first char of [You is [, not Y
-				append(desc.replace(Regex("""^(\[\w)?""")) {
-					it.value.lowercase()
-				})
+				append(desc.decapitalized(true))
 			} else {
 				append(".")
 			}

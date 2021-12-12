@@ -8,11 +8,27 @@ import kotlin.math.roundToInt
  * Created by aimozg on 04.12.2021.
  */
 
-fun String.capitalized() =
-	replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+private val FIRST_LETTER = Regex("""^[^\w]*\w""")
 
-fun String.decapitalized() =
-	replaceFirstChar { if (it.isUpperCase()) it.lowercase() else it.toString() }
+fun String.capitalized(skipPunctuation:Boolean = false): String {
+	return if (skipPunctuation) {
+		replace(FIRST_LETTER) { it.value.uppercase() }
+	} else {
+		replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+	}
+}
+
+
+/**
+ * Convert first character ([skipPunctuation]=false) or first letter ([skipPunctuation]=true) to lowercase
+ */
+fun String.decapitalized(skipPunctuation:Boolean = false): String {
+	return if (skipPunctuation) {
+		replace(FIRST_LETTER) { it.value.lowercase() }
+	} else {
+		replaceFirstChar { if (it.isUpperCase()) it.lowercase() else it.toString() }
+	}
+}
 
 fun Int.toHex6() = toString(16).padStart(6, '0')
 

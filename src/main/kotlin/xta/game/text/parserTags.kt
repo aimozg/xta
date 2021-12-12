@@ -14,7 +14,7 @@ fun Parser.evalGameTag(tag:String, tagArgs:String):String {
 		else -> {
 			if (char == null) error("Character for tag '$tag' not selected")
 			else {
-				val forMe = char === myChar
+				val forMe = char === myChar // TODO consider "enforce third person" option
 				when (tag) {
 					"bodytype" -> Appearance.bodyType(char)
 					"level" -> char.level.toString()
