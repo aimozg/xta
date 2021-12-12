@@ -18,7 +18,7 @@ abstract class AbstractParser: LogContext {
 			// [RACE] -> HUMAN
 			tag == tag.uppercase() -> output.uppercase()
 			// [Race] -> Human
-			tag == tag.capitalized() -> output.capitalized()
+			tag == tag.capitalized(false) -> output.capitalized()
 			// [race] -> human
 			else -> output
 		})

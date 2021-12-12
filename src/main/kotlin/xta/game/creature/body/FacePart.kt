@@ -24,7 +24,7 @@ class FacePart(val creature: Creature): JsonSerializable() {
 		if (isNotEmpty()) {
 			if (desc.isNotEmpty()) {
 				append("; however, ")
-				append(desc.decapitalized(true))
+				append(desc.decapitalized())
 			} else {
 				append(".")
 			}

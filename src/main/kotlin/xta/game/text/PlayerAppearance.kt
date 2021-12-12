@@ -1,9 +1,11 @@
 package xta.game.text
 
 import xta.game.PlayerCharacter
+import xta.game.creature.Gender
 import xta.text.displayInches
 import xta.utils.decapitalized
 import xta.utils.joinToSentence
+import xta.utils.prependIfNotEmpty
 
 /*
  * Created by aimozg on 05.12.2021.
@@ -36,29 +38,75 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		if (horns.isNotEmpty() || antennae.isNotEmpty()) {
 			append(" Beyond that, ")
 			append(
-				listOf(horns, antennae).joinToSentence().decapitalized(true)
+				listOf(horns, antennae).joinToSentence().decapitalized()
 			)
 		}
-		// TODO eyes
-		// TODO tongue
-		// TODO beard
-		// TODO gills
-		// TODO visage
-		// TODO arms
-		// TODO lower body
-		// TODO wings
-		// TODO rear body
-		// TODO tail
-		// TODO breasts
-		// TODO crotch
-		// TODO cock
-		// TODO balls
-		// TODO pussy
-		// TODO asshole
-		// TODO piercings
-		// TODO special
-		// TODO pregnancy
-		// TODO equipment
+
+		append(
+			listOf(
+				describeEyes(),
+				describeTongue()
+			).joinToSentence()
+		)
+
+		val beard = describeBeard()
+		val gills = describeGills()
+		if (beard.isNotEmpty() || gills.isNotEmpty()) {
+			append("Also, ")
+			append(
+				listOf(beard, gills).joinToSentence().decapitalized()
+			)
+		}
+
+		append(describeVisage())
+
+		append("[pg]")
+		append(
+			listOf(
+				describeArms(),
+				describeLowerBody()
+			).joinToSentence()
+		)
+
+		append(describeWings().prependIfNotEmpty("[pg]"))
+
+		append(describeRearBody().prependIfNotEmpty("[pg]"))
+
+		append(describeTail().prependIfNotEmpty(" "))
+
+		append("[pg]")
+		append(describeBreasts())
+
+		append(describeCrotch().prependIfNotEmpty(" "))
+
+		if (character.hasCock()) {
+			append("[pg]")
+			append(describeCock())
+			append("[pg]")
+			append(describeBalls())
+		}
+
+		append(describePussy().prependIfNotEmpty("[pg]"))
+
+		append("[pg]")
+		if (character.gender == Gender.GENDERLESS) {
+			append(
+				listOf(
+					"You have a curious lack of any sexual endowments.",
+					describeAsshole()
+				).joinToSentence()
+			)
+		} else {
+			append(describeAsshole())
+		}
+
+		append(describePiercings().prependIfNotEmpty("[pg]"))
+
+		append(describeSpecialCases().prependIfNotEmpty("[pg]"))
+
+		append(describePregnancy().prependIfNotEmpty("[pg]"))
+
+		append(describeEquipment().prependIfNotEmpty("[pg]"))
 	}
 
 	fun describeRace() = buildString {
@@ -92,4 +140,44 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 	fun describeHorns() = character.horns.appearanceDescription()
 
 	fun describeAntennae() = character.antennae.appearanceDescription()
+
+	fun describeEyes() = "" // TODO
+
+	fun describeTongue() = "" // TODO
+
+	fun describeBeard() = "" // TODO
+
+	fun describeGills() = "" // TODO
+
+	fun describeVisage() = "" // TODO
+
+	fun describeArms() = "" // TODO
+
+	fun describeLowerBody() = "" // TODO
+
+	fun describeWings() = "" // TODO
+
+	fun describeRearBody() = "" // TODO
+
+	fun describeTail() = "" // TODO
+
+	fun describeBreasts() = "" // TODO
+
+	fun describeCrotch() = "" // TODO
+
+	fun describeCock() = "" // TODO
+
+	fun describeBalls() = "" // TODO
+
+	fun describePussy() = "" // TODO
+
+	fun describeAsshole() = "" // TODO
+
+	fun describePiercings() = "" // TODO
+
+	fun describeSpecialCases() = "" // TODO
+
+	fun describePregnancy() = "" // TODO
+
+	fun describeEquipment() = "" // TODO
 }

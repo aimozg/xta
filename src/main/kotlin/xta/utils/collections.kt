@@ -67,7 +67,7 @@ fun List<String>.joinToSentence(
 			}
 			val s2 = if (dropPeriods && i < size-1) s.removeSuffix(".") else s
 			if (decapitalize && i > 0) {
-				append(s2.decapitalized(true))
+				append(s2.decapitalized())
 			} else {
 				append(s2)
 			}

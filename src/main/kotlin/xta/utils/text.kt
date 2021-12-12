@@ -10,7 +10,10 @@ import kotlin.math.roundToInt
 
 private val FIRST_LETTER = Regex("""^[^\w]*\w""")
 
-fun String.capitalized(skipPunctuation:Boolean = false): String {
+/**
+ * Convert first character ([skipPunctuation]=false) or first letter ([skipPunctuation]=true) to uppercase
+ */
+fun String.capitalized(skipPunctuation:Boolean = true): String {
 	return if (skipPunctuation) {
 		replace(FIRST_LETTER) { it.value.uppercase() }
 	} else {
@@ -18,11 +21,10 @@ fun String.capitalized(skipPunctuation:Boolean = false): String {
 	}
 }
 
-
 /**
  * Convert first character ([skipPunctuation]=false) or first letter ([skipPunctuation]=true) to lowercase
  */
-fun String.decapitalized(skipPunctuation:Boolean = false): String {
+fun String.decapitalized(skipPunctuation:Boolean = true): String {
 	return if (skipPunctuation) {
 		replace(FIRST_LETTER) { it.value.lowercase() }
 	} else {
@@ -37,6 +39,8 @@ fun String.crop(maxLength: Int, tail: String = "…"): String =
 	else substring(0, maxLength - tail.length) + tail
 
 fun String.prepend(prefix: String) = prefix + this
+fun String.prependIfNotEmpty(prefix: String) = if (isEmpty()) "" else (prefix+this)
+fun String.appendIfNotEmpty(postfix: String) = if (isEmpty()) "" else (this+postfix)
 
 fun String.wrap(prefix: String, postfix: String) = prefix + this + postfix
 
