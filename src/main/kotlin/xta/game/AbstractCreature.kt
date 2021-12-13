@@ -30,12 +30,12 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val statStore = StatStore()
 
 	//new stat area
-	val strStat by nestedProperty(PrimaryStat(this as Creature, Stats.STR))
-	val touStat by nestedProperty(PrimaryStat(this as Creature, Stats.TOU))
-	val speStat by nestedProperty(PrimaryStat(this as Creature, Stats.SPE))
-	val intStat by nestedProperty(PrimaryStat(this as Creature, Stats.INT))
-	val wisStat by nestedProperty(PrimaryStat(this as Creature, Stats.WIS))
-	val libStat by nestedProperty(PrimaryStat(this as Creature, Stats.LIB))
+	val strStat by nestedProperty(PrimaryStat(this as Creature, Stats.STR, "Strength"))
+	val touStat by nestedProperty(PrimaryStat(this as Creature, Stats.TOU, "Toughness"))
+	val speStat by nestedProperty(PrimaryStat(this as Creature, Stats.SPE, "Speed"))
+	val intStat by nestedProperty(PrimaryStat(this as Creature, Stats.INT, "Intelligence"))
+	val wisStat by nestedProperty(PrimaryStat(this as Creature, Stats.WIS, "Wisdom"))
+	val libStat by nestedProperty(PrimaryStat(this as Creature, Stats.LIB, "Libido"))
 	val sensStat by nestedProperty(BuffableStat(Stats.SENS, baseValue = 15.0))
 
 	//Primary stats
@@ -52,10 +52,26 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val maxHpBaseStat by nestedProperty(BuffableStat(Stats.HP_MAX_BASE, baseValue = 50.0))
 	val maxHpPerLevelStat by nestedProperty(BuffableStat(Stats.HP_MAX_PERLEVEL, baseValue = 60.0))
 	val maxHpMultStat by nestedProperty(BuffableStat(Stats.HP_MAX_MULT, baseValue = 1.0))
+	val minLustStat by nestedProperty(BuffableStat(Stats.LUST_MIN, baseValue = 0.0))
+	val maxLustBaseStat by nestedProperty(BuffableStat(Stats.LUST_MAX_BASE, baseValue = 100.0))
+	val maxLustPerLevelStat by nestedProperty(BuffableStat(Stats.LUST_MAX_PERLEVEL, baseValue = 3.0))
+	val maxLustMultStat by nestedProperty(BuffableStat(Stats.LUST_MAX_MULT, baseValue = 1.0))
+	val maxWrathBaseStat by nestedProperty(BuffableStat(Stats.WRATH_MAX_BASE, baseValue = 500.0))
+	val maxWrathPerLevelStat by nestedProperty(BuffableStat(Stats.WRATH_MAX_PERLEVEL, baseValue = 5.0))
+	val maxWrathMultStat by nestedProperty(BuffableStat(Stats.WRATH_MAX_MULT, baseValue = 1.0))
+	val maxFatigueBaseStat by nestedProperty(BuffableStat(Stats.FATIGUE_MAX_BASE, baseValue = 150.0))
+	val maxFatiguePerLevelStat by nestedProperty(BuffableStat(Stats.FATIGUE_MAX_PERLEVEL, baseValue = 5.0))
+	val maxFatigueMultStat by nestedProperty(BuffableStat(Stats.FATIGUE_MAX_MULT, baseValue = 1.0))
 	val maxManaBaseStat by nestedProperty(BuffableStat(Stats.MANA_MAX_BASE, baseValue = 300.0))
 	val maxManaPerLevelStat by nestedProperty(BuffableStat(Stats.MANA_MAX_PERLEVEL, baseValue = 10.0))
 	val maxManaMultStat by nestedProperty(BuffableStat(Stats.MANA_MAX_MULT, baseValue = 1.0))
+	val maxSfBaseStat by nestedProperty(BuffableStat(Stats.SF_MAX_BASE, baseValue = 50.0))
+	val maxSfPerLevelStat by nestedProperty(BuffableStat(Stats.SF_MAX_PERLEVEL, baseValue = 5.0))
+	val maxSfMultStat by nestedProperty(BuffableStat(Stats.SF_MAX_MULT, baseValue = 1.0))
 
+	val meleeAimStat by nestedProperty(BuffableStat(Stats.AIM_MELEE, baseValue = 0.64))
+	val meleeDodgeStat by nestedProperty(BuffableStat(Stats.DODGE_MELEE, baseValue = 0.0))
+	val meleeDamageStat by nestedProperty(BuffableStat(Stats.DAMAGE_MELEE, baseValue = 0.0))
 
 	//Level Stats
 	var xp: Int by property(0)

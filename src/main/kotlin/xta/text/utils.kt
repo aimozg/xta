@@ -1,5 +1,7 @@
 package xta.text
 
+import js.toFixed
+
 /*
  * Created by aimozg on 28.11.2021.
  */
@@ -13,6 +15,13 @@ fun Int.displayInches():String {
 		feet > 0 -> "$feet'"
 		else -> "$inches\""
 	}
+}
+
+private val REX_TRAILING_ZEROS = Regex("""\.?0+$""")
+
+fun Double.toNiceString(maxDecimals: Int): String {
+	if (maxDecimals == 0) return toFixed(0)
+	return toFixed(maxDecimals).replace(REX_TRAILING_ZEROS,"")
 }
 
 private val NUMBER_WORDS_NORMAL = arrayOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")

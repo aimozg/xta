@@ -2,6 +2,7 @@ package xta.game.combat
 
 import xta.Game
 import xta.Player
+import xta.game.PlayerCharacter
 import xta.game.Scene
 import xta.game.combat.actions.CombatFinish
 import xta.game.combat.actions.CombatMeleeAttack
@@ -39,7 +40,7 @@ class Combat(
 			participants.forEach { it.display.selectSelf() }
 		}
 
-		override fun selectPerson(person: Player) {
+		override fun selectPerson(person: PlayerCharacter) {
 			participants.forEach { it.display.selectPerson(person) }
 		}
 

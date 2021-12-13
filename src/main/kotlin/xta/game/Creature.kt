@@ -123,13 +123,13 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun minLust():Double {
 		// TODO calculations
-		return 0.0
+		return minLustStat.value
 	}
 	open fun maxLust():Double {
 		return round(maxLustBase()*maxLustMult()).coerceAtMost(199_999.0)
 	}
 	open fun maxLustBase():Double {
-		var max = 100.0
+		var max = maxLustBaseStat.value
 		// TODO perk bonuses
 		max += level*maxLustPerLevel()
 		if (level <= 6) max += level*3
@@ -137,17 +137,17 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxLustPerLevel():Double {
 		// TODO perk bonuses
-		return 3.0
+		return maxLustPerLevelStat.value
 	}
 	open fun maxLustMult():Double {
 		// TODO calculate
-		return 1.0
+		return maxLustPerLevelStat.value
 	}
 	open fun maxWrath():Double {
 		return round(maxWrathBase()*maxWrathMult()).coerceAtMost(476_999.0)
 	}
 	open fun maxWrathBase():Double {
-		var max = 500.0
+		var max = maxWrathBaseStat.value
 		// TODO perk, item, race bonuses
 		max += level*maxWrathPerLevel()
 		if (level <= 6) max += level*5
@@ -155,11 +155,11 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxWrathPerLevel():Double {
 		// TODO perk, item, race bonuses
-		return 5.0
+		return maxWrathPerLevelStat.value
 	}
 	open fun maxWrathMult():Double {
 		// TODO perk, item, race bonuses
-		return 1.0
+		return maxWrathMultStat.value
 	}
 
 	/**
@@ -174,7 +174,7 @@ abstract class Creature: AbstractCreature() {
 		return round(maxFatigueBase()*maxFatigueMult()).coerceAtMost(1_499_999.0)
 	}
 	open fun maxFatigueBase():Double {
-		var max = 150.0
+		var max = maxFatigueBaseStat.value
 		// TODO racial scores items and perks
 		max += level*maxFatiguePerLevel()
 		if (level <= 6) max += level*5
@@ -182,11 +182,11 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxFatiguePerLevel():Double {
 		// TODO racial scores items and perks
-		return 5.0
+		return maxFatiguePerLevelStat.value
 	}
 	open fun maxFatigueMult():Double {
 		// TODO racial scores items and perks
-		return 1.0
+		return maxFatigueMultStat.value
 	}
 	open fun maxMana():Double {
 		return round(maxManaBase()*maxManaMult()).coerceAtMost(2_499_999.0)
@@ -210,7 +210,7 @@ abstract class Creature: AbstractCreature() {
 		return round(maxSoulforceBase()*maxSoulforceMult()).coerceAtMost(1_499_999.0)
 	}
 	open fun maxSoulforceBase():Double {
-		var max = 50.0
+		var max = maxSfBaseStat.value
 		// TODO perk, cultivation level, item, racial bonuses
 		max += level*maxSoulforcePerLevel()
 		if (level <= 6) max += level*5
@@ -218,11 +218,11 @@ abstract class Creature: AbstractCreature() {
 	}
 	open fun maxSoulforcePerLevel():Double {
 		// TODO perk, cultivation level, item, racial bonuses
-		return 5.0
+		return maxSfPerLevelStat.value
 	}
 	open fun maxSoulforceMult():Double {
 		// TODO perk, cultivation level, item, racial bonuses
-		return 1.0
+		return maxSfMultStat.value
 	}
 
 	/*
@@ -361,5 +361,39 @@ abstract class Creature: AbstractCreature() {
 	fun scalingBonusStrength(randomize:Boolean=true):Double {
 		val roll = scalingBonusIwlRoll(str.roundToInt())
 		if (randomize) return roll.roll() else return roll.mean()
+	}
+
+	val meleeAim: Double
+		get() {
+			var aim =meleeAimStat.value
+			aim += (level*0.06).coerceAtMost(0.72)
+			// TODO flying penalty
+			// TODO perk bonuses
+			// TODO item bonuses
+			// TODO mastery
+			if (hasCondition(CombatCondition.BLIND)) {
+				aim /= 2
+			}
+			return aim
+		}
+	val meleeDodge: Double
+		get() {
+			return meleeDodgeStat.value
+		}
+	fun meleeDamage(randomize:Boolean=true):Double {
+		var dmg = meleeDamageStat.value
+		dmg += scalingBonusStrength(randomize)
+		dmg = round(dmg)
+		dmg = dmg.coerceAtLeast(10.0)
+		// Strength-based damage
+		// TODO port calculations from Combat.as:5166-5203
+		// Weapon-based damage
+		// TODO port calculations from Combat.as:5204-5287
+		// Damage post-processing
+		// TODO port calculations from Combat.as:5313-5327 (damage post-processing)
+		// TODO port calculations from Combat.as:5422-5440 (some more perk-based damage)
+		// TODO port calculations from Combat.as:5518-5539 (damage boosted by dao)
+		// TODO port calculations from doDamage/doXXXDamage functions (damage type-related adjustments)
+		return dmg
 	}
 }

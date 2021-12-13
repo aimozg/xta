@@ -7,7 +7,7 @@ import xta.text.Parser
  */
 
 fun Parser.evalGameTag(tag:String, tagArgs:String):String {
-	val char = player?.char
+	val char = char
 	val myChar = myPlayer?.char
 	return when (tag) {
 		"pg" -> "\n\n"

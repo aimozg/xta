@@ -1,11 +1,11 @@
 package xta.text
 
-import xta.logging.LogManager
-import xta.utils.ENTITY_REGEX
-import xta.utils.decodeEntity
 import kotlinx.browser.document
 import org.w3c.dom.DocumentFragment
 import org.w3c.dom.ParentNode
+import xta.logging.LogManager
+import xta.utils.ENTITY_REGEX
+import xta.utils.decodeEntity
 
 /*
  * Created by aimozg on 04.12.2021.
@@ -77,7 +77,7 @@ class HTMLParser() {
 	companion object {
 		private val logger = LogManager.getLogger("xta.text.HTMLParser")
 
-		private val SAFE_HTML_TAGS = setOf("b","i","u","p","h1","h2","h3","h4","h5","hr","br","span")
+		private val SAFE_HTML_TAGS = setOf("b","i","u","p","h1","h2","h3","h4","h5","hr","br","span","div")
 		private val SINGULAR_HTML_TAGS = setOf("br","hr","img","input")
 		private val SAFE_HTML_ATTRIBUTES = setOf("class")
 

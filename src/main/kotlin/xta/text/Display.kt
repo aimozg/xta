@@ -1,6 +1,7 @@
 package xta.text
 
 import xta.Player
+import xta.game.PlayerCharacter
 import xta.game.Scene
 
 /*
@@ -12,10 +13,10 @@ abstract class Display: TextOutput {
 	val character get() = player.char
 
 	override fun selectSelf() {
-		parser.player = player
+		parser.char = player.char
 	}
-	override fun selectPerson(person:Player) {
-		parser.player = person
+	override fun selectPerson(person:PlayerCharacter) {
+		parser.char = person
 	}
 	override fun outputText(text: String) {
 		rawOutput(parser.parse(text))
@@ -23,7 +24,7 @@ abstract class Display: TextOutput {
 	abstract var sceneId: String
 	open fun startScene(sceneId:String) {
 		this.sceneId = sceneId
-		parser.player = player
+		parser.char = player.char
 		clearOutput()
 	}
 	open fun endScene(){}

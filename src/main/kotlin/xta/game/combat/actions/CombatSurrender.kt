@@ -5,7 +5,7 @@ import xta.game.combat.AbstractCombatAction
 
 class CombatSurrender(actor: Player): AbstractCombatAction(actor) {
 	override fun perform() {
-		display.selectPerson(actor)
+		display.selectPerson(actor.char)
 		display.outputText("[You] [verb surrender]!..")
 		actor.char.surrendered = true
 	}

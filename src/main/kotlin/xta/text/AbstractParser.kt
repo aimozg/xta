@@ -94,7 +94,7 @@ abstract class AbstractParser: LogContext {
 		return postProcess(parseTags(s))
 	}
 	companion object {
-		val ALLOWED_HTML_TAGS = setOf("b","i","u","p","h1","h2","h3","h4","h5","hr","br","span")
+		val ALLOWED_HTML_TAGS = setOf("b","i","u","p","h1","h2","h3","h4","h5","hr","br","span","div")
 
 		private val REX_ESCAPED = Regex("""\\.""")
 		// "Lookahead" regexes

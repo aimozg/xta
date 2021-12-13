@@ -1,9 +1,7 @@
 package xta.game.combat.actions
 
 import xta.Player
-import xta.game.combat.AbstractCombatAction
-import xta.game.combat.CombatMath
-import xta.utils.chanceRoll
+import xta.game.combat.*
 import xta.utils.formatBigInt
 import xta.utils.gamerng
 import xta.utils.percentRoll
@@ -21,36 +19,18 @@ class CombatMeleeAttack(
 		// TODO multi-attack
 		// TODO handle seals
 		// TODO port combat math
-		val hitChance = CombatMath.meleeAim(attacker)
-		if (!gamerng.chanceRoll(hitChance)) {
-			// miss
-			display.selectPerson(actor)
-			display.outputText("[You] [verb miss] ")
-			display.selectPerson(target)
-			display.outputText("[you]!")
-			return
-		}
-		val dodgeChance = CombatMath.meleeEvadeChance(attacker, defender)
-		if (gamerng.chanceRoll(dodgeChance)) {
-			// dodge
-			if (dodgeChance >= 0.5) {
-				display.selectPerson(target)
-				display.outputText("[You] deftly [verb avoid] ")
-				display.selectPerson(actor)
-				display.outputText("[your] slow attack.")
-			} else if (dodgeChance >= 0.25) {
-				display.selectPerson(target)
-				display.outputText("[You] [verb dodge] ")
-				display.selectPerson(actor)
-				display.outputText("[your] attack with superior quickness!")
-			} else {
-				display.selectPerson(target)
-				display.outputText("[You] narrowly [verb dodge] ")
-				display.selectPerson(actor)
-				display.outputText("[your] attack!")
-			}
-			return
-		}
+		val roll = CombatRoll(attacker, defender)
+		roll.aim = attacker.meleeAim
+		roll.dodgeChance = CombatMath.meleeEvadeChance(attacker, defender)
+		CombatPipeline.execute(
+			arrayOf(
+				AimPipe,
+				DodgePipe
+			),
+			display,
+			roll
+		)
+		if (roll.failed) return
 		// TODO blocking
 		// TODO feral combat
 		// hit
@@ -87,8 +67,10 @@ class CombatMeleeAttack(
 			// TODO use weapon name
 			append("Strike ${defender.name} with your weapon")
 			append("\n")
-			val hitChance = CombatMath.meleeTotalAccuracy(attacker, defender).times(100).roundToInt()
-			append("\nHit chance: $hitChance%")
+//			val hitChance = CombatMath.meleeTotalAccuracy(attacker, defender).times(100).roundToInt()
+//			append("\nHit chance: $hitChance%")
+			append("\nAim: ${attacker.meleeAim.coerceIn(0.0, 1.0).times(100).roundToInt()}%")
+			append("\nDodge: ${CombatMath.meleeEvadeChance(attacker, defender).times(100).roundToInt()}%")
 			append("\nApprox. damage: " + CombatMath.meleeDamage(attacker, defender, false).roundToInt())
 		}
 }

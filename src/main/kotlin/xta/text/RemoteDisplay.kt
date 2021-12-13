@@ -9,7 +9,7 @@ import xta.utils.jsobject
 
 class RemoteDisplay(
 	override val player: Player,
-	override val parser: Parser
+	override val parser: Parser = Parser(player)
 ): Display() {
 	var screen: ScreenJson = jsobject { scene ->
 		scene.sceneId = Limbo.scene.sceneId

@@ -11,7 +11,6 @@ import xta.net.protocol.GuestProtocol
 import xta.net.protocol.RemoteGuestProtocol
 import xta.net.protocol.messages.ScreenJson
 import xta.net.transport.DeadConnection
-import xta.text.Parser
 import xta.text.RemoteDisplay
 
 /*
@@ -51,7 +50,7 @@ class Player(
 
 	// HOST
 	var guest: GuestProtocol = RemoteGuestProtocol(this, DeadConnection())
-	val display = RemoteDisplay(this, Parser(this, this))
+	val display = RemoteDisplay(this)
 	var location: GameLocation = Limbo
 		set(value) {
 			if (field != value) {

@@ -24,10 +24,11 @@ class StartMenu: UiScreen("start-menu") {
 	private val saveFile = fragment.ref<HTMLInputElement>("savefile")
 	private val agreement = fragment.ref<HTMLInputElement>("agreement")
 
-	private val display = HTMLElementDisplay(Game.me,Parser(Game.me,Game.me), outputElement)
+	private val display = HTMLElementDisplay(Game.me,Parser(Game.me), outputElement)
 
 	fun showCharacter() {
 		display.clearOutput()
+		display.selectPerson(Game.myCharacter)
 		display.outputText(PlayerAppearance(Game.myCharacter).describe())
 		characterDiv.style.visibility = "visible"
 		playerPanel.showCharacter(Game.myCharacter)

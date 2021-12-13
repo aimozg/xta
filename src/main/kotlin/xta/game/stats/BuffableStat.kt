@@ -1,6 +1,8 @@
 package xta.game.stats
 
+import xta.game.creature.PerkType
 import xta.net.serialization.IJsonSerializable
+import xta.text.toNiceString
 import xta.utils.buildJson
 import xta.utils.mapToDynamicArray
 import xta.utils.walk
@@ -91,10 +93,73 @@ open class BuffableStat(
 		dirty = true
 	}
 
+	fun explainBuffs(
+		asPercentage: Boolean,
+		htmlFormat:Boolean = true,
+		includeHidden: Boolean = false,
+		groupPerks: Boolean = true
+	) = buildString {
+		var perkBuff = 0.0
+		for (buff in buffs) {
+			val x = buff.value
+			if (groupPerks && buff.tag.startsWith(PerkType.BUFF_TAG_PREFIX)) {
+				perkBuff += x
+				continue
+			}
+			if (!includeHidden && !buff.show) continue
+			if (x in 0.0..0.01) continue
+			explainBuff(buff.text, x, htmlFormat, asPercentage)
+		}
+		if (perkBuff != 0.0) {
+			explainBuff("Perks", perkBuff, htmlFormat, asPercentage)
+		}
+	}
+
 	enum class Aggregate(val defaultBase: Double) {
 		SUM(0.0),
 		PRODUCT(1.0),
 		MAX(Double.NEGATIVE_INFINITY),
 		MIN(Double.POSITIVE_INFINITY)
+	}
+
+	companion object {
+		private fun StringBuilder.explainBuff(
+			text: String,
+			value: Double,
+			htmlFormat: Boolean,
+			asPercentage: Boolean
+		) {
+			if (htmlFormat) {
+				append("<div class='buff ")
+				if (value > 0) {
+					append("buff-gt0")
+				} else {
+					append("buff-lt0")
+				}
+				append("'>")
+				append("<span class='buff-name'>")
+				append(text)
+				append("</span>: <span class='buff-value'>")
+				if (value > 0) append("+")
+				if (asPercentage) {
+					append(value.times(100).toInt().toString())
+					append("%")
+				} else {
+					append(value.toNiceString(1))
+				}
+				append("</span></div>")
+			} else {
+				append(text)
+				append(": ")
+				if (value > 0) append("+")
+				if (asPercentage) {
+					append(value.times(100).toInt().toString())
+					append("%")
+				} else {
+					append(value.toNiceString(1))
+				}
+				append("\n")
+			}
+		}
 	}
 }

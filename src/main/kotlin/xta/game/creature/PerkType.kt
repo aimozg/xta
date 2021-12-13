@@ -19,6 +19,8 @@ abstract class PerkType(
 	}
 
 	companion object {
+		val BUFF_TAG_PREFIX = "perk_"
+
 		val BY_ID = HashMap<String, PerkType>()
 	}
 }

@@ -14,49 +14,64 @@ object KitsuneRace: Race(17, "kitsune", 5) {
 	val basicFurColors = listOf("orange and white", "black", "black and white", "red", "red and white", "white")
 	val elderColors = listOf("metallic golden", "golden blonde", "metallic silver", "silver blonde", "snow white", "iridescent gray")
 
+	// 26+
 	object STAGE_INARI:RacialStage(this, "Inari",
 		Stats.STR_MULT to -0.50,
 		Stats.SPE_MULT to +0.50,
 		Stats.INT_MULT to +1.40,
 		Stats.WIS_MULT to +2.00,
 		Stats.LIB_MULT to +1.10,
-		Stats.SENS to +60.0
+		Stats.SENS to +60.0,
+		Stats.FATIGUE_MAX_BASE to 1000.0,
+		Stats.SF_MAX_MULT to +1.0
 	)
+	// 21-25
 	object STAGE_NINETAIL_OF_BALANCE:RacialStage(this, "nine tailed kitsune of balance",
 		Stats.STR_MULT to -0.45,
 		Stats.SPE_MULT to +0.40,
 		Stats.INT_MULT to +1.25,
 		Stats.WIS_MULT to +1.60,
 		Stats.LIB_MULT to +0.80,
-		Stats.SENS to +45.0
+		Stats.SENS to +45.0,
+		Stats.FATIGUE_MAX_BASE to 500.0,
+		Stats.SF_MAX_MULT to +0.65
 	) {
 		override fun nameOf(creature: PlayerCharacter) =
 			if (creature.isTaur) "nine tailed kitsune-taur of balance"
 			else "nine tailed kitsune of balance"
 	}
+	// 16-20
 	object STAGE_NINETAIL: RacialStage(this,"nine tailed kitsune",
 		Stats.STR_MULT to -0.40,
 		Stats.SPE_MULT to +0.30,
 		Stats.INT_MULT to +1.10,
 		Stats.WIS_MULT to +1.25,
 		Stats.LIB_MULT to +0.45,
-		Stats.SENS to +30.0
+		Stats.SENS to +30.0,
+		Stats.FATIGUE_MAX_BASE to 300.0,
+		Stats.SF_MAX_MULT to +0.4
 	)
+	// 9-15
 	object STAGE_KITSUNE: RacialStage(this,"kitsune",
 		Stats.STR_MULT to -0.35,
 		Stats.SPE_MULT to +0.25,
 		Stats.INT_MULT to +0.60,
 		Stats.WIS_MULT to +0.75,
 		Stats.LIB_MULT to +0.30,
-		Stats.SENS to +20.0
+		Stats.SENS to +20.0,
+		Stats.FATIGUE_MAX_BASE to 100.0,
+		Stats.SF_MAX_MULT to +0.2
 	)
+	// 5-8
 	object STAGE_HALF_KITSUNE: RacialStage(this,"kitsune",
 		Stats.STR_MULT to -0.30,
 		Stats.SPE_MULT to +0.20,
 		Stats.INT_MULT to +0.35,
 		Stats.WIS_MULT to +0.40,
 		Stats.LIB_MULT to +0.25,
-		Stats.SENS to +15.0
+		Stats.SENS to +15.0,
+		Stats.FATIGUE_MAX_BASE to 50.0,
+		Stats.SF_MAX_MULT to +0.1
 	)
 
 	override fun stageForScore(creature: PlayerCharacter, score: Int) =

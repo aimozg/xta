@@ -38,4 +38,27 @@ object Stats {
 	const val MANA_MAX_BASE = "manamax_base"
 	const val MANA_MAX_MULT = "manamax_mult"
 	const val MANA_MAX_PERLEVEL = "manamax_perlevel"
+
+	const val LUST_MIN = "lustmin"
+	const val LUST_MAX_BASE = "lustmax_base"
+	const val LUST_MAX_MULT = "lustmax_mult"
+	const val LUST_MAX_PERLEVEL = "lustmax_perlevel"
+
+	const val FATIGUE_MAX_BASE = "fatgmax_base"
+	const val FATIGUE_MAX_MULT = "fatgmax_mult"
+	const val FATIGUE_MAX_PERLEVEL = "fatgmax_perlevel"
+
+	const val WRATH_MAX_BASE = "wrathmax_base"
+	const val WRATH_MAX_MULT = "wrathmax_mult"
+	const val WRATH_MAX_PERLEVEL = "wrathmax_perlevel"
+
+	const val SF_MAX_BASE = "sfmax_base"
+	const val SF_MAX_MULT = "sfmax_mult"
+	const val SF_MAX_PERLEVEL = "sfmax_perlevel"
+
+	const val AIM_MELEE = "aim_melee"
+
+	const val DODGE_MELEE = "dodge_melee"
+
+	const val DAMAGE_MELEE = "dmg_melee"
 }

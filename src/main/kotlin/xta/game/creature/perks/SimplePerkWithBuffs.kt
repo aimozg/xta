@@ -9,14 +9,14 @@ class SimplePerkWithBuffs(id:String,
                           vararg val buffs:Pair<String,Double>
 						  ): PerkType(id, name) {
 
-	val buffTag = "perk_$id"
+	val buffTag = BUFF_TAG_PREFIX + id
 	override fun onAdd(host: Creature) {
 		for (buff in buffs) {
 			host.statStore.addOrReplaceBuff(
 				buff.first,
 				buffTag,
 				buff.second,
-				text = name,
+				text = "Perk: $name",
 				save = false
 			)
 		}
