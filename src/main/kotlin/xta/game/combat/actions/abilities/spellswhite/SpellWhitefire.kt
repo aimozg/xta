@@ -33,7 +33,7 @@ class SpellWhitefire(
 
 	override fun performAbilityEffect() {
 		display.selectNpcs(caster, target)
-		display.outputText("[You] [verb narrow] [your] eyes, focusing [your] mind with deadly intent.  [You] [verb snap] [your] fingers and [npc1 name] [npc1 is] enveloped in a flash of white flames! ")
+		display.outputText("[You] [verb narrow] [your] eyes, focusing [your] mind with deadly intent.  [You] [verb snap] [your] fingers and [npc1 you] [npc1 are] enveloped in a flash of white flames! ")
 		val damage = calcDamage()
 		// TODO proper damage dealing function
 		// TODO crit and repeat damage
