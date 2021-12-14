@@ -27,6 +27,6 @@ open class UiTemplate(
 	companion object {
 		fun findTemplate(templateId: String): HTMLTemplateElement =
 			(document.getElementById(templateId) as? HTMLTemplateElement)
-				?: error("Cannot find template #templateId")
+				?: error("Cannot find template #$templateId")
 	}
 }

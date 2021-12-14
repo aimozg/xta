@@ -2,6 +2,7 @@ package xta.game
 
 import xta.game.combat.CombatCondition
 import xta.game.creature.Gender
+import xta.game.creature.PerkType
 import xta.game.creature.body.LowerBodyType
 import xta.game.creature.body.PenisType
 import xta.game.creature.body.SkinCoatType
@@ -320,6 +321,8 @@ abstract class Creature: AbstractCreature() {
 	}
 	fun mf(m:String,f:String) = if (looksFemale()) f else m
 
+	fun hasPerk(perkType: PerkType) = perkType in perks
+
 	/*
 	 *     ██████  ██████  ███    ███ ██████   █████  ████████     ███████ ███    ██ ███████
 	 *    ██      ██    ██ ████  ████ ██   ██ ██   ██    ██        ██      ████   ██ ██
@@ -378,7 +381,7 @@ abstract class Creature: AbstractCreature() {
 		}
 	val meleeDodge: Double
 		get() {
-			return meleeDodgeStat.value
+			return meleeDodgeStat.value + dodgeStat.value
 		}
 	fun meleeDamage(randomize:Boolean=true):Double {
 		var dmg = meleeDamageStat.value
@@ -395,5 +398,12 @@ abstract class Creature: AbstractCreature() {
 		// TODO port calculations from Combat.as:5518-5539 (damage boosted by dao)
 		// TODO port calculations from doDamage/doXXXDamage functions (damage type-related adjustments)
 		return dmg
+	}
+	fun physDamageReduction():Double {
+		var percentage = 100.0
+		percentage -= resistPhysStat.value*100.0
+		if (percentage < 20) percentage = 20.0
+		// TODO port from player.damagePercent()
+		return percentage/100.0
 	}
 }

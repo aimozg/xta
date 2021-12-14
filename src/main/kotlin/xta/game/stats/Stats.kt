@@ -58,7 +58,16 @@ object Stats {
 
 	const val AIM_MELEE = "aim_melee"
 
+	const val DODGE_ANY = "dodge"
 	const val DODGE_MELEE = "dodge_melee"
 
 	const val DAMAGE_MELEE = "dmg_melee"
+
+	const val RESIST_PHYS = "resist_phys"
+	const val RESIST_MAG = "resist_mag"
+	const val RESIST_LUST = "resist_lust"
+
+	const val SPELL_POWER = "spellpower"
+	const val SOULSKILL_POWER = "soulskillpower"
+	const val SOULSKILL_COST = "soulskill_cost"
 }

@@ -15,6 +15,9 @@ class Buff(
 	val show: Boolean = true
 ) {
 
+	val isNatural: Boolean
+		get() = tag.startsWith("perk_") || tag in NATURAL_TAGS
+
 	enum class Rate(val cocID:Int) {
 		PERMANENT(0),
 		ROUNDS(1),
@@ -27,6 +30,8 @@ class Buff(
 	}
 
 	companion object {
+		val NATURAL_TAGS = setOf("Racials","Alchemical","Mutagen","Knowledge")
+
 		fun serializer(stat: BuffableStat) = object: JsonSerializer<Buff> {
 			override fun serializeObject(t: Buff) = jsobject<BuffJson> { json ->
 				json.tag = t.tag

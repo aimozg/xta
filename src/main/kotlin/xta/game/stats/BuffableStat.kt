@@ -115,6 +115,14 @@ open class BuffableStat(
 		}
 	}
 
+	fun hasNegativeBuffs(): Boolean {
+		return buffs.any { !it.isNatural && it.value < 0 }
+	}
+
+	fun hasPositiveBuffs(): Boolean {
+		return buffs.any { !it.isNatural && it.value > 0 }
+	}
+
 	enum class Aggregate(val defaultBase: Double) {
 		SUM(0.0),
 		PRODUCT(1.0),

@@ -37,16 +37,28 @@ class FlashImporter {
 
 	private fun importStat(dest:BuffableStat, src:CocBuffableStatJson) {
 		for ((value, tag, options) in src.effects) {
-			dest.addOrReplaceBuff(tag,
-				value,
-				options.text,
-				Buff.Rate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
-				options.tick,
-				true,
-				options.show?:true
-			)
+			importBuff(dest, tag, value, options)
 		}
 	}
+
+	private fun importBuff(
+		dest: BuffableStat,
+		tag: String,
+		value: Double,
+		options: CocBuffJson
+	) {
+		if (tag == "Racials" || tag == "EzekielBlessing") return
+		dest.addOrReplaceBuff(
+			tag,
+			value,
+			options.text,
+			Buff.Rate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
+			options.tick,
+			true,
+			options.show ?: true
+		)
+	}
+
 	private fun importStat(dest:RawStat, src:CocRawStatJson) {
 		dest.value = src.value
 	}

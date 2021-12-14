@@ -37,6 +37,15 @@
 }
 .char-statval {
 	font-family: monospace;
+	&.-buffed {
+		color: #080;
+	}
+	&.-debuffed {
+		color: #c00;
+	}
+	&.-buffed.-debuffed {
+		color: #c80;
+	}
 }
 @media(min-width: 800px) {
 	.char-stat-sen {
@@ -105,7 +114,10 @@
 		background: #aaf;
 	}
 }
-
+.combat-stat-value {
+	font-weight: bold;
+	font-family: monospace;
+}
 .char-render {
 	display: flex;
 	justify-content: center;

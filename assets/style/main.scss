@@ -56,14 +56,16 @@
 		font-weight: bold;
 	}
 
-	.buff-gt0 .buff-value {
-		color: #080;
-	}
-	.buff-lt0 .buff-value {
-		color: #800;
-	}
+}
 
-	.buff-value {
-		font-weight: bold;
-	}
+.buff-gt0 .buff-value {
+	color: #080;
+}
+.buff-lt0 .buff-value {
+	color: #800;
+}
+
+.buff-value {
+	font-weight: bold;
+	font-family: monospace;
 }

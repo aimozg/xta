@@ -43,6 +43,7 @@ fun String.prependIfNotEmpty(prefix: String) = if (isEmpty()) "" else (prefix+th
 fun String.appendIfNotEmpty(postfix: String) = if (isEmpty()) "" else (this+postfix)
 
 fun String.wrap(prefix: String, postfix: String) = prefix + this + postfix
+fun String.wrapIfNotEmpty(prefix: String, postfix: String) = if (isEmpty()) "" else (prefix + this + postfix)
 
 fun String.fixedWrap(prefix: String, postfix: String, maxLength: Int, tail: String = "…") =
 	prefix + (

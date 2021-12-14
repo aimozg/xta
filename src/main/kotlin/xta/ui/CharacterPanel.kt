@@ -7,7 +7,11 @@ import org.w3c.dom.HTMLElement
 import xta.charview.CharViewImage
 import xta.game.PlayerCharacter
 import xta.game.settings.GameSettings
+import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
+import xta.text.toNiceString
+import xta.utils.toggleClass
+import xta.utils.wrapIfNotEmpty
 import kotlin.math.roundToInt
 
 /*
@@ -18,6 +22,12 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val titleDiv = fragment.ref("title")
 	private val subtitleDiv = fragment.ref("subtitle")
 	private val xpBar = fragment.ref("xpbar")
+
+	private val tabBtnMain = fragment.ref("seltab-main")
+	private val tabBtnCombat = fragment.ref("seltab-combat")
+	private val tabContentMain = fragment.ref("tab-main")
+	private val tabContentCombat = fragment.ref("tab-combat")
+
 	private val strVal = fragment.ref("stat-str")
 	private val touVal = fragment.ref("stat-tou")
 	private val speVal = fragment.ref("stat-spe")
@@ -38,6 +48,18 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val btnRenderShow = fragment.ref("render-showbtn")
 	private val renderDiv = fragment.ref("render")
 
+	private val combatStatDiv = fragment.ref("combat-stats")
+	private val csDodge = CombatStat("Dodge").also { it.insertTo(combatStatDiv) }
+	private val csDodgeMelee = CombatStat("Melee dodge bonus").also { it.insertTo(combatStatDiv) }
+	private val csAimMelee = CombatStat("Melee aim").also { it.insertTo(combatStatDiv) }
+	private val csDmgMelee = CombatStat("Melee damage bonus").also { it.insertTo(combatStatDiv) }
+	private val csResistPhys = CombatStat("Resist physical").also { it.insertTo(combatStatDiv) }
+	private val csResistMag = CombatStat("Resist magical").also { it.insertTo(combatStatDiv) }
+	private val csResistLust = CombatStat("Resist lust").also { it.insertTo(combatStatDiv) }
+	private val csSpellPower = CombatStat("Spell power").also { it.insertTo(combatStatDiv) }
+	private val csSoulskillPower = CombatStat("Soulskill power").also { it.insertTo(combatStatDiv) }
+	private val csSoulskillCost = CombatStat("Soulskill cost").also { it.insertTo(combatStatDiv) }
+
 	private var lastCharacter: PlayerCharacter? = null
 	init {
 		btnRenderZoom.onclick = {
@@ -50,6 +72,10 @@ class CharacterPanel : UiTemplate("char-panel") {
 			GameSettings.save()
 			refresh()
 		}
+		setupTabList(
+			tabBtnMain to tabContentMain,
+			tabBtnCombat to tabContentCombat,
+		)
 	}
 	fun hide() {
 		container.style.display = "none"
@@ -84,18 +110,20 @@ class CharacterPanel : UiTemplate("char-panel") {
 			xpBar.removeClass("-levelup")
 		}
 		// TODO mark buffed/debuffed stats with text-positive/text-negative classses
-		strVal.textContent = char.str.roundToInt().toString()
-		addBuffTooltip(strVal,char.strStat)
-		touVal.textContent = char.tou.roundToInt().toString()
-		addBuffTooltip(touVal,char.touStat)
-		speVal.textContent = char.spe.roundToInt().toString()
-		addBuffTooltip(speVal,char.speStat)
-		intVal.textContent = char.int.roundToInt().toString()
-		addBuffTooltip(intVal,char.intStat)
-		wisVal.textContent = char.wis.roundToInt().toString()
-		addBuffTooltip(wisVal,char.wisStat)
-		libVal.textContent = char.lib.roundToInt().toString()
-		addBuffTooltip(libVal,char.libStat)
+		val stats = listOf(
+			strVal to char.strStat,
+			touVal to char.touStat,
+			speVal to char.speStat,
+			intVal to char.intStat,
+			wisVal to char.wisStat,
+			libVal to char.libStat,
+		)
+		for ((div, stat) in stats) {
+			div.textContent = stat.value.roundToInt().toString()
+			addBuffTooltip(div,stat)
+			div.toggleClass("-buffed", stat.hasPositiveBuffs())
+			div.toggleClass("-debuffed", stat.hasNegativeBuffs())
+		}
 		senVal.textContent = char.sens.roundToInt().toString()
 		corVal.textContent = char.cor.toString()
 		hpBar.displayValue(
@@ -156,9 +184,43 @@ class CharacterPanel : UiTemplate("char-panel") {
 		ssValue.textContent = "0" // TODO soulstones
 		// TODO status effects (the cool kind)
 
+		csDodge.showForStat(true, char.dodgeStat)
+		csDodgeMelee.showForStat(true, char.meleeDodgeStat)
+		csAimMelee.showForStat(true, char.meleeAimStat)
+		csDmgMelee.showForStat(false, char.meleeDamageStat)
+		csResistPhys.showForStat(true, char.resistPhysStat)
+		csResistMag.showForStat(true, char.resistMagStat)
+		csResistLust.showForStat(true, char.resistLustStat)
+		csSpellPower.showForStat(true, char.spellPowerStat)
+		csSoulskillPower.showForStat(true, char.soulskillPowerStat)
+		csSoulskillCost.showForStat(true, char.soulskillCostStat)
+
 		renderDiv.clear()
 		if (render) {
 			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char, renderX2).canvas)
+		}
+	}
+
+	private class CombatStat(
+		statName: String
+	):UiTemplate("char-combat-stat") {
+		private val divValue = fragment.ref("stat-value")
+		init {
+			fragment.ref("stat-name").textContent = statName
+		}
+
+		fun showForStat(asPercentage:Boolean, stat:BuffableStat) {
+			divValue.toggleClass("-buffed", stat.hasPositiveBuffs())
+			divValue.toggleClass("-debuffed", stat.hasNegativeBuffs())
+			divValue.textContent =
+				if (asPercentage) (stat.value*100).roundToInt().toString()+"%"
+				else stat.value.toNiceString(1)
+			divValue.addTooltip(
+				stat.explainBuffs(asPercentage = asPercentage).wrapIfNotEmpty(
+					"<div class='stat-buffs -"+stat.statName+"'>",
+					"</div>"
+				)
+			)
 		}
 	}
 

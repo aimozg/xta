@@ -43,7 +43,6 @@ object CombatMath {
 	}
 
 	fun meleeDamageReduction(target: Creature, damage:Double):Double {
-		// TODO monster.damagePercent() or similar player function
-		return damage * (100.0/100.0)
+		return damage * target.physDamageReduction()
 	}
 }

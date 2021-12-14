@@ -107,8 +107,12 @@
             <div class="char-xp-bar">
                 <div class="char-xp-bar-fill" data-ref="xpbar" style="width:50%"></div>
             </div>
-            <div>
-                <div class="char-statgrid mt-4">
+            <div class="tab-buttons mt-2">
+                <button type="button" class="tab -active" data-ref="seltab-main">Main</button>
+                <button type="button" class="tab" data-ref="seltab-combat">Combat</button>
+            </div>
+            <div class="tab-content -active" data-ref="tab-main">
+                <div class="char-statgrid mt-2">
                     <div class="char-statname char-stat-str">Str</div>
                     <div class="char-statname char-stat-tou">Tou</div>
                     <div class="char-statname char-stat-spe">Spe</div>
@@ -144,6 +148,9 @@
                     <div class="char-effect -neutral">❤</div>-->
                 </div>
             </div>
+            <div class="tab-content" data-ref="tab-combat">
+                <div data-ref="combat-stats"></div>
+            </div>
         </div>
         <div class="char-render">
             <div class="char-render-options">
@@ -152,6 +159,13 @@
             </div>
             <div data-ref="render"></div>
         </div>
+    </div>
+</template>
+
+<template id="char-combat-stat">
+    <div class="combat-stat">
+        <span class="combat-stat-name" data-ref="stat-name"></span>:
+        <span class="combat-stat-value" data-ref="stat-value"></span>
     </div>
 </template>
 

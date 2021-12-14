@@ -54,4 +54,12 @@ open class PrimaryStat(
 		append(mult.explainBuffs(true, format, includeHidden, groupPerks))
 		append(bonus.explainBuffs(false, format, includeHidden, groupPerks))
 	}
+
+	fun hasNegativeBuffs(): Boolean {
+		return bonus.hasNegativeBuffs() || mult.hasNegativeBuffs()
+	}
+
+	fun hasPositiveBuffs(): Boolean {
+		return bonus.hasPositiveBuffs() || mult.hasPositiveBuffs()
+	}
 }

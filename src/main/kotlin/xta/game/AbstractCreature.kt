@@ -69,9 +69,20 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val maxSfPerLevelStat by nestedProperty(BuffableStat(Stats.SF_MAX_PERLEVEL, baseValue = 5.0))
 	val maxSfMultStat by nestedProperty(BuffableStat(Stats.SF_MAX_MULT, baseValue = 1.0))
 
+	val dodgeStat by nestedProperty(BuffableStat(Stats.DODGE_ANY, baseValue = 0.0))
+
 	val meleeAimStat by nestedProperty(BuffableStat(Stats.AIM_MELEE, baseValue = 0.64))
 	val meleeDodgeStat by nestedProperty(BuffableStat(Stats.DODGE_MELEE, baseValue = 0.0))
 	val meleeDamageStat by nestedProperty(BuffableStat(Stats.DAMAGE_MELEE, baseValue = 0.0))
+
+	val resistPhysStat by nestedProperty(BuffableStat(Stats.RESIST_PHYS, baseValue = 0.0))
+	val resistMagStat by nestedProperty(BuffableStat(Stats.RESIST_MAG, baseValue = 0.0))
+	val resistLustStat by nestedProperty(BuffableStat(Stats.RESIST_LUST, baseValue = 0.0))
+
+	val spellPowerStat by nestedProperty(BuffableStat(Stats.SPELL_POWER, baseValue = 1.0))
+
+	val soulskillPowerStat by nestedProperty(BuffableStat(Stats.SOULSKILL_POWER, baseValue = 1.0))
+	val soulskillCostStat by nestedProperty(BuffableStat(Stats.SOULSKILL_COST, baseValue = 1.0))
 
 	//Level Stats
 	var xp: Int by property(0)

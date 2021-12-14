@@ -1,0 +1,15 @@
+button.tab {
+	&.-active {
+		border: none;
+		font-weight: bold;
+	}
+}
+
+.tab-buttons {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.tab-content:not(.-active) {
+	display: none;
+}

@@ -10,22 +10,22 @@ import xta.utils.mapToArray
  */
 class PerkManager(
 	val host:Creature,
-	private val map: HashMap<String, PerkType> = HashMap()
+	private val set: HashSet<PerkType> = HashSet()
 ):
-	IJsonSerializable,MutableMap<String,PerkType> by map
+	IJsonSerializable,MutableSet<PerkType> by set
 {
+
 	fun addPerk(perk: PerkType) {
-		val key = perk.id
-		map[key]?.onRemove(host)
-		map[key] = perk
-		perk.onAdd(host)
+		if (set.add(perk)) {
+			perk.onAdd(host)
+		}
 	}
 
 	/**
 	 * Add perk that is guaranteed to be not present (ex. when loading a save)
 	 */
 	fun loadPerk(perk: PerkType) {
-		map[perk.id] = perk
+		set.add(perk)
 		perk.onAdd(host)
 	}
 
@@ -42,11 +42,11 @@ class PerkManager(
 	}
 
 	override fun serializeToJson(): Array<String> {
-		return map.values.mapToArray { it.id }
+		return set.mapToArray { it.id }
 	}
 
 	override fun deserializeFromJson(input: dynamic) {
-		map.clear()
+		set.clear()
 		for (id in input as Array<String>) {
 			loadPerk(id)
 		}
