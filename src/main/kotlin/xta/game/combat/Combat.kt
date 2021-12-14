@@ -8,6 +8,8 @@ import xta.game.combat.actions.CombatFinish
 import xta.game.combat.actions.CombatMeleeAttack
 import xta.game.combat.actions.CombatSurrender
 import xta.game.combat.actions.CombatWait
+import xta.game.combat.actions.abilities.AbstractCombatAbility
+import xta.game.combat.actions.abilities.spellswhite.SpellWhitefire
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.text.TextOutput
@@ -28,6 +30,8 @@ class Combat(
 		append("]")
 	}
 
+	override fun toString() = toLogString()
+
 	var ongoing = false
 	val participants = partyA.players + partyB.players
 	val turnQueue = ArrayList<Player>()
@@ -40,8 +44,8 @@ class Combat(
 			participants.forEach { it.display.selectSelf() }
 		}
 
-		override fun selectPerson(person: PlayerCharacter) {
-			participants.forEach { it.display.selectPerson(person) }
+		override fun selectNpc(index: Int, npc: PlayerCharacter) {
+			participants.forEach { it.display.selectNpc(index, npc) }
 		}
 
 		override fun clearOutput() {
@@ -104,11 +108,19 @@ class Combat(
 				actions.add(CombatWait(player))
 				for (target in opponentsOf(player)?.players ?: emptyList()) {
 					actions.add(CombatMeleeAttack(player, target))
+					// TODO needs better library organization
+					val abilities: List<AbstractCombatAbility> = listOf(SpellWhitefire(player, target))
+					for (ability in abilities) {
+						if (!ability.isKnown()) continue
+						actions.add(ability)
+					}
 				}
 				actions.add(CombatSurrender(player))
 			} else {
 				actions.add(CombatFinish(player))
 			}
+		} else {
+			logger.error(this, "buildCombatActions was called for $player (${player.combat}) inside $this")
 		}
 
 		player.combatActions = actions

@@ -271,6 +271,7 @@ class GameServer(): LogContext {
 						json.actionId = action.uid
 						json.label = action.label
 						json.hint = action.tooltip
+						if (!action.enabled) json.disabled = true
 					}
 					cum.actingPlayerId = combat.currentPlayer.id
 					cum.myContent = player.screen.content

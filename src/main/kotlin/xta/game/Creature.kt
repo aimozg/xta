@@ -366,6 +366,11 @@ abstract class Creature: AbstractCreature() {
 		if (randomize) return roll.roll() else return roll.mean()
 	}
 
+	fun scalingBonusIntelligence(randomize:Boolean=true):Double {
+		val roll = scalingBonusIwlRoll(int.roundToInt())
+		if (randomize) return roll.roll() else return roll.mean()
+	}
+
 	val meleeAim: Double
 		get() {
 			var aim =meleeAimStat.value

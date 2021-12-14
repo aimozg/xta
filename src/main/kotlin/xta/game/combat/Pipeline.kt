@@ -48,10 +48,8 @@ object AimPipe: CombatPipeline() {
 		if (!gamerng.chanceRoll(roll.aim)) {
 			roll.missed = true
 			roll.failed = true
-			display.selectPerson(roll.attacker)
-			display.outputText("[You] [verb miss] ")
-			display.selectPerson(roll.defender)
-			display.outputText("[you]!")
+			display.selectNpcs(roll.attacker, roll.defender)
+			display.outputText("[You] [verb miss] [npc1 you]!")
 		}
 	}
 }
@@ -63,21 +61,13 @@ object DodgePipe: CombatPipeline() {
 			roll.dodged = true
 			roll.failed = true
 			// dodge
+			display.selectNpcs(roll.defender, roll.attacker)
 			if (roll.dodgeChance >= 0.5) {
-				display.selectPerson(roll.defender)
-				display.outputText("[You] deftly [verb avoid] ")
-				display.selectPerson(roll.attacker)
-				display.outputText("[your] slow attack.")
+				display.outputText("[You] deftly [verb avoid] [npc1 your] slow attack.")
 			} else if (roll.dodgeChance >= 0.25) {
-				display.selectPerson(roll.defender)
-				display.outputText("[You] [verb dodge] ")
-				display.selectPerson(roll.attacker)
-				display.outputText("[your] attack with superior quickness!")
+				display.outputText("[You] [verb dodge] [npc1 your] attack with superior quickness!")
 			} else {
-				display.selectPerson(roll.defender)
-				display.outputText("[You] narrowly [verb dodge] ")
-				display.selectPerson(roll.attacker)
-				display.outputText("[your] attack!")
+				display.outputText("[You] narrowly [verb dodge] [npc1 your] attack!")
 			}
 		}
 	}
@@ -85,19 +75,14 @@ object DodgePipe: CombatPipeline() {
 
 object MeleeHitPipe: CombatPipeline() {
 	override fun process(roll: CombatRoll, display: TextOutput) {
+		display.selectNpcs(roll.attacker, roll.defender)
 		if (roll.damage < 0) {
-			display.selectPerson(roll.attacker)
-			display.outputText("[Your] attacks are deflected by ")
-			display.selectPerson(roll.defender)
-			display.outputText("[you].")
+			display.outputText("[Your] attacks are deflected by [npc1 you].")
 			return
 		}
 		roll.defender.hp -= roll.damage
-		display.selectPerson(roll.attacker)
 		// TODO weapon verbs
-		display.outputText("[You] [verb hit] ")
-		display.selectPerson(roll.defender)
-		display.outputText("[you]! ")
+		display.outputText("[You] [verb hit] [npc1 you]! ")
 		if (roll.crit) {
 			display.outputText("<b>Critical!</b> ")
 		}

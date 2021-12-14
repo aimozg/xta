@@ -1,5 +1,6 @@
 package xta.game
 
+import xta.game.creature.PcKnowledge
 import xta.game.creature.Race
 import xta.game.creature.RacialStage
 import xta.game.creature.perks.PerkLib
@@ -10,6 +11,12 @@ import xta.game.stats.Stats
  * Created by aimozg on 28.11.2021.
  */
 class PlayerCharacter: Creature() {
+
+	var startingRace by property("human")
+	val knowledge by nestedProperty(PcKnowledge())
+
+	////////////////////////////////////////
+
 	val chatName get() = "[$level] $name"
 
 	fun racialScores():List<Pair<Int,RacialStage>> {
@@ -35,7 +42,7 @@ class PlayerCharacter: Creature() {
 		return topRace().fullNameOf(this)
 	}
 
-	var startingRace: String = "human"
+	fun knows(thing:String) = thing in knowledge
 
 	fun updateStats() {
 		Race.clearRacialBonuses(this)

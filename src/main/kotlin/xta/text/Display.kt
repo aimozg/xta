@@ -13,18 +13,19 @@ abstract class Display: TextOutput {
 	val character get() = player.char
 
 	override fun selectSelf() {
-		parser.char = player.char
+		parser.npc0 = player.char
 	}
-	override fun selectPerson(person:PlayerCharacter) {
-		parser.char = person
+	override fun selectNpc(index: Int, npc: PlayerCharacter) {
+		parser.npcs[index] = npc
 	}
+
 	override fun outputText(text: String) {
 		rawOutput(parser.parse(text))
 	}
 	abstract var sceneId: String
 	open fun startScene(sceneId:String) {
 		this.sceneId = sceneId
-		parser.char = player.char
+		parser.clearNpcs(player.char)
 		clearOutput()
 	}
 	open fun endScene(){}

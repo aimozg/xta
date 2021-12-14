@@ -8,6 +8,7 @@ import org.khronos.webgl.ArrayBuffer
 import org.w3c.files.Blob
 import org.w3c.files.arrayBuffer
 import xta.game.PlayerCharacter
+import xta.game.creature.KnownThings
 import xta.game.creature.body.*
 import xta.game.stats.Buff
 import xta.game.stats.BuffableStat
@@ -66,6 +67,19 @@ class FlashImporter {
 		importStat(dest.bonus, src.bonus)
 		importStat(dest.mult, src.mult)
 		importStat(dest.core, src.core)
+	}
+
+	private fun importStatusEffect(character: PlayerCharacter, effect:CocStatusEffectJson) {
+		val knowledge = statusEffectIdToKnowledge[effect.statusAffectName]
+		if (knowledge != null) {
+			character.knowledge.add(knowledge)
+			return
+		}
+		/*
+		when (effect.statusAffectName) {
+
+		}
+		 */
 	}
 
 	private fun importAMF(amfdata: AMF3WrappedValue): PlayerCharacter {
@@ -142,12 +156,13 @@ class FlashImporter {
 		character.horns.type = HornType.byId(data.hornType)
 		character.horns.count = data.horns
 		character.wings.type = WingType.byId(data.wingType)
-		// TODO wingDesc
+		character.wings.desc = data.wingDesc
 		character.lowerBody.type = LowerBodyType.byId(data.lowerBodyPart.type)
 		character.lowerBody.legCount = data.lowerBodyPart.legCount
 		character.tail.type = TailType.byId(data.tail.type)
 		character.tail.count = data.tail.count
-		// TODO tail venom, recharge
+		character.tail.venom = data.tail.venom
+		character.tail.recharge = data.tail.recharge
 		character.antennae.type = AntennaeType.byId(data.antennae)
 		character.eyes.type = EyeType.byId(data.eyeType)
 		character.eyes.irisColor = data.eyeColor
@@ -193,11 +208,105 @@ class FlashImporter {
 			character.perks.loadPerk(jperk.id)
 		}
 
+		for (effect in data.statusAffects) {
+			importStatusEffect(character, effect)
+		}
+
 		logger.logObject(Logger.Level.INFO, null, "Imported",character)
 		return character
 	}
 
 	companion object {
 		private val logger by lazy { LogManager.getLogger("xta.flash.FlashImporter") }
+
+		private val statusEffectIdToKnowledge = mapOf(
+			"Knows Aegis" to KnownThings.SPELL_AEGIS,
+			"Knows Arctic Gale" to KnownThings.SPELL_ARCTICGALE,
+			"Knows Arouse" to KnownThings.SPELL_AROUSE,
+			"Knows Balance of Life" to KnownThings.SPELL_BALANCEOFLIFE,
+			// "Knows Barrage" to KnownThings.BARRAGE,
+			"Knows Blind" to KnownThings.SPELL_BLIND,
+			"Knows Blink" to KnownThings.SPELL_BLINK,
+			"Knows Blizzard" to KnownThings.SPELL_BLIZZARD,
+			"Knows Blood Chains" to KnownThings.SPELL_BLOODCHAINS,
+			"Knows Blood Explosion" to KnownThings.SPELL_BLOODEXPLOSION,
+			"Knows Blood Field" to KnownThings.SPELL_BLOODFIELD,
+			"Knows Blood Missiles" to KnownThings.SPELL_BLOODMISSILES,
+			// "Knows Blood Dewdrops" to KnownThings.BLOODDEWDROPS,
+			// "Knows Blood Dewdrops (infused with Soulforce)" to KnownThings.BLOODDEWDROPSSF,
+			// "Knows Blood Requiem" to KnownThings.BLOODREQUIEM,
+			// "Knows Blood Requiem (infused with Soulforce)" to KnownThings.BLOODREQUIEMSF,
+			"Knows Blood Shield" to KnownThings.SPELL_BLOODSHIELD,
+			// "Knows Blood Swipe" to KnownThings.BLOODSWIPE,
+			// "Knows Blood Swipe (infused with Soulforce)" to KnownThings.BLOODSWIPESF,
+			// "Knows Blood Wave" to KnownThings.BLOODWAVE,
+			"Knows Boneshatter" to KnownThings.SPELL_BONESHATTER,
+			"Knows Bone armor" to KnownThings.SPELL_BONEARMOR,
+			"Knows Bone spirit" to KnownThings.SPELL_BONESPIRIT,
+			"Knows Chain Lighting" to KnownThings.SPELL_CHAINLIGNTNING,
+			"Knows Charge" to KnownThings.SPELL_CHARGEWEAPON,
+			"Knows Charge Armor" to KnownThings.SPELL_CHARGEARMOR,
+			"Knows Clear Mind" to KnownThings.SPELL_CLEARMIND,
+			// "Knows Cleave" to KnownThings.CLEAVE,
+			// "Knows Comet" to KnownThings.COMET,
+			"Knows Consuming darkness" to KnownThings.SPELL_CONSUMINGDARKNESS,
+			"Knows Cure" to KnownThings.SPELL_CURE,
+			"Knows Curse of Desire" to KnownThings.SPELL_CURSEOFDESIRE,
+			"Knows Curse of Weeping" to KnownThings.SPELL_CURSEOFWEEPING,
+			"Knows Darkness Shard" to KnownThings.SPELL_DARKNESSSHARD,
+			"Knows Divine shield" to KnownThings.SPELL_DIVINESHIELD,
+			// "Knows Draco Sweep" to KnownThings.DRACOSWEEP,
+			"Knows Dusk Wave" to KnownThings.SPELL_DUSKWAVE,
+			// "Knows Earth Stance" to KnownThings.EARTHSTANCE,
+			"Knows Exorcise" to KnownThings.SPELL_EXORCISE,
+			"Knows Energy Drain" to KnownThings.SPELL_ENERGYDRAIN,
+			// "Knows Fire Punch" to KnownThings.FIREPUNCH,
+			"Knows Fire Storm" to KnownThings.SPELL_FIRESTORM,
+			// "Knows Flames of Love" to KnownThings.FLAMESOFLOVE,
+			// "Knows Grandiose Hail of Blades" to KnownThings.GRANDIOSEHAILOFBLADES,
+			// "Knows Grandiose Hail of Moon Blades" to KnownThings.GRANDIOSEHAILOFMOONBLADES,
+			// "Knows Hail of Blades" to KnownThings.HAILOFBLADES,
+			// "Knows Heart Seeker" to KnownThings.HEARTSEEKER,
+			// "Knows Heart Seeker (infused with Soulforce)" to KnownThings.HEARTSEEKERSF,
+			"Knows Heal" to KnownThings.SPELL_HEAL,
+			// "Knows Heaven's Devourer" to KnownThings.HEAVENSDEVOURER,
+			// "Knows Hurricane Dance" to KnownThings.HURRICANEDANCE,
+			// "Knows Ice Fist" to KnownThings.ICEFIST,
+			"Knows Ice Rain" to KnownThings.SPELL_ICERAIN,
+			"Knows Ice Spike" to KnownThings.SPELL_ICESPIKE,
+			// "Knows Icicles of Love" to KnownThings.ICICLESOFLOVE,
+			"Knows Lifesteal Enchantment" to KnownThings.SPELL_LIFESTEALENCHANTMENT,
+			"Knows Lifetap" to KnownThings.SPELL_LIFETAP,
+			"Knows Life siphon" to KnownThings.SPELL_LIFESIPHON,
+			"Knows Lightning Bolt" to KnownThings.SPELL_LIGHTNINGBOLT,
+			// "Knows Many Birds" to KnownThings.MANYBIRDS,
+			"Knows Mana Shield" to KnownThings.SPELL_MANASHIELD,
+			"Knows Mental Shield" to KnownThings.SPELL_MENTALSHIELD,
+			"Knows Meteor Shower" to KnownThings.SPELL_METEORSHOWER,
+			"Knows Might" to KnownThings.SPELL_MIGHT,
+			// "Knows Night of Brotherhood" to KnownThings.NIGHTOFBROTHERHOOD,
+			// "Knows Nonuple Thrust" to KnownThings.NONUPLETHRUST,
+			"Knows Nosferatu" to KnownThings.SPELL_NOSFERATU,
+			// "Knows Overlimit" to KnownThings.OVERLIMIT,
+			"Knows Polar Midnight" to KnownThings.SPELL_POLARMIDNIGHT,
+			// "Knows Punishing Kick" to KnownThings.PUNISHINGKICK,
+			"Knows Pyre Burst" to KnownThings.SPELL_PYREBURST,
+			"Knows Regenerate" to KnownThings.SPELL_REGENERATE,
+			"Knows Restore" to KnownThings.SPELL_RESTORE,
+			// "Knows Scarlet Spirit Charge" to KnownThings.SCARLETSPIRITCHARGE,
+			// "Knows Scarlet Spirit Charge (infused with Soulforce)" to KnownThings.SCARLETSPIRITCHARGESF,
+			// "Knows Sextuple Thrust" to KnownThings.SEXTUPLETHRUST,
+			// "Knows Sidewinder" to KnownThings.SIDEWINDER,
+			// "Knows Soul Blast" to KnownThings.SOULBLAST,
+			// "Knows Storm of Sisterhood" to KnownThings.STORMOFSISTERHOOD,
+			"Knows Tears of Denial" to KnownThings.SPELL_TEARSOFDENIAL,
+			"Knows Thunderstorm" to KnownThings.SPELL_THUNDERSTORM,
+			// "Knows Triple Thrust" to KnownThings.TRIPLETHRUST,
+			// "Knows Violet Pupil Transformation" to KnownThings.VIOLETPUPILTRANSFORMATION,
+			"Knows Wave of Ecstasy" to KnownThings.SPELL_WAVEOFECSTASY,
+			// "Knows Were-Beast" to KnownThings.WEREBEAST,
+			"Knows Whitefire" to KnownThings.SPELL_WHITEFIRE,
+			// "Knows Yin Yang Blast" to KnownThings.YINYANGBLAST,
+		)
 	}
 }

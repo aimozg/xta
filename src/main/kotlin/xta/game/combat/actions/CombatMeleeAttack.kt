@@ -41,18 +41,14 @@ class CombatMeleeAttack(
 		}
 		damage = round(CombatMath.meleeDamageReduction(defender, damage))
 		if (damage < 0) {
-			display.selectPerson(actor)
-			display.outputText("[Your] attacks are deflected by ")
-			display.selectPerson(target)
-			display.outputText("[you].")
+			display.selectNpcs(actor, target)
+			display.outputText("[Your] attacks are deflected by [npc1 you].")
 			return
 		}
 		defender.hp -= damage
-		display.selectPerson(actor)
 		// TODO weapon verbs
-		display.outputText("[You] [verb hit] ")
-		display.selectPerson(target)
-		display.outputText("[you]! ")
+		display.selectNpcs(actor, target)
+		display.outputText("[You] [verb hit] [npc1 you]! ")
 		if (crit) {
 			display.outputText("<b>Critical!</b> ")
 		}

@@ -65,6 +65,7 @@ class CombatScreen: UiScreen("combat-screen") {
 				textContent = action.label
 				if (action.disabled == true) disabled = true
 				addTooltip(action.hint?:"")
+				// TODO add tooltip on disabled buttons
 				onclick = {
 					hideTooltip()
 					disableActions()
