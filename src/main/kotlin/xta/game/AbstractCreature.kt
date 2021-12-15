@@ -75,6 +75,8 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val meleeDodgeStat by nestedProperty(BuffableStat(Stats.DODGE_MELEE, baseValue = 0.0))
 	val meleeDamageStat by nestedProperty(BuffableStat(Stats.DAMAGE_MELEE, baseValue = 0.0))
 
+	val rangedDamageMultStat by nestedProperty(BuffableStat(Stats.DAMAGE_RANGED_MULT, baseValue = 1.0))
+
 	val resistPhysStat by nestedProperty(BuffableStat(Stats.RESIST_PHYS, baseValue = 0.0))
 	val resistMagStat by nestedProperty(BuffableStat(Stats.RESIST_MAG, baseValue = 0.0))
 	val resistLustStat by nestedProperty(BuffableStat(Stats.RESIST_LUST, baseValue = 0.0))

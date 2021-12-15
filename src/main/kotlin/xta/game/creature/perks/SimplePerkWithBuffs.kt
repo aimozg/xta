@@ -9,7 +9,6 @@ class SimplePerkWithBuffs(id:String,
                           vararg val buffs:Pair<String,Double>
 						  ): PerkType(id, name) {
 
-	val buffTag = BUFF_TAG_PREFIX + id
 	override fun onAdd(host: Creature) {
 		for (buff in buffs) {
 			host.statStore.addOrReplaceBuff(

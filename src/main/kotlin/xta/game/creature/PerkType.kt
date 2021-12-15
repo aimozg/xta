@@ -10,6 +10,7 @@ abstract class PerkType(
 	val name:String
 ) {
 	abstract val description: String
+	val buffTag = BUFF_TAG_PREFIX + id
 
 	open fun onAdd(host: Creature){}
 	open fun onRemove(host: Creature){}

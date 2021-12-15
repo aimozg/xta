@@ -62,6 +62,7 @@ object Stats {
 	const val DODGE_MELEE = "dodge_melee"
 
 	const val DAMAGE_MELEE = "dmg_melee"
+	const val DAMAGE_RANGED_MULT = "dmg_ranged_mult"
 
 	const val RESIST_PHYS = "resist_phys"
 	const val RESIST_MAG = "resist_mag"

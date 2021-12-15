@@ -53,6 +53,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val csDodgeMelee = CombatStat("Melee dodge bonus").also { it.insertTo(combatStatDiv) }
 	private val csAimMelee = CombatStat("Melee aim").also { it.insertTo(combatStatDiv) }
 	private val csDmgMelee = CombatStat("Melee damage bonus").also { it.insertTo(combatStatDiv) }
+	private val csDmgRangedMult = CombatStat("Ranged damage").also { it.insertTo(combatStatDiv) }
 	private val csResistPhys = CombatStat("Resist physical").also { it.insertTo(combatStatDiv) }
 	private val csResistMag = CombatStat("Resist magical").also { it.insertTo(combatStatDiv) }
 	private val csResistLust = CombatStat("Resist lust").also { it.insertTo(combatStatDiv) }
@@ -131,54 +132,86 @@ class CharacterPanel : UiTemplate("char-panel") {
 			max = char.maxHp(),
 			text = char.hp.toString()
 		)
-		hpBar.container.addTooltip(
-			"HP: ${char.hp}/${char.maxHp()}\n" +
-					"(${char.hpRatio.times(100).roundToInt()}%)")
+		addResourceTooltip(
+			hpBar.container,
+			"HP",
+			char.hp,
+			char.maxHp(),
+			char.maxHpPerLevelStat,
+			char.maxHpBaseStat,
+			char.maxHpMultStat,
+		)
+		// TODO display white/gray/black magic thresholds
 		lustBar.displayValue(
 			value = char.lust,
 			extra = char.minLust(),
 			max = char.maxLust(),
 			text = char.lust.toString()
 		)
-		lustBar.container.addTooltip(
-			"Lust: ${char.lust}/${char.maxLust()}\n" +
-					"(${char.lustRatio.times(100).roundToInt()}%)"
+		addResourceTooltip(
+			lustBar.container,
+			"Lust",
+			char.lust,
+			char.maxLust(),
+			char.maxLustPerLevelStat,
+			char.maxLustBaseStat,
+			char.maxLustMultStat,
 		)
 		wrathBar.displayValue(
 			value = char.wrath,
 			max = char.maxWrath(),
 			text = char.wrath.toString()
 		)
-		wrathBar.container.addTooltip(
-			"Wrath: ${char.wrath}/${char.maxWrath()}\n" +
-					"(${char.wrathRatio.times(100).roundToInt()}%)"
+		addResourceTooltip(
+			wrathBar.container,
+			"Wrath",
+			char.wrath,
+			char.maxWrath(),
+			char.maxWrathPerLevelStat,
+			char.maxWrathBaseStat,
+			char.maxWrathMultStat,
 		)
 		staminaBar.displayValue(
 			value = char.stamina,
 			max = char.maxFatigue(),
 			text = char.stamina.toString()
 		)
-		staminaBar.container.addTooltip(
-			"Stamina: ${char.stamina}/${char.maxFatigue()}\n" +
-					"(${char.staminaRatio.times(100).roundToInt()}%)"
+		addResourceTooltip(
+			staminaBar.container,
+			"Stamina",
+			char.stamina,
+			char.maxFatigue(),
+			char.maxFatiguePerLevelStat,
+			char.maxFatigueBaseStat,
+			char.maxFatigueMultStat,
 		)
 		manaBar.displayValue(
 			value = char.mana,
 			max = char.maxMana(),
 			text = char.mana.toString()
 		)
-		manaBar.container.addTooltip(
-			"Mana: ${char.mana}/${char.maxMana()}\n" +
-					"(${char.manaRatio.times(100).roundToInt()}%)"
+		addResourceTooltip(
+			manaBar.container,
+			"Mana",
+			char.mana,
+			char.maxMana(),
+			char.maxManaPerLevelStat,
+			char.maxManaBaseStat,
+			char.maxManaMultStat,
 		)
 		sfBar.displayValue(
 			value = char.soulforce,
 			max = char.maxSoulforce(),
 			text = char.soulforce.toString()
 		)
-		sfBar.container.addTooltip(
-			"Soulforce: ${char.soulforce}/${char.maxSoulforce()}\n" +
-					"(${char.sfRatio.times(100).roundToInt()}%)"
+		addResourceTooltip(
+			sfBar.container,
+			"Soulforce",
+			char.soulforce,
+			char.maxSoulforce(),
+			char.maxSfPerLevelStat,
+			char.maxSfBaseStat,
+			char.maxSfMultStat,
 		)
 		gemsValue.textContent = char.gems.toString()
 		ssValue.textContent = "0" // TODO soulstones
@@ -188,6 +221,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 		csDodgeMelee.showForStat(true, char.meleeDodgeStat)
 		csAimMelee.showForStat(true, char.meleeAimStat)
 		csDmgMelee.showForStat(false, char.meleeDamageStat)
+		csDmgRangedMult.showForStat(true, char.rangedDamageMultStat)
 		csResistPhys.showForStat(true, char.resistPhysStat)
 		csResistMag.showForStat(true, char.resistMagStat)
 		csResistLust.showForStat(true, char.resistLustStat)
@@ -199,6 +233,34 @@ class CharacterPanel : UiTemplate("char-panel") {
 		if (render) {
 			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char, renderX2).canvas)
 		}
+	}
+
+	private fun addResourceTooltip(
+		container: HTMLElement,
+		name: String,
+		value: Double,
+		maxValue: Double,
+		perLevelStat: BuffableStat,
+		baseStat: BuffableStat,
+		multStat: BuffableStat
+	) {
+		container.addTooltip(buildString {
+			append(name+": "+value.toInt()+"/"+maxValue.toInt()+"\n")
+//			append("(${char.hpRatio.times(100).roundToInt()}%)")
+			append("<div><b>Per level</b>: <span class='buff-value'>")
+			append(perLevelStat.value.toInt())
+			append("</span></div>")
+			append(perLevelStat.explainBuffs(false))
+			append("<div class='stat-buffs -hp'>")
+			append("<div><b>Bonus</b>: <span class='buff-value'>")
+			append(baseStat.value.toInt())
+			append("</span></div>")
+			append(baseStat.explainBuffs(false))
+			append("<div><b>Multiplier</b>: <span class='buff-value'>")
+			append(multStat.value.times(100).toInt())
+			append("%</span></div>")
+			append(multStat.explainBuffs(true))
+		})
 	}
 
 	private class CombatStat(
