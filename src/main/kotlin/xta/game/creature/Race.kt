@@ -6,6 +6,8 @@ import xta.game.creature.races.HumanRace
 import xta.game.creature.races.KitsuneRace
 import xta.game.creature.races.DogRace
 import xta.game.creature.races.HorseRace
+import xta.game.creature.races.WolfRace
+
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -61,7 +63,7 @@ abstract class Race(
 			// DragonneRace,
 			// RaccoonRace,
 			DogRace,
-			// WolfRace,
+			WolfRace,
 			// WerewolfRace,
 			// FoxRace,
 			// FerretRace,
