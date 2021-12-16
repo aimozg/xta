@@ -10,4 +10,6 @@ object BreastCup {
 	const val C: Int = 3
 	const val D: Int = 4
 	const val DD: Int = 5
+	const val DD_BIG: Int = 6
+	const val E: Int = 7
 }
