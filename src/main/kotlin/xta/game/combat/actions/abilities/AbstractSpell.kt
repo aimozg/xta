@@ -14,4 +14,9 @@ abstract class AbstractSpell(actor: Player): AbstractCombatAbility(actor) {
 
 		return super.usabilityCheck()
 	}
+
+	override fun useResources() {
+		// TODO blood magic & last resort
+		caster.mana -= manaCost
+	}
 }
