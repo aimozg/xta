@@ -2,6 +2,7 @@ package xta
 
 import kotlinx.browser.window
 import xta.charview.CharViewImage
+import xta.game.combat.statuses.StatusLib
 import xta.game.creature.perks.PerkLib
 import xta.game.settings.GameSettings
 import xta.logging.LogManager
@@ -24,6 +25,7 @@ fun main() {
 	Game.localMessage("Welcome to the CoC-XTA")
 	ScreenManager.showStartMenu()
 	PerkLib
+	StatusLib
 	if (GameSettings.data.render == true) {
 		Game.localMessage("Loading images...")
 		window.setTimeout({

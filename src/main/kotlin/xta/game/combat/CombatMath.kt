@@ -13,18 +13,18 @@ object CombatMath {
 	}
 
 	fun speedBasedDodge(attacker:Creature, target: Creature):Double {
-		return target.spe / (target.spe + attacker.spe)
+		/*
+		CoCX formula:
+		if (speedDiff < 0) return 0.0
+		return 1.0 - 100.0 / ( speedDiff*0.3125 + 100.0)
+		 */
+		return (target.spe - attacker.spe) / (target.spe + attacker.spe)
 	}
 	/**
 	 * Chance to evade attack that is about to hit
 	 */
 	fun meleeEvadeChance(attacker:Creature, target: Creature):Double {
 		// TODO account for other items & perks, see Creature.getEvasionReason()
-		/*
-		CoCX formula:
-		if (speedDiff < 0) return 0.0
-		return 1.0 - 100.0 / ( speedDiff*0.3125 + 100.0)
-		 */
 		return (target.meleeDodgeStat.value + speedBasedDodge(attacker, target)).coerceIn(0.0, 1.0)
 	}
 

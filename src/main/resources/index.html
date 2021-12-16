@@ -68,6 +68,8 @@
             <input type="text" data-ref="invite">
         </div>
         <button type="button" data-ref="connect-btn">Connect</button>
+        <br/>
+        <button type="button" data-ref="back-btn">Back</button>
     </form>
 </template>
 
@@ -142,11 +144,7 @@
                     <div>Gems: <span data-ref="gems"></span></div>
                     <div>Spirit Stones: <span data-ref="soulstones"></span></div>
                 </div>
-                <div class="char-effects mt-2">
-                    <!--<div class="char-effect -bad">👁</div>
-                    <div class="char-effect -good">St</div>
-                    <div class="char-effect -neutral">❤</div>-->
-                </div>
+                <div class="char-effects mt-2" data-ref="status-effects"></div>
             </div>
             <div class="tab-content" data-ref="tab-combat">
                 <div data-ref="combat-stats"></div>

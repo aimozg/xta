@@ -2,7 +2,6 @@ package xta.text
 
 import xta.logging.LogContext
 import xta.logging.LogManager
-import xta.utils.capitalized
 
 /*
  * Created by aimozg on 08.12.2021.
@@ -10,19 +9,8 @@ import xta.utils.capitalized
 abstract class AbstractParser: LogContext {
 	protected abstract fun doEvaluateTag(tag:String, tagArgs:String):String
 
-	fun evaluateTag(tag:String, tagArgs:String):String {
-		val lc = tag.lowercase()
-		val output = doEvaluateTag(lc, tagArgs)
-		@Suppress("IntroduceWhenSubject")
-		return parseTags(when {
-			// [RACE] -> HUMAN
-			tag == tag.uppercase() -> output.uppercase()
-			// [Race] -> Human
-			tag == tag.capitalized(false) -> output.capitalized()
-			// [race] -> human
-			else -> output
-		})
-	}
+	fun evaluateTag(tag:String, tagArgs:String) =
+		adjustCase(tag, doEvaluateTag(tag.lowercase(), tagArgs))
 
 	fun parseTags(input:String):String {
 		logger.trace(this,"parseTags",input)

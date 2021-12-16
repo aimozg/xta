@@ -95,12 +95,14 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 2px;
+	min-height: 26px;
 }
 .char-effect {
 	border: 1px solid black;
-	height: 24px;
-	width: 24px;
+	height: 26px;
+	width: 26px;
 	box-sizing: border-box;
+	cursor: default;
 	/*border-radius: 8px;*/
 	text-align: center;
 	font-family: sans-serif;

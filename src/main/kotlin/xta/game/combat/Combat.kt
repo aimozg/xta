@@ -9,10 +9,13 @@ import xta.game.combat.actions.CombatMeleeAttack
 import xta.game.combat.actions.CombatSurrender
 import xta.game.combat.actions.CombatWait
 import xta.game.combat.actions.abilities.AbstractCombatAbility
+import xta.game.combat.actions.abilities.spellswhite.SpellBlind
+import xta.game.combat.actions.abilities.spellswhite.SpellLightningBolt
 import xta.game.combat.actions.abilities.spellswhite.SpellWhitefire
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.text.TextOutput
+import xta.utils.walk
 
 /*
  * Created by aimozg on 04.12.2021.
@@ -109,7 +112,11 @@ class Combat(
 				for (target in opponentsOf(player)?.players ?: emptyList()) {
 					actions.add(CombatMeleeAttack(player, target))
 					// TODO needs better library organization
-					val abilities: List<AbstractCombatAbility> = listOf(SpellWhitefire(player, target))
+					val abilities: List<AbstractCombatAbility> = listOf(
+						SpellWhitefire(player, target),
+						SpellLightningBolt(player, target),
+						SpellBlind(player, target),
+					)
 					for (ability in abilities) {
 						if (!ability.isKnown()) continue
 						actions.add(ability)
@@ -166,13 +173,26 @@ class Combat(
 		}
 	}
 
+	private fun roundStart() {
+		for (player in participants) {
+			if (!player.char.isAlive) continue
+			// TODO other things-on-new-round
+			player.char.statusEffects.walk { iterator, value ->
+				// TODO delegate to effect itself
+				value.durationRounds--
+				if (value.durationRounds <= 0) {
+					iterator.remove()
+				}
+			}
+		}
+	}
+
 	private fun nextRound() {
 		roundNumber++
 		logger.debug(this, "nextRound()",roundNumber)
-		// TODO things-on-new-round
-		if (checkEnd()) {
-			return
-		}
+		if (checkEnd()) return
+		roundStart()
+		if (checkEnd()) return
 		turnQueue.addAll(participants)
 		nextPlayer() // TODO protection from endless loop
 	}

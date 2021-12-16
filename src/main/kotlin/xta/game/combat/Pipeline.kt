@@ -5,6 +5,8 @@ import xta.text.TextOutput
 import xta.utils.chanceRoll
 import xta.utils.formatBigInt
 import xta.utils.gamerng
+import xta.utils.percentRoll
+import kotlin.math.round
 
 /*
  * Created by aimozg on 13.12.2021.
@@ -25,7 +27,11 @@ class CombatRoll(
 	var dodged:Boolean = false
 
 	var damage: Double = 0.0
+	var damageType: DamageType = DamageType.TRUE
+
 	var crit: Boolean = false
+	var critChance: Double = 0.0
+	var critMultiplier: Double = 1.0
 }
 
 abstract class CombatPipeline {
@@ -80,12 +86,30 @@ object MeleeHitPipe: CombatPipeline() {
 			display.outputText("[Your] attacks are deflected by [npc1 you].")
 			return
 		}
-		roll.defender.hp -= roll.damage
 		// TODO weapon verbs
 		display.outputText("[You] [verb hit] [npc1 you]! ")
+	}
+}
+
+object MeleeDamageRollPipe: CombatPipeline() {
+	override fun process(roll: CombatRoll, display: TextOutput) {
+		roll.damage = CombatMath.meleeDamage(roll.attacker, roll.defender)
+		val crit = gamerng.percentRoll(roll.critChance)
+		if (crit) {
+			roll.damage *= roll.critMultiplier
+		}
+		roll.damage = round(CombatMath.meleeDamageReduction(roll.defender, roll.damage))
+
+	}
+}
+
+object DealDamagePipe: CombatPipeline() {
+	override fun process(roll: CombatRoll, display: TextOutput) {
+		roll.defender.hp -= roll.damage
 		if (roll.crit) {
 			display.outputText("<b>Critical!</b> ")
 		}
 		display.outputText("(<span class='text-damage'>${roll.damage.formatBigInt()}</span>)")
+		// TODO post-damage effects
 	}
 }

@@ -15,6 +15,7 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 	private val roomIdInput = fragment.ref<HTMLInputElement>("room")
 	private val inviteInput = fragment.ref<HTMLInputElement>("invite")
 	private val connectButton = fragment.ref<HTMLButtonElement>("connect-btn")
+	private val backButton = fragment.ref<HTMLButtonElement>("back-btn")
 
 	init {
 		ScreenManager.chatEnabled = false
@@ -66,6 +67,9 @@ class ConnectMenu(val asHost:Boolean) : UiScreen("connect-screen") {
 				}
 			}
 			Unit
+		}
+		backButton.onclick = {
+			ScreenManager.showStartMenu()
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package xta.ui
 
 import kotlinx.dom.addClass
+import kotlinx.dom.appendElement
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
 import org.w3c.dom.HTMLElement
@@ -44,6 +45,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val sfBar = BarGauge().also { it.insertTo(fragment.ref("bar-sf")) }
 	private val gemsValue = fragment.ref("gems")
 	private val ssValue = fragment.ref("soulstones")
+	private val effectsDiv = fragment.ref("status-effects")
 	private val btnRenderZoom = fragment.ref("render-zoombtn")
 	private val btnRenderShow = fragment.ref("render-showbtn")
 	private val renderDiv = fragment.ref("render")
@@ -214,8 +216,16 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxSfMultStat,
 		)
 		gemsValue.textContent = char.gems.toString()
-		ssValue.textContent = "0" // TODO soulstones
-		// TODO status effects (the cool kind)
+		ssValue.textContent = "0" // TODO soulstones - do we need them? maybe other resource
+		effectsDiv.clear()
+		for (effect in char.statusEffects) {
+			effectsDiv.appendElement("div") {
+				this as HTMLElement
+				className = "char-effect "+effect.type.effectClass
+				innerHTML = effect.type.effectIcon
+				addTooltip(effect.tooltipHtml)
+			}
+		}
 
 		csDodge.showForStat(true, char.dodgeStat)
 		csDodgeMelee.showForStat(true, char.meleeDodgeStat)

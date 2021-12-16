@@ -9,24 +9,24 @@ import xta.game.combat.actions.abilities.AbstractWhiteSpell
 import xta.game.creature.KnownThings
 import kotlin.math.floor
 
-class SpellWhitefire(
+class SpellLightningBolt(
 	actor: Player,
 	val targetPlayer: Player
 ): AbstractWhiteSpell(
 	actor,
-	"Whitefire"
+	"Lightning Bolt"
 ) {
 	// TODO cooldown
 	val target = targetPlayer.char
-	override fun isKnown() = caster.knows(KnownThings.SPELL_WHITEFIRE)
+	override fun isKnown() = caster.knows(KnownThings.SPELL_LIGHTNINGBOLT)
 	override val description: String
-		get() = "Whitefire is a potent fire based attack that will burn your foe with flickering white flames, ignoring their physical toughness and most armors."
+		get() = "Lightning Bolt is a basic lightning attack that will electrocute your foe with a single bolt of lightning."
 
 	override val baseManaCost
 		get() = 40
 
 	override fun describeEffect(): String =
-		"~"+calcDamage(false)+" fire damage"
+		"~"+calcDamage(false)+" lightning damage"
 
 	fun calcDamage(randomize:Boolean = true):Double {
 		var damage = 2.0 * caster.scalingBonusIntelligence(randomize)
@@ -37,14 +37,16 @@ class SpellWhitefire(
 
 	override fun performAbilityEffect() {
 		display.selectNpcs(caster, target)
-		display.outputText("[You] [verb narrow] [your] eyes, focusing [your] mind with deadly intent.  [You] [verb snap] [your] fingers and [npc1 you] [npc1 are] enveloped in a flash of white flames! ")
+		display.outputText("[You] [verb charge] out energy in your hand and [verb fire] it out in the form of a powerful bolt of lightning at [npc1 you] !\n")
 		val roll = CombatRoll(caster, target)
-		roll.damageType = DamageType.FIRE
+		roll.damageType = DamageType.LIGHTNING
 		// TODO proper damage dealing function
 		// TODO crit and repeat damage
 		roll.damage = calcDamage()
-		CombatPipeline.execute(arrayOf(
-			DealDamagePipe
-		), display, roll)
+		CombatPipeline.execute(
+			arrayOf(
+				DealDamagePipe
+			), display, roll
+		)
 	}
 }

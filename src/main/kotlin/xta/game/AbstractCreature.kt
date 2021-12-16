@@ -1,5 +1,6 @@
 package xta.game
 
+import xta.game.combat.StatusEffect
 import xta.game.creature.PerkManager
 import xta.game.creature.body.*
 import xta.game.stats.*
@@ -92,6 +93,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	var gems: Int by property(0)
 
 	val perks by nestedProperty(PerkManager(this as Creature))
+	val statusEffects by nestedList(StatusEffect.Serializer(this as Creature))
 
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
