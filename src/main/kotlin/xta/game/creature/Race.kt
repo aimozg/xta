@@ -6,7 +6,6 @@ import xta.game.creature.races.HumanRace
 import xta.game.creature.races.KitsuneRace
 import xta.game.creature.races.DogRace
 import xta.game.creature.races.HorseRace
-import xta.game.creature.races.* //Can we not just use this instead of importing each individually?
 
 /*
  * Created by aimozg on 28.11.2021.

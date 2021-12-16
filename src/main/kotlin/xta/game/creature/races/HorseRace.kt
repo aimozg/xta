@@ -31,18 +31,10 @@ object HorseRace : Race (18, "horse", 4) {
         if (tail.type == TailType.HORSE)
             score++
         if (lowerBody.type == LowerBodyType.HOOFED)
-            /*
-            TODO: Missing/comment-blocked Centaur LowerBodyType
-            || lowerBody.type == LowerBodyType.CENTAUR)
-            */
             score++
         if (countCocksOfType(PenisType.HORSE) > 0)
             score++
-        if (hasVagina())
-            /*
-            TODO:vaginas.type is not working. What are we supposed to use?
-            && vaginas.type == VaginaType.EQUINE)
-            */
+        if (hasVagina() && vaginas[0].type == VaginaType.EQUINE)
             score++
         if (skin.hasCoatOfType(SkinCoatType.FUR))
             score++
@@ -55,22 +47,11 @@ object HorseRace : Race (18, "horse", 4) {
         ||  AlicornRace.basicScore(creature) > 11
            */
         )
-            if (score >= 7)
-                score -= 7
-            else
-                score = 0
-        /*
-        TODO: perk bonus, isGargoyle?
-        if (hasPerk(PerkLib.ChimericalBodyUltimateStage))
-            dogCounter += 50;
-        if (hasPerk(PerkLib.AscensionHybridTheory) && dogCounter >= 4)
-            dogCounter += 1;
-        if (hasPerk(PerkLib.AscensionCruelChimerasThesis) && dogCounter >= 8)
-            dogCounter += 1;
-		if (hasPerk(PerkLib.ElementalBody))
-            dogCounter = 0;
-         */
+           if (score >= 7)
+               score -= 7
+           else
+               score = 0
 
         score
-    }
+        }
 }

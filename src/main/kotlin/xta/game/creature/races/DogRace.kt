@@ -48,17 +48,6 @@ object DogRace : Race(12, "dog", 4) {
             score--
         if (skin.hasCoatOfType(SkinCoatType.FUR) && score > 0)
             score++
-        /*
-        TODO: perk bonus, isGargoyle?
-        if (hasPerk(PerkLib.ChimericalBodyUltimateStage))
-            dogCounter += 50;
-        if (hasPerk(PerkLib.AscensionHybridTheory) && dogCounter >= 4)
-            dogCounter += 1;
-        if (hasPerk(PerkLib.AscensionCruelChimerasThesis) && dogCounter >= 8)
-            dogCounter += 1;
-		if (hasPerk(PerkLib.ElementalBody))
-            dogCounter = 0;
-         */
         score
     }
 
