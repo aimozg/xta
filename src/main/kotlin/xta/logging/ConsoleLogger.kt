@@ -22,7 +22,7 @@ class ConsoleLogger(id: String) : Logger(id) {
 
 	override fun doLogObject(level: Level, context: LogContext, message: String, obj: Any?) {
 		val myname = wrappedId
-		val actualContext = context.toLogString()
+		val actualContext = context.logContextLabel()
 		val dt = (Date().getTime() - t0).div(1000).toFixed(3).padStart(7, ' ')
 		val safemessage = message.replace("\n"," ")
 		when (level) {

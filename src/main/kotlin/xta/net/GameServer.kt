@@ -54,7 +54,7 @@ import xta.utils.*
  * 4. See 3-7 above
  */
 class GameServer(): LogContext {
-	override fun toLogString() = "[GameServer]"
+	override fun logContextLabel() = "[GameServer]"
 
 	val players = arrayListOf(Game.me)
 

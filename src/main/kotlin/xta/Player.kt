@@ -25,8 +25,8 @@ class Player(
 ) : LogContext {
 
 	// BOTH HOST AND GUEST
-	override fun toLogString(): String =
-		if (isHost && isMe) "[LocalHost]" else guest.toLogString()
+	override fun logContextLabel(): String =
+		if (isHost && isMe) "[LocalHost]" else guest.logContextLabel()
 	override fun toString() = "Player($id)"
 
 	var isHost = false

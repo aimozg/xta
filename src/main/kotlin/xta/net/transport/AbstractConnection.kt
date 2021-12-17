@@ -1,5 +1,6 @@
 package xta.net.transport
 
+import org.khronos.webgl.Uint8Array
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.net.protocol.MessageToGuest
@@ -7,12 +8,11 @@ import xta.net.protocol.MessageToHost
 import xta.utils.EventEmitter
 import xta.utils.encodeToArray
 import xta.utils.stringify
-import org.khronos.webgl.Uint8Array
 import kotlin.js.Json
 
 abstract class AbstractConnection : EventEmitter(), LogContext {
 
-	override fun toLogString() = "[$identity]"
+	override fun logContextLabel() = "[$identity]"
 
 	abstract fun send(message: Uint8Array)
 	fun send(message: String) {

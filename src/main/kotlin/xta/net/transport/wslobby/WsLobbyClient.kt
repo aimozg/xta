@@ -1,9 +1,5 @@
 package xta.net.transport.wslobby
 
-import xta.logging.LogContext
-import xta.logging.LogManager
-import xta.utils.EventEmitter
-import xta.utils.jsObject
 import kotlinx.browser.window
 import org.khronos.webgl.Uint8Array
 import org.w3c.dom.CloseEvent
@@ -11,7 +7,11 @@ import org.w3c.dom.WebSocket
 import org.w3c.dom.events.Event
 import org.w3c.files.Blob
 import org.w3c.files.arrayBuffer
-import wslobby.*
+import wslobby.compose
+import xta.logging.LogContext
+import xta.logging.LogManager
+import xta.utils.EventEmitter
+import xta.utils.jsObject
 import kotlin.random.Random
 
 /*
@@ -23,7 +23,7 @@ abstract class WsLobbyClient(
 	val token: String,
 	val role: wslobby.Role
 ) : EventEmitter(), LogContext {
-	override fun toLogString() = "[$identity]"
+	override fun logContextLabel() = "[$identity]"
 
 	enum class State {
 		CONNECTING,

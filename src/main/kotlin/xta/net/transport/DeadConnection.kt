@@ -1,7 +1,7 @@
 package xta.net.transport
 
-import xta.utils.randomString
 import org.khronos.webgl.Uint8Array
+import xta.utils.randomString
 import kotlin.random.Random
 
 class DeadConnection : AbstractConnection() {
@@ -9,7 +9,7 @@ class DeadConnection : AbstractConnection() {
 		error("Cannot use DeadConnection")
 	}
 
-	override fun toLogString() = "[Disconnected]"
+	override fun logContextLabel() = "[Disconnected]"
 
 	override val isConnected: Boolean
 		get() = false

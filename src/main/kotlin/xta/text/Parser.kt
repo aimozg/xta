@@ -27,7 +27,7 @@ class Parser(
 	var npc0 get() = npcs[0]; set(value) { npcs[0] = value }
 	var npc1 get() = npcs[1]; set(value) { npcs[1] = value }
 
-	override fun toLogString() = Game.me.toLogString()
+	override fun logContextLabel() = Game.me.logContextLabel()
 
 	override fun doEvaluateTag(tag: String, tagArgs: String): String {
 		return when {

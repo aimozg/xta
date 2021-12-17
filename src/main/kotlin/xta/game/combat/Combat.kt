@@ -25,7 +25,7 @@ class Combat(
 	val partyB: Party,
 	val returnScene: Scene
 ): LogContext {
-	override fun toLogString(): String = buildString {
+	override fun logContextLabel(): String = buildString {
 		append("[Combat ")
 		append(partyA.players.joinToString { it.id })
 		append(" vs ")
@@ -33,7 +33,7 @@ class Combat(
 		append("]")
 	}
 
-	override fun toString() = toLogString()
+	override fun toString() = logContextLabel()
 
 	var ongoing = false
 	val participants = partyA.players + partyB.players

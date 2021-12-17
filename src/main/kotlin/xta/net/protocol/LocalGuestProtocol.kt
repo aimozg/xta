@@ -22,7 +22,7 @@ class LocalGuestProtocol(
 	override val identity: String
 		get() = connection?.identity?:"[LocalHost]"
 
-	override fun toLogString() = connection?.toLogString()?:"[LocalHost]"
+	override fun logContextLabel() = connection?.logContextLabel()?:"[LocalHost]"
 
 	override fun onMessage(message: MessageToGuest) {
 		logger.ifdebug(this) { "< ${message.stringify()}" }
