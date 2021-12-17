@@ -48,6 +48,8 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val effectsDiv = fragment.ref("status-effects")
 	private val btnRenderZoom = fragment.ref("render-zoombtn")
 	private val btnRenderShow = fragment.ref("render-showbtn")
+	private val btnRenderArmor = fragment.ref("render-armorbtn")
+	private val btnRenderWeapon = fragment.ref("render-weaponbtn")
 	private val renderDiv = fragment.ref("render")
 
 	private val combatStatDiv = fragment.ref("combat-stats")
@@ -64,17 +66,31 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val csSoulskillCost = CombatStat("Soulskill cost").also { it.insertTo(combatStatDiv) }
 
 	private var lastCharacter: PlayerCharacter? = null
+	private var armorDisplayMode = CharViewImage.ArmorDisplayMode.NEVER_NUDE
+	private var weaponDisplayMode = CharViewImage.WeaponDisplayMode.MELEE
 	init {
 		btnRenderZoom.onclick = {
 			GameSettings.data.renderX2 = GameSettings.data.renderX2?.not()?:true
 			GameSettings.save()
-			refresh()
+			rerender()
 		}
 		btnRenderShow.onclick = {
 			GameSettings.data.render = GameSettings.data.render?.not()?:true
 			GameSettings.save()
-			refresh()
+			rerender()
 		}
+		btnRenderArmor.onclick = {
+			armorDisplayMode = armorDisplayMode.next()
+			btnRenderArmor.addTooltip("Armor display mode: "+armorDisplayMode.displayName)
+			rerender()
+		}
+		btnRenderArmor.addTooltip("Armor display mode: "+armorDisplayMode.displayName)
+		btnRenderWeapon.onclick = {
+			weaponDisplayMode = weaponDisplayMode.next()
+			btnRenderWeapon.addTooltip("Weapon display mode: "+weaponDisplayMode.displayName)
+			rerender()
+		}
+		btnRenderWeapon.addTooltip("Weapon display mode: "+weaponDisplayMode.displayName)
 		setupTabList(
 			tabBtnMain to tabContentMain,
 			tabBtnCombat to tabContentCombat,
@@ -89,10 +105,9 @@ class CharacterPanel : UiTemplate("char-panel") {
 	fun refresh() {
 		showCharacter(lastCharacter)
 	}
-	fun showCharacter(char: PlayerCharacter?,
-	                  render: Boolean = GameSettings.data.render?:false,
-	                  renderX2: Boolean = GameSettings.data.renderX2?:false
-	) {
+	private val render get() = GameSettings.data.render?:false
+	private val renderX2 get() = GameSettings.data.renderX2?:false
+	fun showCharacter(char: PlayerCharacter?) {
 		lastCharacter = char
 		btnRenderZoom.textContent = if (renderX2) "zoom_out" else "zoom_in"
 		btnRenderShow.textContent = if (render) "visibility_off" else "visibility"
@@ -239,9 +254,18 @@ class CharacterPanel : UiTemplate("char-panel") {
 		csSoulskillPower.showForStat(true, char.soulskillPowerStat)
 		csSoulskillCost.showForStat(true, char.soulskillCostStat)
 
+		rerender()
+	}
+
+	fun rerender() {
 		renderDiv.clear()
-		if (render) {
-			renderDiv.append(CharViewImage.INSTANCE.renderCharacter(char, renderX2).canvas)
+		val char = lastCharacter
+		if (render && char != null) {
+			renderDiv.append(
+				CharViewImage.INSTANCE.renderCharacter(
+					char, renderX2, armorDisplayMode, weaponDisplayMode
+				).canvas
+			)
 		}
 	}
 

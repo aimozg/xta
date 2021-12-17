@@ -285,6 +285,7 @@ abstract class Creature: AbstractCreature() {
 
 	fun hasCock() = cocks.isNotEmpty()
 	fun hasVagina() = vaginas.isNotEmpty()
+	val vaginaType get() = vaginas.firstOrNull()?.type
 	fun vaginalCapacity():Int {
 		val vagina = vaginas.firstOrNull() ?: return 0
 		var bonus = 0

@@ -190,7 +190,26 @@ class CharViewImage : CompositeImage(200, 220) {
 		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0, 25))
 	}
 
-	fun renderCharacter(char: PlayerCharacter, scale: Boolean): CanvasRenderingContext2D = with(char) {
+	enum class ArmorDisplayMode(val displayName:String) {
+		NUDE("Nude"),
+		UNDERWEAR("Underwear only"),
+		CLOTHED("All clothes"),
+		NEVER_NUDE("Never nude");
+		fun next() = values().getOrNull(values().indexOf(this)+1)?:NUDE
+	}
+	enum class WeaponDisplayMode(val displayName: String) {
+		NO_WEAPON("No weapon"),
+		MELEE("Melee weapon"),
+		RANGED("Ranged weapon");
+		fun next() = values().getOrNull(values().indexOf(this)+1)?:NO_WEAPON
+	}
+
+	fun renderCharacter(
+		char: PlayerCharacter,
+		scale: Boolean,
+		armorDisplayMode: ArmorDisplayMode = ArmorDisplayMode.CLOTHED,
+		weaponDisplayMode: WeaponDisplayMode = WeaponDisplayMode.MELEE
+	): CanvasRenderingContext2D = with(char) {
 		// regexes to port model.xml:
 
 		// \<show part *\= *\"([\w-/]+)\"\/\>
@@ -254,22 +273,78 @@ class CharViewImage : CompositeImage(200, 220) {
 
 		/* VARIABLES AREA */
 		val hydraTails = 0 // TODO statusEffectv1(StatusEffects.HydraTailsPlayer)
-		/* <set var="CaveWyrmNipples" value="hasStatusEffect(StatusEffects.GlowingNipples)"/> */
 		// TODO CharViewContext.as variables
+
+		val IsEarthElemental = false
+		val IsFireElemental = false
+		val IsWaterElemental = false
+		val IsWindElemental = false
+		val CaveWyrmNipples = false
+		val CancerCrabStance = false
+		val DarkSlimeCore = false
 		val PlayerHasViewableOutfit = false
-		val armStanceNonBannedList = false
-		val PlayerHasAWeapon = false
-		val PlayerHasAShield = false
-		val PlayerHasADualWeapon = false
+		val PlayerIsStancing = false
+		val PlayerIsFeralStancing = false
+		val PlayerIsSitStancing = false
 		val showClothing = false
+		val showArmClothing = false
+		val showLegClothing = lowerBody.type !in arrayOf(LowerBodyType.GAZER, LowerBodyType.YETI, LowerBodyType.HOOFED, LowerBodyType.CLOVEN_HOOFED, LowerBodyType.HARPY, LowerBodyType.BUNNY, LowerBodyType.GOO, LowerBodyType.NAGA, LowerBodyType.HYDRA, LowerBodyType.DRIDER, LowerBodyType.ATLACH_NACHA, LowerBodyType.HINEZUMI, LowerBodyType.MELKIE, LowerBodyType.CENTIPEDE, LowerBodyType.SCYLLA, LowerBodyType.KRAKEN, LowerBodyType.CANCER, LowerBodyType.GHOST_2) && legCount == 2 && !PlayerIsStancing
+		val playerHasWeaponBannedArms = !PlayerIsStancing && arms.type !in arrayOf(ArmType.GAZER, ArmType.YETI, ArmType.DISPLACER, ArmType.FROSTWYRM, ArmType.CANCER)
+		val playerHasWeaponWings = wings.type != WingType.VAMPIRE
+		val playerHasLargeLowerBody = isTaur || lowerBody.type in arrayOf(LowerBodyType.DRIDER, LowerBodyType.ATLACH_NACHA, LowerBodyType.MELKIE, LowerBodyType.CENTIPEDE, LowerBodyType.SCYLLA, LowerBodyType.KRAKEN, LowerBodyType.CANCER)
+		val playerHasWridLowerBody = isTaur || lowerBody.type in arrayOf(LowerBodyType.DRIDER, LowerBodyType.ATLACH_NACHA, LowerBodyType.HYDRA, LowerBodyType.NAGA, LowerBodyType.MELKIE, LowerBodyType.CENTIPEDE, LowerBodyType.SCYLLA, LowerBodyType.KRAKEN)
+
+		// TODO use sprite ids from weapons
+		val PlayerHasAWeapon = false
+		val PlayerHasAStaff = false
+		val PlayerHasAStaffHoly = false
+		val PlayerHasAStaffUnholy = false
+		val PlayerHasASword = false
+		val PlayerHasASwordHoly = false
+		val PlayerHasASwordunholy = false
+		val PlayerHasAnAxe = false
+		val PlayerHasAnAxeHoly = false
+		val PlayerHasAnAxeUnholy = false
+		val PlayerHasAHammer = false
+		val PlayerHasATetsu = false
+		val PlayerHasATetsuHoly = false
+		val PlayerHasATetsuUnholy = false
+		val PlayerHasASpear = false
+		val PlayerHasASpearHoly = false
+		val PlayerHasASpearUnholy = false
+		val PlayerHasAKatana = false
+		val PlayerHasAKatanaHoly = false
+		val PlayerHasAKatanaUnholy = false
+		val PlayerHasARapier = false
+		val PlayerHasARapierHoly = false
+		val PlayerHasARapierUnholy = false
+		val PlayerHasDagger = false
+		val PlayerHasAShield = false
+		val PlayerDualWield = false
+		val PlayerHasSanctuary = false
+		val PlayerHasSanctuaryHoly = false
+		val PlayerHasSanctuaryUnholy = false
+		val PlayerHasABow = false
+		val PlayerHasABowHoly = false
+		val PlayerHasABowUnholy = false
+		val PlayerHasAThrownWeapon = false
+		val PlayerHasAJavelin = false
+		val PlayerHasAJavelinHoly = false
+		val PlayerHasAJavelinUnholy = false
+		val PlayerHasAThrownAe = false
+		val PlayerHasLactoBlaster = false
+		val PlayerHasADualWeapon = false
+
+		val WeaponDisplay = false
+		val FireBuff = false
+
+		val armStanceNonBannedList = false
+		val sleevelessList = false
 		val playerWearsAStanceBannedDress = false
 		val playerWearsAStanceBannedArmor = false
-		val sleevelessList = false
-		val CancerCrabStance = false
-		val playerHasLargeLowerBody = false
-		val DarkSlimeCore = false
-		val CaveWyrmPussy = false
-		val MindBreakerPussy = false
+
+		// TODO use sprite id from armor
+		val ComfyCLothes = false
 
 		/* WEAPON AREA */
 		// TODO use sprite ids from weapons
@@ -894,7 +969,21 @@ class CharViewImage : CompositeImage(200, 220) {
 				showPart("breasts/F$skinx") // DD+
 		}
 
-		// nipple colors  - TODO port model.xml code
+		// nipple colors
+		if (CaveWyrmNipples) when {
+			breastSize <= BreastCup.FLAT ->
+				showPart("overskin/BfcaveWyrm")
+			breastSize <= BreastCup.B ->
+				showPart("overskin/BpcaveWyrm")
+			breastSize <= BreastCup.C ->
+				showPart("overskin/BcaveWyrm")
+			breastSize <= BreastCup.D ->
+				showPart("overskin/BcaveWyrm")
+			breastSize <= BreastCup.E ->
+				showPart("overskin/BlcaveWyrm")
+			else ->
+				showPart("overskin/BlcaveWyrm")
+		}
 
 		/* ARMS AREA */
 		when (arms.type) {
@@ -1638,19 +1727,19 @@ class CharViewImage : CompositeImage(200, 220) {
 				/* CHEST AREA */
 				if (breastRows.size > 0) {
 					when {
-						breastRows[0].breastRating <= BreastCup.FLAT -> {/*FLAT*/
+						breastSize <= BreastCup.FLAT -> {/*FLAT*/
 							showPart("breasts/0liliraune")
 						}
-						breastRows[0].breastRating <= BreastCup.B -> {/*A-B*/
+						breastSize <= BreastCup.B -> {/*A-B*/
 							showPart("breasts/Bliliraune")
 						}
-						breastRows[0].breastRating <= BreastCup.C -> {/*C*/
+						breastSize <= BreastCup.C -> {/*C*/
 							showPart("breasts/Dliliraune")
 						}
-						breastRows[0].breastRating <= BreastCup.D -> {/*D*/
+						breastSize <= BreastCup.D -> {/*D*/
 							showPart("breasts/Dliliraune")
 						}
-						breastRows[0].breastRating <= BreastCup.E -> {/*DD-E*/
+						breastSize <= BreastCup.E -> {/*DD-E*/
 							showPart("breasts/Fliliraune")
 						}
 						else -> {
@@ -2074,10 +2163,10 @@ class CharViewImage : CompositeImage(200, 220) {
 		}
 
 		/* Unique pussy AREA */
-		if (CaveWyrmPussy) {
+		if (vaginaType == VaginaType.CAVE_WYRM) {
 			showPart("overskinpanty/caveWyrm")
 		}
-		if (MindBreakerPussy) {
+		if (vaginaType == VaginaType.MINDBREAKER) {
 			showPart("overskinpanty/mindbreaker")
 		}
 
@@ -2120,18 +2209,18 @@ class CharViewImage : CompositeImage(200, 220) {
 			SkinBasePatternType.MAGICAL_TATTOO, SkinBasePatternType.BATTLE_TATTOO -> {
 				if (breastRows.size > 0) {
 					when {
-						breastRows[0].breastRating <= BreastCup.FLAT -> {/* FLAT */
+						breastSize <= BreastCup.FLAT -> {/* FLAT */
 						}
-						breastRows[0].breastRating <= BreastCup.B -> {/* A-B */
+						breastSize <= BreastCup.B -> {/* A-B */
 							showPart("breasts_pattern/Bptatoo")
 						}
-						breastRows[0].breastRating <= BreastCup.C -> {/* A-B */
+						breastSize <= BreastCup.C -> {/* A-B */
 							showPart("breasts_pattern/Btatoo")
 						}
-						breastRows[0].breastRating <= BreastCup.D -> {/* A-B */
+						breastSize <= BreastCup.D -> {/* A-B */
 							showPart("breasts_pattern/Btatoo")
 						}
-						breastRows[0].breastRating <= BreastCup.E -> {/* A-B */
+						breastSize <= BreastCup.E -> {/* A-B */
 							showPart("breasts_pattern/Bltatoo")
 						}
 						else -> {
@@ -2267,6 +2356,22 @@ class CharViewImage : CompositeImage(200, 220) {
 
 		/* DRESS AREA */
 		// TODO port model.xml code; consider items defining their own sprites
+		// TODO 'never nude' option - should display only if no other clothing
+		if (armorDisplayMode == ArmorDisplayMode.NEVER_NUDE) {
+			if (looksFemale()) when {
+				breastSize <= BreastCup.FLAT -> showPart("bra/comfortableBraSmall")
+				breastSize <= BreastCup.B -> showPart("bra/comfortableBraSmall")
+				breastSize <= BreastCup.C -> showPart("bra/comfortableBraMedium")
+				breastSize <= BreastCup.D -> showPart("bra/comfortableBraMedium")
+				breastSize <= BreastCup.E -> showPart("bra/comfortableBraLarge")
+				else -> showPart("bra/comfortableBraLarge")
+			}
+			if (showLegClothing) {
+				showPart("panty/comfortablePanty")
+				hideLayer("penis")
+				hideLayer("balls")
+			}
+		}
 
 		/* FULL BODY AREA */
 		// TODO port model.xml code
