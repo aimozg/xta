@@ -4,6 +4,7 @@ import kotlinx.browser.document
 import kotlinx.dom.clear
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import xta.game.settings.GameSettings
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.net.protocol.host.DisplayChatMessage
@@ -41,6 +42,10 @@ object ScreenManager: LogContext {
 	fun displayChatMessage(message: DisplayChatMessage) {
 		chatHistory.add(message)
 		chatBox.addChatMessage(message)
+		while (chatHistory.size > GameSettings.data.chatHistoryLimit) {
+			chatHistory.removeFirst()
+			chatBox.removeFirst()
+		}
 	}
 
 	fun displaySceneContent(scene: ScreenJson = Game.me.screen) {

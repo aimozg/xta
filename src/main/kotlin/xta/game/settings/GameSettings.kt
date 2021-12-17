@@ -38,6 +38,7 @@ object GameSettings {
 		data.wsJoinInvite = ""
 		data.wsPingInterval = 15
 
+		data.chatHistoryLimit = 150
 		data.render = true
 		data.renderX2 = false
 	}

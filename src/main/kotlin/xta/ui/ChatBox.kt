@@ -50,6 +50,10 @@ class ChatBox(
 		}
 	}
 
+	fun removeFirst() {
+		historyDiv.firstElementChild?.remove()
+	}
+
 	fun addChatMessage(message: DisplayChatMessage) {
 		val senderName = message.senderName
 		val senderStyle = message.senderStyle
