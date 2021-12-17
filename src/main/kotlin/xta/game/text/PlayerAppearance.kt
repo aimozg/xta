@@ -337,11 +337,11 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 		}
 	}
 
-	fun describeWings() = "" // TODO
+	fun describeWings() = character.wings.appearanceDescription()
 
-	fun describeRearBody() = "" // TODO
+	fun describeRearBody() = character.rearBody.appearanceDescription()
 
-	fun describeTail() = "" // TODO
+	fun describeTail() = character.tail.appearanceDescription()
 
 	fun describeBreasts() = "" // TODO
 

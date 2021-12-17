@@ -8,4 +8,6 @@ class TailPart(val host: Creature): JsonSerializable() {
 	var count by property(0)
 	var venom by property(0)
 	var recharge by property(0)
+
+	fun appearanceDescription(): String = "" // TODO
 }
