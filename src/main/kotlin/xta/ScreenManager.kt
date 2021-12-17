@@ -3,6 +3,7 @@ package xta
 import kotlinx.browser.document
 import kotlinx.dom.clear
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.net.protocol.host.DisplayChatMessage
@@ -20,7 +21,6 @@ object ScreenManager: LogContext {
 
 	fun init() {
 		uiRoot = document.getElementByIdOrThrow("root")
-		chatBox.insertTo(document.getElementByIdOrThrow("chatbox-container"))
 	}
 
 	fun setScreen(screen:UiScreen) {
@@ -31,7 +31,7 @@ object ScreenManager: LogContext {
 	}
 
 	val chatHistory = ArrayList<DisplayChatMessage>()
-	val chatBox = ChatBox(false)
+	val chatBox = ChatBox(false, document.getElementByIdOrThrow("chatbox-container") as HTMLElement)
 	var chatEnabled: Boolean
 		get() = chatBox.chatEnabled
 		set(value) {

@@ -169,18 +169,19 @@
 
 <template id="chat-box">
     <div class="chat-box">
-        <div class="mxy-2">
-            <div data-ref="history" class="chat-history">
-                <div data-ref="message" class="chat-message">
-                    <span data-ref="message-author" class="message-author"></span>
-                    <span data-ref="message-content" class="message-content"></span>
-                </div>
+        <div class="chat-box-expander" data-ref="expander">
+            <span class="material-icons"></span>
+        </div>
+        <div data-ref="history" class="chat-history">
+            <div data-ref="message" class="chat-message">
+                <span data-ref="message-author" class="message-author"></span>
+                <span data-ref="message-content" class="message-content"></span>
             </div>
-            <div class="chat-send-div">
-                <!--<label>Message</label>-->
-                <input type="text" data-ref="message-input">
-                <button type="button" data-ref="send-button">Send</button>
-            </div>
+        </div>
+        <div class="chat-send-div">
+            <!--<label>Message</label>-->
+            <input type="text" data-ref="message-input">
+            <button type="button" data-ref="send-button">Send</button>
         </div>
     </div>
 </template>
