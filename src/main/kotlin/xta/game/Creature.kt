@@ -326,6 +326,9 @@ abstract class Creature: AbstractCreature() {
 
 	fun hasPerk(perkType: PerkType) = perkType in perks
 
+	// TODO maxVenom
+	fun maxVenom():Double = 0.0
+
 	/*
 	 *     ██████  ██████  ███    ███ ██████   █████  ████████     ███████ ███    ██ ███████
 	 *    ██      ██    ██ ████  ████ ██   ██ ██   ██    ██        ██      ████   ██ ██

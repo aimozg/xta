@@ -3,6 +3,7 @@ package xta.game.text
 import xta.game.PlayerCharacter
 import xta.text.Parser
 import xta.text.adjustCase
+import xta.text.num2text
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -12,6 +13,7 @@ fun evalNpcTag(forMe:Boolean, char: PlayerCharacter, tag:String, tagArgs: String
 	"bodytype" -> Appearance.bodyType(char)
 	"butt" -> Appearance.buttDescript(char)
 	"eyecolor" -> char.eyes.irisColor
+	"haircolor" -> char.hairColor
 	"hips" -> Appearance.hipDescript(char)
 	"level" -> char.level.toString()
 	"malefemaleherm" -> Appearance.maleFemaleHerm(char)
@@ -50,6 +52,7 @@ fun evalNpcTag(forMe:Boolean, char: PlayerCharacter, tag:String, tagArgs: String
 
 		else -> error("Unknown tag $tag$tagArgs")
 	}
+	"tailcount" -> num2text(char.tail.count)
 
 	// Tags to address either player itself or other character
 	"is", "are" -> if (forMe) "are" else "is"
