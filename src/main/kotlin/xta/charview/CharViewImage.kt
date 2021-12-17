@@ -16,8 +16,13 @@ class CharViewImage : CompositeImage(200, 220) {
 		loadPartsFromJson(sprites_json, charviewImages, originX = 15, originY = 10)
 		logger.debug(null, "Loaded images in ${Date().getTime() - t0} ms")
 		setLayerOrder(
-			"fullbody",
 			"full_pattern",
+			"fullbodyBreast",
+			"fullbodyMuscle",
+			"fullbodyPenis",
+			"fullbodyBalls",
+			"full_patternUnder",
+			"fullbody",
 			"horns_overclothe",
 			"overclothe",
 			"shield",
@@ -219,10 +224,14 @@ class CharViewImage : CompositeImage(200, 220) {
 		// when {
 
 		// \<\!\-\-(([^-]|-[^-]|--[^>])*)\-\-\>
-		// /*$1*/
+		// /* $1 */
 
 		// &[g]t;
 		// >
+
+		// Case-sensitive!
+		// \b(LowerBody|Arms|Ears|)\.
+		// $1Type\.
 
 		// Carefully!
 
@@ -232,6 +241,12 @@ class CharViewImage : CompositeImage(200, 220) {
 		// \b[o]r\b
 		// ||
 
+		// \b[g]t\b
+		// >
+
+		// \b[g]te\b
+		// >=
+
 		hideAll()
 		setupColors(char)
 
@@ -239,7 +254,6 @@ class CharViewImage : CompositeImage(200, 220) {
 
 		/* VARIABLES AREA */
 		val hydraTails = 0 // TODO statusEffectv1(StatusEffects.HydraTailsPlayer)
-		val big = if ((cocks.firstOrNull()?.length ?: 0) >= 12) "_big" else ""
 		/* <set var="CaveWyrmNipples" value="hasStatusEffect(StatusEffects.GlowingNipples)"/> */
 		// TODO CharViewContext.as variables
 		val PlayerHasViewableOutfit = false
@@ -253,6 +267,9 @@ class CharViewImage : CompositeImage(200, 220) {
 		val sleevelessList = false
 		val CancerCrabStance = false
 		val playerHasLargeLowerBody = false
+		val DarkSlimeCore = false
+		val CaveWyrmPussy = false
+		val MindBreakerPussy = false
 
 		/* WEAPON AREA */
 		// TODO use sprite ids from weapons
@@ -491,6 +508,9 @@ class CharViewImage : CompositeImage(200, 220) {
 			EyeType.MONOEYE -> {
 				showPart("eyes/gazer")
 			}
+			EyeType.MINDBREAKERMALE -> {
+				showPart("eyes/mindbreakerMale")
+			}
 			else -> {
 				showPart("eyes/human")
 			}
@@ -554,6 +574,14 @@ class CharViewImage : CompositeImage(200, 220) {
 					showPart("hair/rainbow")
 					showPart("hair_bg/rainbow")
 				}
+				HairType.MINDBREAKER -> {
+					showPart("hair/mindbreaker")
+					showPart("hair_bg/mindbreaker")
+				}
+				HairType.MINDBREAKERMALE -> {
+					showPart("hair/mindbreakerMale")
+					showPart("hair_bg/mindbreakerMale")
+				}
 				else -> {
 					showPart("hair/0")
 					if (hairLength >= 16) {
@@ -569,6 +597,8 @@ class CharViewImage : CompositeImage(200, 220) {
 		if (hairLength > 0) {
 			if (hairType !in arrayOf(HairType.FLUFFY, HairType.GORGON, HairType.ANEMONE, HairType.GOO)) {
 				if (hairType !in arrayOf(
+						HairType.MINDBREAKER,
+						HairType.MINDBREAKERMALE,
 						HairType.STORM,
 						HairType.BURNING,
 						HairType.QUILL,
@@ -632,6 +662,8 @@ class CharViewImage : CompositeImage(200, 220) {
 					}
 					else -> {
 						if (hairType !in arrayOf(
+								HairType.MINDBREAKER,
+								HairType.MINDBREAKERMALE,
 								HairType.STORM,
 								HairType.BURNING,
 								HairType.QUILL,
@@ -742,6 +774,10 @@ class CharViewImage : CompositeImage(200, 220) {
 		when (face.type) {
 			FaceType.HUMAN -> {
 				when {
+					tongue.type == TongueType.MINDBREAKERMALE ->
+						showPart("antennae/mindbreakerMale")
+					tongue.type == TongueType.MINDBREAKER ->
+						showPart("face/fairySmile")
 					skin.baseType == SkinBaseType.GOO ->
 						showPart("face/goo")
 					cor >= 100 -> {
@@ -919,6 +955,10 @@ class CharViewImage : CompositeImage(200, 220) {
 			ArmType.HARPY, ArmType.PHOENIX -> {
 				showPart("hands/harpy")
 				showPart("hands_bg/harpy")
+			}
+			ArmType.MINDBREAKER -> {
+				showPart("hands/mindbreaker")
+				showPart("hands_bg/mindbreaker")
 			}
 			ArmType.GHOST -> {
 				if (femininity >= 40) {
@@ -1338,16 +1378,20 @@ class CharViewImage : CompositeImage(200, 220) {
 					}
 				}
 			}
-			LowerBodyType.HOOFED,LowerBodyType.PONY,LowerBodyType.CLOVEN_HOOFED -> {
-                hideLayer("legs")
-                when {
-                    legCount==4 -> {
+			LowerBodyType.HOOFED, LowerBodyType.PONY, LowerBodyType.CLOVEN_HOOFED -> {
+				hideLayer("legs")
+				when {
+					legCount == 4 -> {
 						showPart("legs/centaur")
-                        showPart("legs_fg/centaur")
-                    }
-                    else -> {
+						showPart("legs_fg/centaur")
+					}
+					else -> {
 						when {
-							hasPartialCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
+							hasPartialCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("legs/hoof_pscales")
 							}
 							hasFullCoatOfType(SkinCoatType.FUR) -> {
@@ -1356,217 +1400,221 @@ class CharViewImage : CompositeImage(200, 220) {
 							hasFullCoatOfType(SkinCoatType.CHITIN) -> {
 								showPart("legs/hoof_chitin")
 							}
-							hasFullCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
+							hasFullCoatOfType(
+								SkinCoatType.SCALES,
+								SkinCoatType.AQUA_SCALES,
+								SkinCoatType.DRAGON_SCALES
+							) -> {
 								showPart("legs/hoof_scales")
 							}
 							else -> {
 								showPart("legs/hoof_human")
 							}
 						}
-                    }
-                }
-            }
-            LowerBodyType.BUNNY,LowerBodyType.KANGAROO,LowerBodyType.CAT,LowerBodyType.DOG,LowerBodyType.FOX,LowerBodyType.RAIJU,LowerBodyType.WEASEL,LowerBodyType.RACCOON,LowerBodyType.FERRET,LowerBodyType.MOUSE,LowerBodyType.HINEZUMI,LowerBodyType.BEAR,LowerBodyType.SQUIRREL -> {
-                when {
-                    legCount==4 -> {
-                        hideLayer("legs")
+					}
+				}
+			}
+			LowerBodyType.BUNNY, LowerBodyType.KANGAROO, LowerBodyType.CAT, LowerBodyType.DOG, LowerBodyType.FOX, LowerBodyType.RAIJU, LowerBodyType.WEASEL, LowerBodyType.RACCOON, LowerBodyType.FERRET, LowerBodyType.MOUSE, LowerBodyType.HINEZUMI, LowerBodyType.BEAR, LowerBodyType.SQUIRREL -> {
+				when {
+					legCount == 4 -> {
+						hideLayer("legs")
 						showPart("legs/cattaur")
-                        showPart("legs_fg/cattaur")
-						if (lowerBody.type==LowerBodyType.BEAR) {
+						showPart("legs_fg/cattaur")
+						if (lowerBody.type == LowerBodyType.BEAR) {
 							hideLayer("legs")
 							showPart("legs/beartaur")
 							showPart("legs_fg/beartaur")
-							if (ears.type==EarType.PANDA) {
+							if (ears.type == EarType.PANDA) {
 								hideLayer("legs")
 								hideLayer("legs_fg")
 								showPart("legs/pandataur")
 								showPart("legs_fg/pandataur")
 							}
 						}
-                    }
-					lowerBody.type==LowerBodyType.FOX -> {
+					}
+					lowerBody.type == LowerBodyType.FOX -> {
 						showPart("feet/furracoon")
 					}
-					lowerBody.type==LowerBodyType.BUNNY -> {
+					lowerBody.type == LowerBodyType.BUNNY -> {
 						showPart("feet/bunny")
 					}
-					lowerBody.type==LowerBodyType.RACCOON -> {
+					lowerBody.type == LowerBodyType.RACCOON -> {
 						showPart("feet/furracoon")
 					}
-					lowerBody.type==LowerBodyType.FERRET -> {
+					lowerBody.type == LowerBodyType.FERRET -> {
 						showPart("feet/furracoon")
 					}
-					lowerBody.type==LowerBodyType.WEASEL -> {
+					lowerBody.type == LowerBodyType.WEASEL -> {
 						showPart("feet/furracoon")
 					}
-					lowerBody.type==LowerBodyType.SQUIRREL -> {
+					lowerBody.type == LowerBodyType.SQUIRREL -> {
 						showPart("feet/ratatoskr")
 					}
-					lowerBody.type==LowerBodyType.BEAR -> {
-							showPart("feet/furracoon")
-							if (ears.type==EarType.PANDA) {
-								hideLayer("legs")
-								showPart("legs/panda")
-								showPart("feet/panda")
-							}
+					lowerBody.type == LowerBodyType.BEAR -> {
+						showPart("feet/furracoon")
+						if (ears.type == EarType.PANDA) {
+							hideLayer("legs")
+							showPart("legs/panda")
+							showPart("feet/panda")
+						}
 					}
-					lowerBody.type==LowerBodyType.HINEZUMI -> {
-						if ((arms.type==ArmType.HINEZUMI) && (playerWearsAStanceBannedDress == false) && (playerWearsAStanceBannedArmor == false)) {
+					lowerBody.type == LowerBodyType.HINEZUMI -> {
+						if ((arms.type == ArmType.HINEZUMI) && (playerWearsAStanceBannedDress == false) && (playerWearsAStanceBannedArmor == false)) {
 							hideLayer("legs")
 							hideLayer("feet")
-							} else {
+						} else {
 
-								showPart("overfeet/fire")
+							showPart("overfeet/fire")
 						}
 					}
 					else -> {
 						showPart("feet/fur")
 					}
-                }
-            }
+				}
+			}
 			LowerBodyType.NAGA -> {
-                hideLayer("legs")
-                showPart("legs/naga")
-            }
+				hideLayer("legs")
+				showPart("legs/naga")
+			}
 			LowerBodyType.FROSTWYRM -> {
-                hideLayer("legs")
-                showPart("legs/frostWyrm")
-            }
+				hideLayer("legs")
+				showPart("legs/frostWyrm")
+			}
 			LowerBodyType.MINDBREAKER -> {
-                hideLayer("legs")
-                showPart("legs/mindbreaker")
-            }
+				hideLayer("legs")
+				showPart("legs/mindbreaker")
+			}
 			LowerBodyType.CANCER -> {
-                hideLayer("legs")
-                showPart("legs_fg/crabtaur")
-            }
+				hideLayer("legs")
+				showPart("legs_fg/crabtaur")
+			}
 			LowerBodyType.ATLACH_NACHA -> {
-                hideLayer("legs")
+				hideLayer("legs")
 				hidePart("tail/spider")
-                showPart("legs_fg/atlach")
+				showPart("legs_fg/atlach")
 				showPart("overGenitals/atlach")
-            }
+			}
 			LowerBodyType.HYDRA -> {
-                hideLayer("legs")
+				hideLayer("legs")
 				hideLayer("feet")
 				hideLayer("tail")
 				when (hydraTails) {
-					1,2,3 -> {
+					1, 2, 3 -> {
 						showPart("legs_fg/hydra2")
 						showPart("legs_bg/hydra2")
-                    }
-					4,5,6 -> {
+					}
+					4, 5, 6 -> {
 						showPart("legs_fg/hydra3")
 						showPart("legs_bg/hydra3")
-                    }
-					7,8 -> {
+					}
+					7, 8 -> {
 						showPart("legs_fg/hydra4")
 						showPart("legs_bg/hydra4")
-                    }
-					9,10 -> {
+					}
+					9, 10 -> {
 						showPart("legs_fg/hydra5")
 						showPart("legs_bg/hydra5")
-                    }
-					11,12 -> {
+					}
+					11, 12 -> {
 						showPart("legs_fg/hydra6")
 						showPart("legs_bg/hydra6")
-                    }
-                    else -> {
+					}
+					else -> {
 						showPart("legs_fg/hydra2")
 						showPart("legs_bg/hydra2")
-                    }
-                }
-            }
+					}
+				}
+			}
 			LowerBodyType.MELKIE -> {
-                hideLayer("legs")
-                showPart("legs/melkie")
-            }
-            LowerBodyType.BEE,LowerBodyType.CRAB -> {
-                hideLayer("legs")
-                showPart("legs/chitin2")
-            }
-            LowerBodyType.GOO -> {
-                hideLayer("legs")
-                showPart("legs/gooblob")
-            }
-			LowerBodyType.LIZARD,LowerBodyType.DRAGON,LowerBodyType.SALAMANDER,LowerBodyType.CAVE_WYRM -> {
-                if (legCount==4) {
-                    hideLayer("legs")
+				hideLayer("legs")
+				showPart("legs/melkie")
+			}
+			LowerBodyType.BEE, LowerBodyType.CRAB -> {
+				hideLayer("legs")
+				showPart("legs/chitin2")
+			}
+			LowerBodyType.GOO -> {
+				hideLayer("legs")
+				showPart("legs/gooblob")
+			}
+			LowerBodyType.LIZARD, LowerBodyType.DRAGON, LowerBodyType.SALAMANDER, LowerBodyType.CAVE_WYRM -> {
+				if (legCount == 4) {
+					hideLayer("legs")
 					showPart("legs/reptaur")
-                    showPart("legs_fg/reptaur")
-					} else {
-						showPart("feet/scales")
-						if (PlayerHasViewableOutfit) {
-							if (armStanceNonBannedList) {
-								if (arms.type==ArmType.DRACONIC) {
-									hideLayer("legs")
-									hideLayer("feet")
-									showPart("legs/dragon")
-								}
+					showPart("legs_fg/reptaur")
+				} else {
+					showPart("feet/scales")
+					if (PlayerHasViewableOutfit) {
+						if (armStanceNonBannedList) {
+							if (arms.type == ArmType.DRACONIC) {
+								hideLayer("legs")
+								hideLayer("feet")
+								showPart("legs/dragon")
 							}
-							} else {
-								if (arms.type==ArmType.DRACONIC) {
-									hideLayer("legs")
-									hideLayer("feet")
-									showPart("legs/dragon")
-								}
 						}
-                }
-            }
-            LowerBodyType.HARPY -> {
-                hideLayer("legs")
-                hideLayer("feet")
-                when {
-                    hasFullCoatOfType(SkinCoatType.FUR) -> {
-                        showPart("legs/harpy_fur")
-                    }
-                    hasFullCoatOfType(SkinCoatType.SCALES) -> {
-                        showPart("legs/harpy_scales")
-                    }
-                    hasFullCoatOfType(SkinCoatType.CHITIN) -> {
-                        showPart("legs/harpy_chitin")
-                    }
-                    hasPartialCoatOfType(SkinCoatType.SCALES) -> {
-                        showPart("legs/harpy_pscales")
-                    }
-                    else -> {
-                        showPart("legs/harpy_human")
-                    }
-                }
-            }
-            LowerBodyType.CHITINOUS_SPIDER_LEGS -> {
-                hideLayer("legs")
-                showPart("legs/chitin2")
-            }
-            LowerBodyType.DRIDER -> {
+					} else {
+						if (arms.type == ArmType.DRACONIC) {
+							hideLayer("legs")
+							hideLayer("feet")
+							showPart("legs/dragon")
+						}
+					}
+				}
+			}
+			LowerBodyType.HARPY -> {
+				hideLayer("legs")
+				hideLayer("feet")
+				when {
+					hasFullCoatOfType(SkinCoatType.FUR) -> {
+						showPart("legs/harpy_fur")
+					}
+					hasFullCoatOfType(SkinCoatType.SCALES) -> {
+						showPart("legs/harpy_scales")
+					}
+					hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+						showPart("legs/harpy_chitin")
+					}
+					hasPartialCoatOfType(SkinCoatType.SCALES) -> {
+						showPart("legs/harpy_pscales")
+					}
+					else -> {
+						showPart("legs/harpy_human")
+					}
+				}
+			}
+			LowerBodyType.CHITINOUS_SPIDER_LEGS -> {
+				hideLayer("legs")
+				showPart("legs/chitin2")
+			}
+			LowerBodyType.DRIDER -> {
 				hidePart("tail/spider")
-                hideLayer("legs")
-                showPart("legs_fg/drider")
-            }
-            /*LowerBodyType.ECHIDNA -> {TODO }*/
-            LowerBodyType.SCYLLA -> {
-                hideLayer("legs")
-                showPart("legs/scylla")
-            }
-            LowerBodyType.KRAKEN -> {
-                hideLayer("legs")
-                showPart("legs/kraken")
-            }
-            LowerBodyType.MANTIS -> {/*TODO */
-                hideLayer("legs")
-                showPart("legs/chitin")
-            }
-            /*LowerBodyType.GARGOYLE -> {TODO }*/
-            /*LowerBodyType.PLANT_HIGH_HEELS -> {TODO }*/
-            /*LowerBodyType.PLANT_ROOT_CLAWS -> {TODO }*/
-            LowerBodyType.PLANT_FLOWER -> {
-                hideLayer("legs")
-                showPart("legs_fg/alraune")
-            }
+				hideLayer("legs")
+				showPart("legs_fg/drider")
+			}
+			/*LowerBodyType.ECHIDNA -> {TODO }*/
+			LowerBodyType.SCYLLA -> {
+				hideLayer("legs")
+				showPart("legs/scylla")
+			}
+			LowerBodyType.KRAKEN -> {
+				hideLayer("legs")
+				showPart("legs/kraken")
+			}
+			LowerBodyType.MANTIS -> {/*TODO */
+				hideLayer("legs")
+				showPart("legs/chitin")
+			}
+			/*LowerBodyType.GARGOYLE -> {TODO }*/
+			/*LowerBodyType.PLANT_HIGH_HEELS -> {TODO }*/
+			/*LowerBodyType.PLANT_ROOT_CLAWS -> {TODO }*/
+			LowerBodyType.PLANT_FLOWER -> {
+				hideLayer("legs")
+				showPart("legs_fg/alraune")
+			}
 			LowerBodyType.FLOWER_LILIRAUNE -> {
-                hideLayer("legs")
+				hideLayer("legs")
 				showPart("legs_fg/liliraune")
-                showPart("legs_bg/liliraune")
+				showPart("legs_bg/liliraune")
 				showPart("torso/liliraune")
 				showPart("face/liliraune")
 				showPart("arms/liliraune")
@@ -1578,14 +1626,14 @@ class CharViewImage : CompositeImage(200, 220) {
 				showPart("uniquePlantBath/lilirauneBath")
 
 				/* HAIR AREA */
-                if (hairLength < 16) {
+				if (hairLength < 16) {
 					showPart("hair/liliraune")
 					showPart("hair_bg/liliraune")
-					} else {
-						showPart("hair/liliraune")
+				} else {
+					showPart("hair/liliraune")
 					showPart("hair_bg/liliraune")
-                    showPart("hair_bg/lilirauneLong")
-                }
+					showPart("hair_bg/lilirauneLong")
+				}
 
 				/* CHEST AREA */
 				if (breastRows.size > 0) {
@@ -1610,143 +1658,167 @@ class CharViewImage : CompositeImage(200, 220) {
 						}
 					}
 				}
-            }
-			LowerBodyType.SHARK,LowerBodyType.ORCA,LowerBodyType.SEA_DRAGON -> {
-				if (lowerBody.type==LowerBodyType.ORCA) {
+			}
+			LowerBodyType.SHARK, LowerBodyType.ORCA, LowerBodyType.SEA_DRAGON -> {
+				if (lowerBody.type == LowerBodyType.ORCA) {
 					hideLayer("legs")
 					showPart("legs/orca")
 				}
-				if (legCount==4) {
+				if (legCount == 4) {
 					hideLayer("legs")
 					showPart("legs/aquataur")
 					showPart("legs_fg/aquataur")
 				}
-            }
+			}
 			/*Manticore section*/
-            LowerBodyType.LION -> {
-                showPart("feet/fur")
-				if (legCount==4) {
-                    hideLayer("legs")
+			LowerBodyType.LION -> {
+				showPart("feet/fur")
+				if (legCount == 4) {
+					hideLayer("legs")
 					hideLayer("feet")
 					showPart("legs/cattaur")
-                    showPart("legs_fg/cattaur")
-					} else {
-						when {
-							arms.type==ArmType.LION -> {
-								hideLayer("legs")
-								hideLayer("feet")
-								when {
-									hasPartialCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
-										showPart("legs/manticore_sit_pscales")
-									}
-									hasFullCoatOfType(SkinCoatType.FUR) -> {
-										showPart("legs/manticore_sit_fur")
-									}
-									hasFullCoatOfType(SkinCoatType.CHITIN) -> {
-										showPart("legs/manticore_sit_chitin")
-									}
-									hasFullCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
+					showPart("legs_fg/cattaur")
+				} else {
+					when {
+						arms.type == ArmType.LION -> {
+							hideLayer("legs")
+							hideLayer("feet")
+							when {
+								hasPartialCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
+									showPart("legs/manticore_sit_pscales")
+								}
+								hasFullCoatOfType(SkinCoatType.FUR) -> {
+									showPart("legs/manticore_sit_fur")
+								}
+								hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+									showPart("legs/manticore_sit_chitin")
+								}
+								hasFullCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
 									showPart("legs/manticore_sit_scales")
-									}
-									else -> {
-										showPart("legs/manticore_sit")
-									}
 								}
-							}
-							arms.type==ArmType.DISPLACER -> {
-								hideLayer("legs")
-								hideLayer("feet")
-								when {
-									hasPartialCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
-										showPart("legs/displacer_pscales")
-									}
-									hasFullCoatOfType(SkinCoatType.FUR) -> {
-										showPart("legs/displacer_fur")
-									}
-									hasFullCoatOfType(SkinCoatType.CHITIN) -> {
-										showPart("legs/displacer_chitin")
-									}
-									hasFullCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
-										showPart("legs/displacer_scales")
-									}
-									else -> {
-										showPart("legs/displacer_human")
-									}
+								else -> {
+									showPart("legs/manticore_sit")
 								}
-							}
-							else -> {
 							}
 						}
-                }
-            }
+						arms.type == ArmType.DISPLACER -> {
+							hideLayer("legs")
+							hideLayer("feet")
+							when {
+								hasPartialCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
+									showPart("legs/displacer_pscales")
+								}
+								hasFullCoatOfType(SkinCoatType.FUR) -> {
+									showPart("legs/displacer_fur")
+								}
+								hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+									showPart("legs/displacer_chitin")
+								}
+								hasFullCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
+									showPart("legs/displacer_scales")
+								}
+								else -> {
+									showPart("legs/displacer_human")
+								}
+							}
+						}
+						else -> {
+						}
+					}
+				}
+			}
 			LowerBodyType.WOLF -> {
-                showPart("feet/fur")
-				if (legCount==4) {
-                    hideLayer("legs")
+				showPart("feet/fur")
+				if (legCount == 4) {
+					hideLayer("legs")
 					hideLayer("feet")
 					showPart("legs/cattaur")
-                    showPart("legs_fg/cattaur")
-					} else {
-						when {
-							(arms.type==ArmType.WOLF) && (playerWearsAStanceBannedDress == false) && (playerWearsAStanceBannedArmor == false) -> {
-								hideLayer("legs")
-								hideLayer("feet")
-								when {
-									hasPartialCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
-										showPart("legs/displacer_pscales")
-									}
-									hasFullCoatOfType(SkinCoatType.FUR) -> {
-										showPart("legs/displacer_fur")
-									}
-									hasFullCoatOfType(SkinCoatType.CHITIN) -> {
-										showPart("legs/displacer_chitin")
-									}
-									hasFullCoatOfType(SkinCoatType.SCALES,SkinCoatType.AQUA_SCALES,SkinCoatType.DRAGON_SCALES) -> {
-										showPart("legs/displacer_scales")
-									}
-									else -> {
-										showPart("legs/displacer_human")
-									}
+					showPart("legs_fg/cattaur")
+				} else {
+					when {
+						(arms.type == ArmType.WOLF) && (playerWearsAStanceBannedDress == false) && (playerWearsAStanceBannedArmor == false) -> {
+							hideLayer("legs")
+							hideLayer("feet")
+							when {
+								hasPartialCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
+									showPart("legs/displacer_pscales")
+								}
+								hasFullCoatOfType(SkinCoatType.FUR) -> {
+									showPart("legs/displacer_fur")
+								}
+								hasFullCoatOfType(SkinCoatType.CHITIN) -> {
+									showPart("legs/displacer_chitin")
+								}
+								hasFullCoatOfType(
+									SkinCoatType.SCALES,
+									SkinCoatType.AQUA_SCALES,
+									SkinCoatType.DRAGON_SCALES
+								) -> {
+									showPart("legs/displacer_scales")
+								}
+								else -> {
+									showPart("legs/displacer_human")
 								}
 							}
 						}
-                }
-            }
+					}
+				}
+			}
 			LowerBodyType.GHOST_2 -> {
-                hideLayer("legs")
-                showPart("legs/ghost")
-            }
+				hideLayer("legs")
+				showPart("legs/ghost")
+			}
 			LowerBodyType.YETI -> {
-                showPart("feet/yeti")
-            }
-			LowerBodyType.GARGOYLE,LowerBodyType.GARGOYLE_2 -> {
-                hideLayer("legs")
+				showPart("feet/yeti")
+			}
+			LowerBodyType.GARGOYLE, LowerBodyType.GARGOYLE_2 -> {
+				hideLayer("legs")
 				showPart("legs/gargoyle_sit")
-            }
+			}
 			LowerBodyType.PLANT_HIGH_HEELS -> {
-                showPart("feet/alraune")
-            }
-            LowerBodyType.CENTIPEDE -> {
-                hideLayer("legs")
-                showPart("legs/centipede")
-                showPart("legs_bg/centipede")
-            }
+				showPart("feet/alraune")
+			}
+			LowerBodyType.CENTIPEDE -> {
+				hideLayer("legs")
+				showPart("legs/centipede")
+				showPart("legs_bg/centipede")
+			}
 			LowerBodyType.FIRE_SNAIL -> {
-                hideLayer("legs")
-                showPart("legs_fg/snail")
-            }
+				hideLayer("legs")
+				showPart("legs_fg/snail")
+			}
 			LowerBodyType.WENDIGO -> {
 				hideLayer("legs")
-                showPart("legs/wendigo")
-            }
+				showPart("legs/wendigo")
+			}
 			LowerBodyType.GAZER -> {
 				hideLayer("legs")
-                showPart("legs_truefg/gazer")
-            }
-            else -> {
-                /*see switch[value=skin.coverage]*/
-            }
-        }
+				showPart("legs_truefg/gazer")
+			}
+			else -> {
+				/*see switch[value=skin.coverage]*/
+			}
+		}
 
 		/* WING AREA */
 		when (wings.type) {
@@ -1966,10 +2038,48 @@ class CharViewImage : CompositeImage(200, 220) {
 		}
 
 		/* Penis AREA */
-		// TODO port model.xml code
+		if (hasCock()) {
+			val big = if ((cocks.firstOrNull()?.length ?: 0) >= 12) "big" else ""
+			when (cocks[0].type) {
+				PenisType.DOG, PenisType.WOLF, PenisType.FOX ->
+					showPart("penis$taur/canine$big$taur")
+				PenisType.CAT, PenisType.DISPLACER ->
+					showPart("penis$taur/cat$big$taur")
+				PenisType.LIZARD, PenisType.DRAGON ->
+					showPart("penis$taur/reptile$big$taur")
+				PenisType.HORSE ->
+					showPart("penis$taur/horse$big$taur")
+				PenisType.BEE ->
+					showPart("penis$taur/chitin$big$taur")
+				PenisType.CAVE_WYRM ->
+					showPart("penis$taur/caveWyrm$big$taur")
+				PenisType.MINDBREAKER -> {
+					showPart("penis$taur/human$big$taur")
+					showPart("penis/mindbreakerdrip")
+				}
+				else ->
+					showPart("penis$taur/human$big$taur")
+			}
+			if (lowerBody.type in arrayOf(
+					LowerBodyType.CANCER,
+					LowerBodyType.PLANT_FLOWER,
+					LowerBodyType.FLOWER_LILIRAUNE,
+					LowerBodyType.GAZER
+				)
+				|| (lowerBody.type == LowerBodyType.HINEZUMI && arms.type == ArmType.HINEZUMI)
+			) {
+				hideLayer("penis")
+				hideLayer("penis_taur")
+			}
+		}
 
 		/* Unique pussy AREA */
-		// TODO port model.xml code
+		if (CaveWyrmPussy) {
+			showPart("overskinpanty/caveWyrm")
+		}
+		if (MindBreakerPussy) {
+			showPart("overskinpanty/mindbreaker")
+		}
 
 		/* BALLS AREA */
 		if (balls > 0) {
@@ -1980,29 +2090,186 @@ class CharViewImage : CompositeImage(200, 220) {
 				else -> "small"
 			}
 			showPart("balls$taur/B$skinx$ballsz$taur")
-			// TODO port model.xml code
+			if (lowerBody.type in arrayOf(
+					LowerBodyType.NAGA,
+					LowerBodyType.HYDRA,
+					LowerBodyType.FROSTWYRM,
+					LowerBodyType.MELKIE,
+					LowerBodyType.CANCER,
+					LowerBodyType.PLANT_FLOWER,
+					LowerBodyType.FLOWER_LILIRAUNE,
+					LowerBodyType.GAZER
+				)
+				|| (lowerBody.type == LowerBodyType.HINEZUMI && arms.type == ArmType.HINEZUMI)
+			) {
+				hideLayer("balls")
+				hideLayer("balls_taur")
+			}
 		}
 
 		/* Muscle AREA */
-		// TODO port model.xml code
+		if (tone >= 65) {
+			if (skin.coverage == SkinCoverage.NONE || skin.coverage == SkinCoverage.LOW) {
+				showPart("muscle/muscle")
+			}
+		}
 
 		/* PATTERN AREA */
-		// TODO port model.xml code
+		when (skin.basePattern) {
+			SkinBasePatternType.NONE -> {}
+			SkinBasePatternType.MAGICAL_TATTOO, SkinBasePatternType.BATTLE_TATTOO -> {
+				if (breastRows.size > 0) {
+					when {
+						breastRows[0].breastRating <= BreastCup.FLAT -> {/* FLAT */
+						}
+						breastRows[0].breastRating <= BreastCup.B -> {/* A-B */
+							showPart("breasts_pattern/Bptatoo")
+						}
+						breastRows[0].breastRating <= BreastCup.C -> {/* A-B */
+							showPart("breasts_pattern/Btatoo")
+						}
+						breastRows[0].breastRating <= BreastCup.D -> {/* A-B */
+							showPart("breasts_pattern/Btatoo")
+						}
+						breastRows[0].breastRating <= BreastCup.E -> {/* A-B */
+							showPart("breasts_pattern/Bltatoo")
+						}
+						else -> {
+							showPart("breasts_pattern/Bltatoo")
+						}
+					}
+				}
+				showPart("torso_pattern/Btatoo")
+				showPart("arms_pattern/Btatoo")
+				showPart("arms_bg_pattern/Btatoo")
+				showPart("legs_pattern/Btatoo")
+			}
+			SkinBasePatternType.LIGHTNING_SHAPED_TATTOO -> {
+				showPart("breasts_pattern/Blightning")
+				showPart("breasts_pattern/Bplightning")
+				showPart("breasts_pattern/Bllightning")
+				showPart("torso_pattern/Blightning")
+				showPart("arms_pattern/Blightning")
+				showPart("arms_bg_pattern/Blightning")
+				showPart("legs_pattern/Blightning")
+			}
+			SkinBasePatternType.SCAR_WINDSWEPT -> {
+				showPart("torso_pattern/BwindScars")
+				showPart("legs_pattern/BwindScars")
+			}
+			SkinBasePatternType.VENOMOUS_MARKINGS -> {
+				showPart("torso_pattern/Bvenom")
+				showPart("arms_pattern/Bvenom")
+				showPart("arms_bg_pattern/Bvenom")
+			}
+			SkinBasePatternType.OIL -> {
+				showPart("breasts_pattern/BgazerTar")
+			}
+			else -> when (skin.coatPattern) {
+				SkinCoatPatternType.TIGER_STRIPES -> {
+					showPart("breasts_pattern/Bstripe")
+					showPart("breasts_pattern/Bpstripe")
+					showPart("breasts_pattern/Blstripe")
+					showPart("torso_pattern/Bstripe")
+					showPart("arms_pattern/Bstripe")
+					showPart("arms_bg_pattern/Bstripe")
+					showPart("legs_pattern/Bstripe")
+				}
+				else -> {
+					hidePart("breasts_pattern")
+					hidePart("torso_pattern")
+					hidePart("arms_pattern")
+					hidePart("arms_bg_pattern")
+					hidePart("legs_pattern")
+				}
+			}
+		}
 
 		/* HIDING INVALID ARM PATTERN AREA */
-		// TODO port model.xml code
+		if (arms.type == ArmType.DISPLACER) {
+			hidePart("arms_pattern")
+			hidePart("arms_bg_pattern")
+			if (lowerBody.type == LowerBodyType.LION) {
+				hidePart("legs_pattern")
+			}
+		}
+
+		if (arms.type == ArmType.GHOST) {
+			if (femininity >= 40) {
+				hidePart("arms_pattern")
+				hidePart("arms_bg_pattern")
+			}
+		}
 
 		/* Succu arm stuff */
-		// TODO port model.xml code
+		if (femininity >= 40) {
+			if (cor >= 50) {
+				if (!(playerWearsAStanceBannedDress || playerWearsAStanceBannedArmor)) {
+					if (skin.coverage == SkinCoverage.NONE) {
+						when (arms.type) {
+							ArmType.HUMAN, ArmType.ELF, ArmType.KITSUNE -> {
+								when (lowerBody.type) {
+									LowerBodyType.HUMAN, LowerBodyType.ELF, LowerBodyType.DEMONIC_HIGH_HEELS -> {
+										hidePart("arms_pattern")
+										hidePart("arms_bg_pattern")
+										hidePart("legs_pattern")
+									}
+									else -> {
+									}
+								}
+							}
+							else -> {
+							}
+						}
+					}
+				}
+			}
+		}
 
 		/* HIDING INVALID LEG PATTERN AREA */
-		// TODO port model.xml code
+		when (lowerBody.type) {
+			LowerBodyType.CANCER,
+			LowerBodyType.DRIDER,
+			LowerBodyType.SCYLLA,
+			LowerBodyType.KRAKEN,
+			LowerBodyType.HOOFED,
+			LowerBodyType.NAGA,
+			LowerBodyType.HYDRA,
+			LowerBodyType.GHOST_2,
+			LowerBodyType.CENTIPEDE -> {
+				hidePart("legs_pattern")
+			}
+			LowerBodyType.WOLF -> {
+				if (arms.type == ArmType.WOLF) {
+					hidePart("arms_bg_pattern")
+					hidePart("arms_pattern")
+					hidePart("legs_pattern")
+				}
+			}
+			LowerBodyType.LION -> {
+				if (arms.type == ArmType.LION) {
+					hidePart("arms_bg_pattern")
+					hidePart("arms_pattern")
+					hidePart("legs_pattern")
+				}
+			}
+			else -> {
+				if (isTaur) {
+					hidePart("legs_pattern")
+				}
+			}
+		}
 
 		/* SLIME CORES */
-		// TODO port model.xml code
+		if (DarkSlimeCore) {
+			showPart("neck/darkGooCore")
+		}
 
-		/* FULL BODY AND DRESS AREA */
+		/* DRESS AREA */
 		// TODO port model.xml code; consider items defining their own sprites
+
+		/* FULL BODY AREA */
+		// TODO port model.xml code
 
 		val compose = compose()
 		if (scale) {
