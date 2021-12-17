@@ -86,6 +86,21 @@ sealed class JsonPropertyDescriptor {
 		}
 	}
 
+	class NestedVar<T>(
+		override val fieldName: String,
+		val property: VariableHolder<T>,
+		val serializer: JsonSerializer<T>
+	): JsonPropertyDescriptor() {
+		override val fieldValue get() = property.value
+		override fun serialize(): dynamic {
+			return serializer.serializeObject(property.value)
+		}
+
+		override fun deserialize(input: dynamic) {
+			property.value = serializer.deserializeObject(input)
+		}
+	}
+
 	class NestedList<T:Any>(
 		override val fieldName: String,
 		val property: ValueHolder<MutableList<T>>,

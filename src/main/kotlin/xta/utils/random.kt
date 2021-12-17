@@ -18,8 +18,8 @@ val gamerng = Random(Random.Default.nextInt())
 
 fun Random.chanceRoll(chance:Double):Boolean =
 	nextDouble() < chance
-fun Random.percentRoll(chance:Double):Boolean =
-	nextDouble(100.0) < chance
+fun Random.percentRoll(chance:Number):Boolean =
+	nextDouble(100.0) < chance.toDouble()
 
 fun Random.either(vararg options:String) =
 	if (options.isEmpty()) ""

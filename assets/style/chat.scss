@@ -6,14 +6,38 @@
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
+
+	&.-expanded {
+		position: fixed;
+		bottom: 0;
+		height: 100vh;
+		.chat-box-expander {
+			span::before {
+				content: "arrow_drop_down";
+			}
+		}
+	}
 }
 .chat-box {
 	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 0 0 0.5em 1em;
+}
+.chat-box-expander {
+	width: 100%;
+	text-align: center;
+	height: 1em;
+	cursor: pointer;
+	span::before {
+		content: "arrow_drop_up";
+	}
 }
 
 .chat-history {
 	overflow-y:scroll;
-	height: 100px;
+	flex-basis: 100px;
+	flex-grow: 1;
 }
 
 .message-author {

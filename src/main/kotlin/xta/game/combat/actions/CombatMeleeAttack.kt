@@ -2,10 +2,6 @@ package xta.game.combat.actions
 
 import xta.Player
 import xta.game.combat.*
-import xta.utils.formatBigInt
-import xta.utils.gamerng
-import xta.utils.percentRoll
-import kotlin.math.round
 import kotlin.math.roundToInt
 
 class CombatMeleeAttack(
@@ -19,41 +15,26 @@ class CombatMeleeAttack(
 		// TODO multi-attack
 		// TODO handle seals
 		// TODO port combat math
+		// TODO feral combat
 		val roll = CombatRoll(attacker, defender)
 		roll.aim = attacker.meleeAim
 		roll.dodgeChance = CombatMath.meleeEvadeChance(attacker, defender)
+		roll.damageType = DamageType.PHYSICAL
+		roll.critChance = CombatMath.meleeDamageCritChancePercent(attacker, defender)
+		roll.critMultiplier = CombatMath.meleeDamageCritMultiplier(attacker, defender)
 		CombatPipeline.execute(
 			arrayOf(
 				AimPipe,
-				DodgePipe
+				DodgePipe,
+				// TODO blocking
+				MeleeDamageRollPipe,
+				MeleeHitPipe,
+				DealDamagePipe
 			),
 			display,
 			roll
 		)
 		if (roll.failed) return
-		// TODO blocking
-		// TODO feral combat
-		// hit
-		var damage = CombatMath.meleeDamage(attacker, defender)
-		val crit = gamerng.percentRoll(CombatMath.meleeDamageCritChancePercent(attacker, defender))
-		if (crit) {
-			damage *= CombatMath.meleeDamageCritMultiplier(attacker, defender)
-		}
-		damage = round(CombatMath.meleeDamageReduction(defender, damage))
-		if (damage < 0) {
-			display.selectNpcs(actor, target)
-			display.outputText("[Your] attacks are deflected by [npc1 you].")
-			return
-		}
-		defender.hp -= damage
-		// TODO weapon verbs
-		display.selectNpcs(actor, target)
-		display.outputText("[You] [verb hit] [npc1 you]! ")
-		if (crit) {
-			display.outputText("<b>Critical!</b> ")
-		}
-		display.outputText("(<span class='text-damage'>${damage.formatBigInt()}</span>)")
-		// TODO post-damage effects
 	}
 
 	override val label: String

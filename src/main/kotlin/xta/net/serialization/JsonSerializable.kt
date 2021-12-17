@@ -69,6 +69,11 @@ open class JsonSerializable: IJsonSerializable {
 			nestedValProperty(property.name, ValueHolder(defaultValue))
 		}
 
+	protected fun<T:Any?> nestedProperty(defaultValue: T, serializer:JsonSerializer<T>) =
+		PropertyDelegateProvider<Any, VariableHolder<T>> { _, property ->
+			nestedVarProperty(property.name, VariableHolder(defaultValue), serializer)
+		}
+
 	protected fun<T:IJsonSerializable> nestedJsonList(
 		defaultValue: ArrayList<T> = ArrayList(),
 		spawner: (dynamic)->T
@@ -113,6 +118,11 @@ open class JsonSerializable: IJsonSerializable {
 	protected fun<T:IJsonSerializable> nestedValProperty(properyName: String, valueHolder: ValueHolder<T>) = valueHolder.also {
 		propertyDescriptors.add(
 			JsonPropertyDescriptor.NestedVal(properyName, it)
+		)
+	}
+	protected fun<T:Any?> nestedVarProperty(properyName: String, valueHolder: VariableHolder<T>, serializer: JsonSerializer<T>) = valueHolder.also {
+		propertyDescriptors.add(
+			JsonPropertyDescriptor.NestedVar(properyName, it, serializer)
 		)
 	}
 	protected fun<T:IJsonSerializable> nestedJsonListProperty(

@@ -4,16 +4,21 @@ import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import xta.Game
 import xta.net.protocol.host.DisplayChatMessage
 import xta.utils.KeyCodes
 
-class ChatBox(chatEnabled:Boolean): UiTemplate("chat-box") {
+class ChatBox(
+	chatEnabled:Boolean,
+	val container: HTMLElement
+): UiTemplate("chat-box") {
 	private val historyDiv = fragment.ref("history")
 	private val messageInput = fragment.ref<HTMLInputElement>("message-input")
 	private val sendBtn = fragment.ref<HTMLButtonElement>("send-button")
 	private val messageItem = fragment.ref("message").apply { remove() }
+	private val expander = fragment.ref("expander")
 	var chatEnabled = chatEnabled
 		set(value) {
 			field = value
@@ -32,6 +37,10 @@ class ChatBox(chatEnabled:Boolean): UiTemplate("chat-box") {
 				Game.hostProtocol.sendChatMessage(msg)
 			}
 		}
+		expander.onclick = {
+			container.classList.toggle("-expanded")
+		}
+		insertTo(container)
 	}
 
 	fun displayChatHistory(history: List<DisplayChatMessage>) {
@@ -39,6 +48,10 @@ class ChatBox(chatEnabled:Boolean): UiTemplate("chat-box") {
 		for (message in history) {
 			addChatMessage(message)
 		}
+	}
+
+	fun removeFirst() {
+		historyDiv.firstElementChild?.remove()
 	}
 
 	fun addChatMessage(message: DisplayChatMessage) {

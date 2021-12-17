@@ -11,6 +11,7 @@ import xta.utils.decodeEntity
  * Created by aimozg on 04.12.2021.
  */
 
+// TODO use to sanitize content from server (search for innerHTML)
 class HTMLParser() {
 
 
@@ -45,6 +46,7 @@ class HTMLParser() {
 						}
 						if (tag !in SINGULAR_HTML_TAGS && match.groupValues[3] == "") {
 							nest.add(tag to output)
+							output.append(ele)
 							output = ele
 						}
 					} else {

@@ -69,6 +69,7 @@ object Stats {
 	const val RESIST_LUST = "resist_lust"
 
 	const val SPELL_POWER = "spellpower"
+	const val SPELL_COST = "spell_cost"
 	const val SOULSKILL_POWER = "soulskillpower"
 	const val SOULSKILL_COST = "soulskill_cost"
 }

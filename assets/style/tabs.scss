@@ -3,6 +3,9 @@ button.tab {
 		border: none;
 		font-weight: bold;
 	}
+	&:not(.-active) {
+		cursor: pointer;
+	}
 }
 
 .tab-buttons {

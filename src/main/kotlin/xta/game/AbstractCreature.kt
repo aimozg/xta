@@ -1,7 +1,10 @@
 package xta.game
 
+import xta.game.combat.StatusEffect
 import xta.game.creature.PerkManager
 import xta.game.creature.body.*
+import xta.game.items.ArmorItem
+import xta.game.items.ItemSerializers
 import xta.game.stats.*
 import xta.net.serialization.JsonSerializable
 
@@ -92,6 +95,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	var gems: Int by property(0)
 
 	val perks by nestedProperty(PerkManager(this as Creature))
+	val statusEffects by nestedList(StatusEffect.Serializer(this as Creature))
 
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
@@ -148,6 +152,8 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	// fertility
 	// nipplelength
 	val breastRows by nestedJsonList { BreastRowPart() }
+
+	var armor: ArmorItem? by nestedProperty(null, ItemSerializers.ArmorSerializer)
 
 	init {
 		for (descriptor in propertyDescriptors) {

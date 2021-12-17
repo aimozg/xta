@@ -10,6 +10,7 @@ external interface GameSettingsJson {
 	var wsJoinInvite: String
 	var wsPingInterval: Int
 
+	var chatHistoryLimit:Int
 	var render:Boolean?
 	var renderX2:Boolean?
 }

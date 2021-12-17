@@ -1,6 +1,7 @@
 package xta.ui
 
 import kotlinx.browser.document
+import kotlinx.dom.hasClass
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
@@ -18,6 +19,7 @@ private fun placeTooltip(
 	atTop:Boolean,
 	tooltip:HTMLElement = globalTooltip
 ) {
+	// TODO better placement (do not overflow viewport)
 	tooltip.style.left = "${mouseX}px"
 	tooltip.style.top = "${mouseY}px"
 	tooltip.toggleClass("-visible", true)
@@ -26,6 +28,7 @@ private fun placeTooltip(
 
 fun hideTooltip() {
 	globalTooltip.toggleClass("-visible", false)
+	tooltipTarget = null
 }
 
 private fun addTooltipActivator(element: HTMLElement) {
@@ -37,6 +40,7 @@ private fun addTooltipActivator(element: HTMLElement) {
 			return@addEventListener
 		}
 		globalTooltip.innerHTML = html
+		tooltipTarget = element
 		placeTooltip(element,
 			it.pageX.toInt(),
 			it.pageY.toInt(),
@@ -62,8 +66,14 @@ fun HTMLElement.addTooltip(tooltipHtml:String) {
 		addTooltipActivator(this)
 	}
 	dataset["tooltip"] = tooltipHtml
+	if (tooltipTarget == this && tooltipVisible()) {
+		globalTooltip.innerHTML = tooltipHtml
+	}
 }
 
+// TODO wrap this shit into proper class...
 private val globalTooltip:HTMLElement by lazy {
 	document.getElementById("tooltip") as HTMLElement
 }
+private var tooltipTarget:HTMLElement? = null
+private fun tooltipVisible():Boolean = globalTooltip.hasClass("-visible")

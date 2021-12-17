@@ -1,6 +1,7 @@
 package xta.text
 
 import js.toFixed
+import xta.utils.capitalized
 
 /*
  * Created by aimozg on 28.11.2021.
@@ -17,6 +18,16 @@ fun Int.displayInches():String {
 	}
 }
 
+@Suppress("IntroduceWhenSubject")
+fun adjustCase(reference:String, content:String): String = when {
+	// [RACE] -> HUMAN
+	reference == reference.uppercase() -> content.uppercase()
+	// [Race] -> Human
+	reference == reference.capitalized(false) -> content.capitalized()
+	// [race] -> human
+	else -> content
+}
+
 private val REX_TRAILING_ZEROS = Regex("""\.?0+$""")
 
 fun Double.toNiceString(maxDecimals: Int): String {
@@ -28,6 +39,12 @@ private val NUMBER_WORDS_NORMAL = arrayOf("zero", "one", "two", "three", "four",
 
 fun num2text(count:Int):String {
 	return NUMBER_WORDS_NORMAL.getOrNull(count) ?: count.toString()
+}
+
+fun numberOfThings(count:Int, noun:String, plural:String=noun+"s") = when(count) {
+	0 -> "no $plural"
+	1 -> "one $noun"
+	else -> "$count $plural"
 }
 
 object EmptyMatchResult: MatchResult {

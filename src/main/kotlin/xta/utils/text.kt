@@ -65,6 +65,10 @@ fun StringBuilder.deletePrefix(prefix:String):Boolean {
 	}
 	return false
 }
+fun StringBuilder.joinAppend(content:String, separator:String = ", ") {
+	if (isNotEmpty() && content.isNotEmpty()) append(separator)
+	append(content)
+}
 
 @JsExport
 fun Double.formatBigInt():String {

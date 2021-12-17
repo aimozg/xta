@@ -3,6 +3,7 @@ package xta.ui
 import kotlinx.dom.appendElement
 import kotlinx.dom.clear
 import org.w3c.dom.HTMLButtonElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import xta.Game
 import xta.ScreenManager
@@ -59,18 +60,20 @@ class CombatScreen: UiScreen("combat-screen") {
 
 		actionsDiv.clear()
 		for (action in Game.me.screen.actions) {
-			actionsDiv.appendElement("button") {
-				this as HTMLButtonElement
+			actionsDiv.appendElement("div") {
+				this as HTMLElement
 				className = "action"
-				textContent = action.label
-				if (action.disabled == true) disabled = true
-				addTooltip(action.hint?:"")
-				// TODO add tooltip on disabled buttons
-				onclick = {
-					hideTooltip()
-					disableActions()
-					Game.hostProtocol.sendCombatAction(action.actionId)
+				appendElement("button") {
+					this as HTMLButtonElement
+					textContent = action.label
+					if (action.disabled == true) disabled = true
+					onclick = {
+						hideTooltip()
+						disableActions()
+						Game.hostProtocol.sendCombatAction(action.actionId)
+					}
 				}
+				addTooltip(action.hint ?: "")
 			}
 		}
 	}

@@ -6,8 +6,7 @@ abstract class AbstractWhiteSpell(
 	actor: Player,
 	override val name: String
 ): AbstractSpell(actor) {
-	open fun manaCost():Double {
-		// TODO apply cost reduction
-		return baseManaCost
-	}
+	// TODO apply cost reduction
+	override val manaCost: Int
+		get() = baseManaCost
 }

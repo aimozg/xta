@@ -1,6 +1,9 @@
 package xta.game
 
 import xta.game.combat.CombatCondition
+import xta.game.combat.StatusEffect
+import xta.game.combat.StatusType
+import xta.game.combat.statuses.StatusLib
 import xta.game.creature.Gender
 import xta.game.creature.PerkType
 import xta.game.creature.body.LowerBodyType
@@ -282,6 +285,7 @@ abstract class Creature: AbstractCreature() {
 
 	fun hasCock() = cocks.isNotEmpty()
 	fun hasVagina() = vaginas.isNotEmpty()
+	val vaginaType get() = vaginas.firstOrNull()?.type
 	fun vaginalCapacity():Int {
 		val vagina = vaginas.firstOrNull() ?: return 0
 		var bonus = 0
@@ -323,6 +327,9 @@ abstract class Creature: AbstractCreature() {
 
 	fun hasPerk(perkType: PerkType) = perkType in perks
 
+	// TODO maxVenom
+	fun maxVenom():Double = 0.0
+
 	/*
 	 *     ██████  ██████  ███    ███ ██████   █████  ████████     ███████ ███    ██ ███████
 	 *    ██      ██    ██ ████  ████ ██   ██ ██   ██    ██        ██      ████   ██ ██
@@ -342,11 +349,12 @@ abstract class Creature: AbstractCreature() {
 		allStatsAndSubstats().forEach {
 			(it as? BuffableStat)?.removeCombatBuffs()
 		}
+		// TODO clear combat statuses only and call their callbacks
+		statusEffects.clear()
 	}
 
-	fun hasCondition(condition: CombatCondition): Boolean {
-		// TODO condition framework
-		return false
+	fun hasCondition(condition: CombatCondition): Boolean = when (condition ){
+		CombatCondition.BLIND -> hasStatusEffect(StatusLib.Blind)
 	}
 
 	private fun scalingBonusIwlRoll(stat: Int): RandomNumber {
@@ -410,5 +418,30 @@ abstract class Creature: AbstractCreature() {
 		if (percentage < 20) percentage = 20.0
 		// TODO port from player.damagePercent()
 		return percentage/100.0
+	}
+
+	fun addStatusEffect(effect: StatusEffect) {
+		statusEffects.add(effect)
+	}
+	fun statusEffectsByType(type: StatusType): List<StatusEffect> =
+		statusEffects.filter { it.type == type }
+	fun statusEffectByType(type:StatusType): StatusEffect? =
+		statusEffects.find { it.type == type }
+	fun hasStatusEffect(type:StatusType): Boolean =
+		statusEffects.any { it.type == type }
+	fun createStatusEffect(type: StatusType, duration: Int) {
+		if (!type.isStackable) {
+			val existing = statusEffectByType(type)
+			if (existing != null) {
+				existing.durationRounds += duration
+				return
+			}
+		}
+		addStatusEffect(StatusEffect(this, type, duration))
+	}
+
+	fun armorDescript(nakedText:String = "gear"): String {
+		// TODO upper and lower garment
+		return armor?.name ?: nakedText
 	}
 }
