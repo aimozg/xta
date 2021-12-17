@@ -10,7 +10,7 @@ abstract class AbstractParser: LogContext {
 	protected abstract fun doEvaluateTag(tag:String, tagArgs:String):String
 
 	fun evaluateTag(tag:String, tagArgs:String) =
-		adjustCase(tag, doEvaluateTag(tag.lowercase(), tagArgs))
+		parseTags(adjustCase(tag, doEvaluateTag(tag.lowercase(), tagArgs)))
 
 	fun parseTags(input:String):String {
 		logger.trace(this,"parseTags",input)

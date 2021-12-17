@@ -190,11 +190,15 @@ class CharViewImage : CompositeImage(200, 220) {
 		setKeyColor(0xECB596, skin.darken(50).saturate(25).shiftTo(0, 25))
 	}
 
-	enum class ArmorDisplayMode(val displayName:String) {
-		NUDE("Nude"),
-		UNDERWEAR("Underwear only"),
-		CLOTHED("All clothes"),
-		NEVER_NUDE("Never nude");
+	enum class ArmorDisplayMode(
+		val displayName:String,
+		val renderArmor:Boolean,
+		val renderUnderwear:Boolean
+	) {
+		NUDE("Nude",false,false),
+		UNDERWEAR("Underwear only",false,true),
+		CLOTHED("All clothes",true,true),
+		NEVER_NUDE("Never nude",true,true);
 		fun next() = values().getOrNull(values().indexOf(this)+1)?:NUDE
 	}
 	enum class WeaponDisplayMode(val displayName: String) {
@@ -2357,19 +2361,28 @@ class CharViewImage : CompositeImage(200, 220) {
 		/* DRESS AREA */
 		// TODO port model.xml code; consider items defining their own sprites
 		// TODO 'never nude' option - should display only if no other clothing
+		if (armorDisplayMode.renderArmor) {
+			val armor = char.armor
+			armor?.render(this@CharViewImage, char)
+		}
 		if (armorDisplayMode == ArmorDisplayMode.NEVER_NUDE) {
-			if (looksFemale()) when {
-				breastSize <= BreastCup.FLAT -> showPart("bra/comfortableBraSmall")
-				breastSize <= BreastCup.B -> showPart("bra/comfortableBraSmall")
-				breastSize <= BreastCup.C -> showPart("bra/comfortableBraMedium")
-				breastSize <= BreastCup.D -> showPart("bra/comfortableBraMedium")
-				breastSize <= BreastCup.E -> showPart("bra/comfortableBraLarge")
-				else -> showPart("bra/comfortableBraLarge")
+			// TODO needs better checks - items return what parts they cover?
+			if (!hasVisibleParts("bra") && !hasVisibleParts("clothe")) {
+				if (looksFemale()) when {
+					breastSize <= BreastCup.FLAT -> showPart("bra/comfortableBraSmall")
+					breastSize <= BreastCup.B -> showPart("bra/comfortableBraSmall")
+					breastSize <= BreastCup.C -> showPart("bra/comfortableBraMedium")
+					breastSize <= BreastCup.D -> showPart("bra/comfortableBraMedium")
+					breastSize <= BreastCup.E -> showPart("bra/comfortableBraLarge")
+					else -> showPart("bra/comfortableBraLarge")
+				}
 			}
-			if (showLegClothing) {
-				showPart("panty/comfortablePanty")
-				hideLayer("penis")
-				hideLayer("balls")
+			if (!hasVisibleParts("panty") && !hasVisibleParts("clothe")) {
+				if (showLegClothing) {
+					showPart("panty/comfortablePanty")
+					hideLayer("penis")
+					hideLayer("balls")
+				}
 			}
 		}
 

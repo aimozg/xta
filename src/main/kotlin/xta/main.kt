@@ -4,6 +4,7 @@ import kotlinx.browser.window
 import xta.charview.CharViewImage
 import xta.game.combat.statuses.StatusLib
 import xta.game.creature.perks.PerkLib
+import xta.game.items.armor.ArmorLib
 import xta.game.settings.GameSettings
 import xta.logging.LogManager
 import xta.logging.Logger
@@ -26,6 +27,7 @@ fun main() {
 	ScreenManager.showStartMenu()
 	PerkLib
 	StatusLib
+	ArmorLib
 	if (GameSettings.data.render == true) {
 		Game.localMessage("Loading images...")
 		window.setTimeout({

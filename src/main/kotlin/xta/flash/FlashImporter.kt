@@ -7,9 +7,11 @@ import minerva.unwrap
 import org.khronos.webgl.ArrayBuffer
 import org.w3c.files.Blob
 import org.w3c.files.arrayBuffer
+import xta.game.ItemType
 import xta.game.PlayerCharacter
 import xta.game.creature.KnownThings
 import xta.game.creature.body.*
+import xta.game.items.ArmorItem
 import xta.game.stats.Buff
 import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
@@ -210,6 +212,14 @@ class FlashImporter {
 
 		for (effect in data.statusAffects) {
 			importStatusEffect(character, effect)
+		}
+
+		if (data.armorId != "nothing") {
+			val armor = ItemType.BY_ID[data.armorId] as? ArmorItem
+			character.armor = armor
+			if (armor == null) {
+				logger.error(null, "Unknown armor id '${data.armorId}'")
+			}
 		}
 
 		logger.logObject(Logger.Level.INFO, null, "Imported",character)

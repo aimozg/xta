@@ -361,5 +361,17 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 
 	fun describePregnancy() = "" // TODO
 
-	fun describeEquipment() = "" // TODO
+	fun describeEquipment() = buildString {
+		append("<b>")
+		append("You are currently ")
+		val armor = character.armorDescript()
+		if (armor == "gear") {
+			append("naked")
+		} else {
+			append("wearing your ")
+			append(armor)
+		}
+		append(".")
+		append("</b>")
+	}
 }

@@ -439,4 +439,9 @@ abstract class Creature: AbstractCreature() {
 		}
 		addStatusEffect(StatusEffect(this, type, duration))
 	}
+
+	fun armorDescript(nakedText:String = "gear"): String {
+		// TODO upper and lower garment
+		return armor?.name ?: nakedText
+	}
 }
