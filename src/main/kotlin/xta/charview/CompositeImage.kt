@@ -15,6 +15,7 @@ import kotlin.js.json
 /*
  * Created by aimozg on 02.12.2021.
  */
+@JsExport
 open class CompositeImage(val width:Int, val height:Int) {
 	// sparse array of rgb->rgb
 	val keyColors:dynamic = js("([])")

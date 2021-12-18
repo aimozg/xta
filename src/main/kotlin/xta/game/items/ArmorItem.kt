@@ -18,5 +18,14 @@ open class ArmorItem(
 	val cost: Int
 ) : ItemType(id, name) {
 	open fun render(image: CharViewImage, creature: PlayerCharacter) {}
+
+	/**
+	 * Called when armor is put in the slot by internal process (ex. from JSON)
+	 */
+	open fun loaded(creature: PlayerCharacter){ equipped(creature)}
+
+	open fun equipped(creature: PlayerCharacter){}
+
+	open fun unequipped(creature: PlayerCharacter){}
 }
 

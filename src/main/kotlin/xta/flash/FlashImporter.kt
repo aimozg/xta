@@ -205,7 +205,6 @@ class FlashImporter {
 			})
 		}
 
-		character.perks.clear()
 		for (jperk in data.perks) {
 			character.perks.loadPerk(jperk.id)
 		}
@@ -217,6 +216,7 @@ class FlashImporter {
 		if (data.armorId != "nothing") {
 			val armor = ItemType.BY_ID[data.armorId] as? ArmorItem
 			character.armor = armor
+			armor?.loaded(character)
 			if (armor == null) {
 				logger.error(null, "Unknown armor id '${data.armorId}'")
 			}

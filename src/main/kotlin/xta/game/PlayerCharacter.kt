@@ -1,17 +1,21 @@
 package xta.game
 
+import xta.Player
 import xta.game.creature.PcKnowledge
 import xta.game.creature.Race
 import xta.game.creature.RacialStage
 import xta.game.creature.perks.PerkLib
 import xta.game.creature.races.HumanRace
+import xta.game.items.ArmorItem
 import xta.game.stats.Stats
 
 /*
  * Created by aimozg on 28.11.2021.
  */
+@JsExport
 class PlayerCharacter: Creature() {
 
+	var player: Player? = null
 	var startingRace by property("human")
 	val knowledge by nestedProperty(PcKnowledge())
 
@@ -60,6 +64,24 @@ class PlayerCharacter: Creature() {
 				save = false
 			)
 		}
+	}
+	fun equipArmor(armorItem: ArmorItem) {
+		unequipArmor()
+		armor = armorItem
+		armorItem.equipped(this)
+	}
+	fun unequipArmor(): ArmorItem? {
+		val old = armor
+		armor = null
+		old?.unequipped(this)
+		return old
+	}
+
+	override fun deserializeFromJson(input: dynamic) {
+		super.deserializeFromJson(input)
+		armor?.loaded(this)
+		// TODO other items
+		updateStats()
 	}
 }
 

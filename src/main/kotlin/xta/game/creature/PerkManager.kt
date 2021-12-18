@@ -12,13 +12,29 @@ class PerkManager(
 	val host:Creature,
 	private val set: HashSet<PerkType> = HashSet()
 ):
-	IJsonSerializable,MutableSet<PerkType> by set
+	IJsonSerializable,Set<PerkType> by set
 {
 
-	fun addPerk(perk: PerkType) {
+	/**
+	 * @return true if perk was added, false if it already exists
+	 */
+	fun addPerk(perk: PerkType): Boolean {
 		if (set.add(perk)) {
 			perk.onAdd(host)
+			return true
 		}
+		return false
+	}
+
+	/**
+	 * @return true if perk was removed, false if there was no such perk
+	 */
+	fun removePerk(perk: PerkType):Boolean {
+		if (set.remove(perk)) {
+			perk.onRemove(host)
+			return true
+		}
+		return false
 	}
 
 	/**

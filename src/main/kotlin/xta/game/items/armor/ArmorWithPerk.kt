@@ -1,5 +1,6 @@
 package xta.game.items.armor
 
+import xta.game.PlayerCharacter
 import xta.game.creature.PerkType
 import xta.game.items.ArmorItem
 import xta.game.items.ArmorType
@@ -9,4 +10,16 @@ open class ArmorWithPerk(
 	id: String, name: String, longName: String,
 	type: ArmorType, def: Int, mdef: Int, cost: Int,
 	vararg val perks: PerkType
-) : ArmorItem(id, name, longName, type, def, mdef, cost)
+) : ArmorItem(id, name, longName, type, def, mdef, cost) {
+	override fun equipped(creature: PlayerCharacter) {
+		for (perk in perks) {
+			creature.addPerk(perk)
+		}
+	}
+
+	override fun unequipped(creature: PlayerCharacter) {
+		for (perk in perks) {
+			creature.removePerk(perk)
+		}
+	}
+}

@@ -30,6 +30,11 @@ abstract class Creature: AbstractCreature() {
 	 *
 	 */
 
+	fun armorDescript(nakedText:String = "gear"): String {
+		// TODO upper and lower garment
+		return armor?.name ?: nakedText
+	}
+
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
 	 *    ██   ██ ██   ██ ██   ██ ██      ██   ██ ██   ██ ██   ██ ████   ██ ██      ██
@@ -326,6 +331,8 @@ abstract class Creature: AbstractCreature() {
 	fun mf(m:String,f:String) = if (looksFemale()) f else m
 
 	fun hasPerk(perkType: PerkType) = perkType in perks
+	fun addPerk(perkType: PerkType) = perks.addPerk(perkType)
+	fun removePerk(perkType: PerkType) = perks.removePerk(perkType)
 
 	// TODO maxVenom
 	fun maxVenom():Double = 0.0
@@ -440,8 +447,4 @@ abstract class Creature: AbstractCreature() {
 		addStatusEffect(StatusEffect(this, type, duration))
 	}
 
-	fun armorDescript(nakedText:String = "gear"): String {
-		// TODO upper and lower garment
-		return armor?.name ?: nakedText
-	}
 }

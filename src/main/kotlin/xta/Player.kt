@@ -35,9 +35,10 @@ class Player(
 		get() =
 			if (charLoaded) char.chatName
 			else "[${guest.identity}]" // TODO username?
-	var char = PlayerCharacter()
+	var char = PlayerCharacter().also { it.player = this }
 		set(value) {
 			field = value
+			field.player = this
 			charLoaded = true
 		}
 	var charLoaded = false
