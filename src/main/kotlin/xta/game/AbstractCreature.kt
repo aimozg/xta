@@ -85,6 +85,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val resistLustStat by nestedProperty(BuffableStat(Stats.RESIST_LUST, baseValue = 0.0))
 
 	val spellPowerStat by nestedProperty(BuffableStat(Stats.SPELL_POWER, baseValue = 1.0))
+	val spellCostStat by nestedProperty(BuffableStat(Stats.SPELL_COST, baseValue = 1.0))
 
 	val soulskillPowerStat by nestedProperty(BuffableStat(Stats.SOULSKILL_POWER, baseValue = 1.0))
 	val soulskillCostStat by nestedProperty(BuffableStat(Stats.SOULSKILL_COST, baseValue = 1.0))

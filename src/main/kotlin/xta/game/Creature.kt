@@ -30,7 +30,7 @@ abstract class Creature: AbstractCreature() {
 	 *
 	 */
 
-	fun armorDescript(nakedText:String = "gear"): String {
+	fun allClothesDescript(nakedText:String = "gear"): String {
 		// TODO upper and lower garment
 		return armor?.name ?: nakedText
 	}

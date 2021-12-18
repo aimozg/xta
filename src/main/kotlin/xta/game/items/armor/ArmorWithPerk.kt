@@ -12,12 +12,14 @@ open class ArmorWithPerk(
 	vararg val perks: PerkType
 ) : ArmorItem(id, name, longName, type, def, mdef, cost) {
 	override fun equipped(creature: PlayerCharacter) {
+		super.equipped(creature)
 		for (perk in perks) {
 			creature.addPerk(perk)
 		}
 	}
 
 	override fun unequipped(creature: PlayerCharacter) {
+		super.unequipped(creature)
 		for (perk in perks) {
 			creature.removePerk(perk)
 		}

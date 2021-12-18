@@ -15,7 +15,7 @@ class SimplePerkWithBuffs(id:String,
 				buff.first,
 				buffTag,
 				buff.second,
-				text = "Perk: $name",
+				text = "(Perk) $name",
 				save = false
 			)
 		}

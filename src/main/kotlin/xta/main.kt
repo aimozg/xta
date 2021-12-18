@@ -30,6 +30,7 @@ fun main() {
 		} else {
 			errorBlock.append("\n$msg")
 		}
+		// TODO copy & close buttons
 	}
 
 	ScreenManager.init()

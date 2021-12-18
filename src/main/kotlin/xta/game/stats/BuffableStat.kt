@@ -70,13 +70,20 @@ open class BuffableStat(
 		show: Boolean = true
 	) {
 		val i = indexOfBuff(tag)
-		val buff = Buff(this, tag, value, text, rate, ticks, save, show)
-		if (i == -1) {
-			buffs.add(buff)
+		if (value == 0.0 && aggregate == Aggregate.SUM) {
+			if (i != -1) {
+				buffs.removeAt(i)
+				dirty = true
+			}
 		} else {
-			buffs[i] = buff
+			val buff = Buff(this, tag, value, text, rate, ticks, save, show)
+			if (i == -1) {
+				buffs.add(buff)
+			} else {
+				buffs[i] = buff
+			}
+			dirty = true
 		}
-		dirty = true
 	}
 
 	fun removeBuff(tag:String) {
@@ -107,7 +114,8 @@ open class BuffableStat(
 				continue
 			}
 			if (!includeHidden && !buff.show) continue
-			if (x in 0.0..0.01) continue
+			if (asPercentage && 0.0 <= x && x < 0.01) continue
+			if (!asPercentage && 0.0 <= x && x < 1.0) continue
 			explainBuff(buff.text, x, htmlFormat, asPercentage)
 		}
 		if (perkBuff != 0.0) {

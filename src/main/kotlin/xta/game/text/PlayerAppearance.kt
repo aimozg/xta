@@ -364,7 +364,7 @@ class PlayerAppearance(private val character:PlayerCharacter) {
 	fun describeEquipment() = buildString {
 		append("<b>")
 		append("You are currently ")
-		val armor = character.armorDescript()
+		val armor = character.allClothesDescript()
 		if (armor == "gear") {
 			append("naked")
 		} else {
