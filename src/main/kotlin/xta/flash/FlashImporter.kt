@@ -206,6 +206,7 @@ class FlashImporter {
 		}
 
 		for (jperk in data.perks) {
+			if (jperk.id in IGNORED_PERK_IDS) continue
 			character.perks.loadPerk(jperk.id)
 		}
 
@@ -218,7 +219,7 @@ class FlashImporter {
 			character.armor = armor
 			armor?.loaded(character)
 			if (armor == null) {
-				logger.error(null, "Unknown armor id '${data.armorId}'")
+				logger.warn(null, "Unknown armor id '${data.armorId}'")
 			}
 		}
 
@@ -228,6 +229,11 @@ class FlashImporter {
 
 	companion object {
 		private val logger by lazy { LogManager.getLogger("xta.flash.FlashImporter") }
+
+		private val IGNORED_PERK_IDS = arrayOf(
+			"Wizard's Endurance",
+			"Wizard's and Daoists's Endurance"
+		)
 
 		private val statusEffectIdToKnowledge = mapOf(
 			"Knows Aegis" to KnownThings.SPELL_AEGIS,

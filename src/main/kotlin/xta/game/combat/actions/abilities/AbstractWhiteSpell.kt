@@ -1,6 +1,7 @@
 package xta.game.combat.actions.abilities
 
 import xta.Player
+import kotlin.math.roundToInt
 
 abstract class AbstractWhiteSpell(
 	actor: Player,
@@ -8,5 +9,5 @@ abstract class AbstractWhiteSpell(
 ): AbstractSpell(actor) {
 	// TODO apply cost reduction
 	override val manaCost: Int
-		get() = baseManaCost
+		get() = (baseManaCost * caster.spellCostStat.value).roundToInt()
 }

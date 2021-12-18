@@ -50,6 +50,14 @@ object Game {
 			it.contentStyle = style
 		})
 	}
+	fun localWarnMessage(message: String) {
+		ScreenManager.displayChatMessage(jsobject {
+			it.senderName = "[Warning]"
+			it.senderStyle = "-warning"
+			it.content = message
+			it.contentStyle = "-warning"
+		})
+	}
 	fun localErrorMessage(message: String, style:String = "-error") {
 		ScreenManager.displayChatMessage(jsobject {
 			it.senderName = "[Error]"

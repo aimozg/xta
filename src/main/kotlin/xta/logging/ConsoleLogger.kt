@@ -32,8 +32,10 @@ class ConsoleLogger(id: String) : Logger(id) {
 				console.asDynamic().debug(dt, myname, actualContext, safemessage, obj)
 			Level.INFO ->
 				console.info(dt, myname, actualContext, safemessage, obj)
-			Level.WARNING ->
+			Level.WARNING -> {
 				console.warn(dt, myname, actualContext, safemessage, obj)
+				// Game.localWarnMessage(safemessage+" "+obj.toString())
+			}
 			Level.ERROR,
 			Level.CRITICAL,
 			Level.NONE -> {

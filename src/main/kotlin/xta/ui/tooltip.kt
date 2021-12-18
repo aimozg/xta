@@ -62,8 +62,9 @@ private fun addTooltipActivator(element: HTMLElement) {
 }
 
 fun HTMLElement.addTooltip(tooltipHtml:String) {
-	if (dataset["tooltip"] == null && tooltipHtml.isNotBlank()) {
+	if (tooltipHtml.isNotBlank() && dataset["tooltip_activator"] != "on") {
 		addTooltipActivator(this)
+		dataset["tooltip_activator"] = "on"
 	}
 	dataset["tooltip"] = tooltipHtml
 	if (tooltipTarget == this && tooltipVisible()) {
