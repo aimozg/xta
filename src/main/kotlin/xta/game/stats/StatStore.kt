@@ -27,7 +27,7 @@ class StatStore : IStatHolder {
 		tag:String,
 		value:Double,
 		text:String = tag,
-		rate: Buff.Rate = Buff.Rate.PERMANENT,
+		rate: BuffRate = BuffRate.PERMANENT,
 		ticks: Int = 0,
 		save: Boolean = true,
 		show: Boolean = true
@@ -40,7 +40,7 @@ class StatStore : IStatHolder {
 		tag:String,
 		value:Double,
 		text:String = tag,
-		rate: Buff.Rate = Buff.Rate.PERMANENT,
+		rate: BuffRate = BuffRate.PERMANENT,
 		ticks: Int = 0,
 		save: Boolean = true,
 		show: Boolean = true

@@ -12,7 +12,7 @@ import xta.game.PlayerCharacter
 import xta.game.creature.KnownThings
 import xta.game.creature.body.*
 import xta.game.items.ArmorItem
-import xta.game.stats.Buff
+import xta.game.stats.BuffRate
 import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
 import xta.game.stats.RawStat
@@ -55,7 +55,7 @@ class FlashImporter {
 			tag,
 			value,
 			options.text,
-			Buff.Rate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
+			BuffRate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
 			options.tick,
 			true,
 			options.show ?: true

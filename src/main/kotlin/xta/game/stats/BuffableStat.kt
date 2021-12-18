@@ -1,34 +1,41 @@
 package xta.game.stats
 
+import js.jspush
+import xta.game.Creature
 import xta.game.creature.PerkType
 import xta.net.serialization.IJsonSerializable
 import xta.text.toNiceString
 import xta.utils.buildJson
-import xta.utils.mapToDynamicArray
 import xta.utils.walk
 import kotlin.js.Json
 
+@JsExport
 open class BuffableStat(
+	val host: Creature,
 	override val statName: String,
-	val aggregate: Aggregate = Aggregate.SUM,
+	val aggregate: BuffAggregate = BuffAggregate.SUM,
 	val baseValue: Double = aggregate.defaultBase,
 	open val min: Double = Double.NEGATIVE_INFINITY,
 	open val max: Double = Double.POSITIVE_INFINITY
 ) : IJsonSerializable, IStat {
+	@JsName("constructByMeta")
 	constructor(
+		host: Creature,
 		meta: StatMeta,
-		aggregate: Aggregate = Aggregate.SUM,
+		aggregate: BuffAggregate = BuffAggregate.SUM,
 		baseValue: Double = aggregate.defaultBase,
 		min: Double = Double.NEGATIVE_INFINITY,
 		max: Double = Double.POSITIVE_INFINITY
-	): this(meta.id, aggregate, baseValue, min, max)
+	): this(host, meta.id, aggregate, baseValue, min, max)
 
-	val buffs = ArrayList<Buff>()
+	// TODO optimization note: keep 2 arrays for two types, cache static buffs aggregate
+	private val buffs = ArrayList<IBuff>()
+	private var hasDynbuffs = false
 
 	override fun deserializeFromJson(input: dynamic) {
 		@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 		input as Json
-		buffs.clear()
+		buffs.removeAll { it !is DynamicBuff || !it.persistent }
 		val bsz = Buff.serializer(this)
 		@Suppress("UNCHECKED_CAST")
 		for (jbuff in input["buffs"] as Array<Json>) {
@@ -40,7 +47,12 @@ open class BuffableStat(
 	override fun serializeToJson(): Json {
 		val bsz = Buff.serializer(this)
 		return buildJson { json ->
-			json["buffs"] = buffs.filter { it.save }.mapToDynamicArray { bsz.serializeObject(it) }
+			val jbuffs = arrayOf<dynamic>()
+			for (buff in buffs) {
+				if (buff !is Buff || !buff.save) continue
+				jbuffs.jspush(bsz.serializeObject(buff))
+			}
+			json["buffs"] = jbuffs
 		}
 	}
 
@@ -48,19 +60,19 @@ open class BuffableStat(
 	private var cachedValue = baseValue
 	override val value: Double
 		get() {
-			if (dirty) recalculate()
+			if (dirty || hasDynbuffs) recalculate()
 			return cachedValue
 		}
 
 	fun recalculate() {
 		cachedValue = when (aggregate) {
-			Aggregate.SUM ->
+			BuffAggregate.SUM ->
 				baseValue + buffs.sumOf { it.value }
-			Aggregate.PRODUCT ->
+			BuffAggregate.PRODUCT ->
 				buffs.fold(baseValue) { acc, buff -> acc * buff.value }
-			Aggregate.MAX ->
+			BuffAggregate.MAX ->
 				maxOf(baseValue, buffs.maxOfOrNull { it.value } ?: baseValue)
-			Aggregate.MIN ->
+			BuffAggregate.MIN ->
 				minOf(buffs.minOfOrNull { it.value } ?: baseValue)
 		}.coerceIn(min, max)
 		dirty = false
@@ -68,17 +80,36 @@ open class BuffableStat(
 
 	fun indexOfBuff(tag: String) = buffs.indexOfFirst { it.tag == tag }
 
+	fun dynamicBuff(
+		tag: String,
+		text: String = tag,
+		rate: BuffRate = BuffRate.PERMANENT,
+		ticks: Int = 0,
+		show: Boolean = true,
+		persistent: Boolean = false,
+		valueFn: (creature:Creature)->Double
+	) {
+		val i = indexOfBuff(tag)
+		val dbuff =DynamicBuff(this,tag,valueFn, text, rate, ticks, show, persistent)
+		if (i == -1) {
+			buffs.add(dbuff)
+		} else {
+			buffs[i] = dbuff
+		}
+		hasDynbuffs = true
+		dirty = true
+	}
 	fun addOrReplaceBuff(
 		tag: String,
 		value: Double,
 		text: String = tag,
-		rate: Buff.Rate = Buff.Rate.PERMANENT,
+		rate: BuffRate = BuffRate.PERMANENT,
 		ticks: Int = 0,
 		save: Boolean = true,
 		show: Boolean = true
 	) {
 		val i = indexOfBuff(tag)
-		if (value == 0.0 && aggregate == Aggregate.SUM) {
+		if (value == 0.0 && aggregate == BuffAggregate.SUM) {
 			if (i != -1) {
 				buffs.removeAt(i)
 				dirty = true
@@ -98,12 +129,13 @@ open class BuffableStat(
 		val i = indexOfBuff(tag)
 		if (i == -1) return
 		buffs.removeAt(i)
+		hasDynbuffs = buffs.any { it is DynamicBuff }
 		dirty = true
 	}
 
 	fun removeCombatBuffs() {
 		buffs.walk { iterator, buff ->
-			if (buff.rate == Buff.Rate.ROUNDS) iterator.remove()
+			if (buff.rate == BuffRate.ROUNDS) iterator.remove()
 		}
 		dirty = true
 	}
@@ -138,13 +170,6 @@ open class BuffableStat(
 
 	fun hasPositiveBuffs(): Boolean {
 		return buffs.any { !it.isNatural && it.value > 0 }
-	}
-
-	enum class Aggregate(val defaultBase: Double) {
-		SUM(0.0),
-		PRODUCT(1.0),
-		MAX(Double.NEGATIVE_INFINITY),
-		MIN(Double.POSITIVE_INFINITY)
 	}
 
 	companion object {

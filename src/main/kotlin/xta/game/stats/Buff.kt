@@ -4,40 +4,26 @@ import xta.net.serialization.JsonSerializer
 import xta.utils.jsobject
 import kotlin.js.Json
 
+@JsExport
 class Buff(
-	val stat: BuffableStat,
-	val tag: String,
-	var value: Double,
-	var text: String,
-	val rate: Rate,
-	var ticks:Int,
+	stat: BuffableStat,
+	tag: String,
+	override var value: Double,
+	text: String,
+	rate: BuffRate,
+	ticks:Int,
 	val save: Boolean = true,
-	val show: Boolean = true
-) {
-
-	val isNatural: Boolean
-		get() = tag.startsWith("perk_") || tag in NATURAL_TAGS
-
-	enum class Rate(val cocID:Int) {
-		PERMANENT(0),
-		ROUNDS(1),
-		HOURS(2),
-		DAYS(3);
-
-		companion object {
-			fun byID(id:Int) = values().find { it.cocID == id }
-		}
-	}
+	show: Boolean = true
+): IBuff(stat, tag, text, rate, ticks, show) {
 
 	companion object {
-		val NATURAL_TAGS = setOf("Racials","Alchemical","Mutagen","Knowledge")
 
 		fun serializer(stat: BuffableStat) = object: JsonSerializer<Buff> {
 			override fun serializeObject(t: Buff) = jsobject<BuffJson> { json ->
 				json.tag = t.tag
 				json.value = t.value
 				json.text = t.text
-				json.rate = Rate.values().indexOf(t.rate) // TODO replace with ordinal in KT 1.6.20
+				json.rate = BuffRate.values().indexOf(t.rate) // TODO replace with ordinal in KT 1.6.20
 				json.ticks = t.ticks
 				json.save = t.save
 				json.show = t.show
@@ -51,7 +37,7 @@ class Buff(
 					j.tag,
 					j.value,
 					j.text,
-					Rate.values()[j.rate],
+					BuffRate.values()[j.rate],
 					j.ticks,
 					j.save?:true,
 					j.show?:true

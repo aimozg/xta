@@ -1,5 +1,6 @@
 package xta.game.stats
 
+@JsExport
 class StatMeta(
 	val id:String,
 	val displayName:String,
