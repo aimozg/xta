@@ -15,12 +15,14 @@ import xta.game.combat.actions.abilities.spellswhite.SpellWhitefire
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.text.TextOutput
+import xta.utils.nextUid
 import xta.utils.walk
 
 /*
  * Created by aimozg on 04.12.2021.
  */
 class Combat(
+	val id: String,
 	val partyA: Party,
 	val partyB: Party,
 	val returnScene: Scene
@@ -96,6 +98,7 @@ class Combat(
 			player.char.clearCombatStatuses()
 			player.display.clearOutput()
 		}
+		participants.map { it.location }.toSet().forEach { it.onCombatStatusChange() }
 		nextRound()
 		for (player in participants) {
 			buildCombatActions(player)
@@ -236,6 +239,6 @@ class Combat(
 		private val logger = LogManager.getLogger("xta.game.combat.Combat")
 
 		fun oneOnOne(playerA: Player, playerB: Player, returnScene: Scene) =
-			Combat(Party(playerA), Party(playerB), returnScene)
+			Combat(nextUid().toString(), Party(playerA), Party(playerB), returnScene)
 	}
 }

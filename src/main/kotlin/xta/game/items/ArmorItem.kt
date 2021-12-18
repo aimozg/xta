@@ -3,7 +3,6 @@ package xta.game.items
 import xta.charview.CharViewImage
 import xta.game.ItemType
 import xta.game.PlayerCharacter
-import xta.utils.capitalized
 
 /*
  * Created by aimozg on 18.12.2021.
@@ -23,11 +22,10 @@ open class ArmorItem(
 
 	override val tooltipHtml: String
 		get() = buildString {
-			append("<b>")
-			append(name.capitalized())
-			append("</b>\n\n")
-			append(description)
+			append(super.tooltipHtml)
 			append("\n")
+			append("\tType: ")
+			append(type.displayName)
 			if (def != 0) {
 				append("\nDefense: ")
 				append(def)

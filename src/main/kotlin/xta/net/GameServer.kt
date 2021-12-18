@@ -70,7 +70,7 @@ class GameServer(): LogContext {
 		}
 		 */
 	}
-	fun hostGame() {
+	fun startGame() {
 		placePlayer(Game.me)
 	}
 
@@ -258,6 +258,7 @@ class GameServer(): LogContext {
 			msg.combatUpdate = jsobject { cum -> /* yes, and? */
 				cum.inCombat = player.inCombat
 				val combat = player.combat
+				cum.combatId = combat?.id
 				cum.ongoing = combat?.ongoing?:false
 				if (combat != null) {
 					cum.partyA = combat.partyA.players.mapToArray { it.id }

@@ -36,6 +36,7 @@ abstract class GameLocation(val id:String) {
 
 	open fun onEnter(player: Player){}
 	open fun onLeave(player: Player){}
+	open fun onCombatStatusChange(){}
 
 	fun scene(suffix:String, playersDynamic: Boolean=false, body: Display.()->Unit) =
 		LocationScene(this,suffix, playersDynamic, body)

@@ -33,6 +33,13 @@ object ArenaLocation : GameLocation("Arena") {
 	override fun onLeave(player: Player) {
 		removePlayerChallenges(player)
 	}
+	override fun onCombatStatusChange() {
+		for (p in players) {
+			if (!p.inCombat) {
+				p.replayScene()
+			}
+		}
+	}
 
 	val enterScene:Scene = scene("enter", playersDynamic = true) {
 		outputText("<b>This is placeholder text.</b>\n\n")
@@ -68,13 +75,13 @@ object ArenaLocation : GameLocation("Arena") {
 				outputText(" challenge"+(if (inChallenges.size>1) "" else "s")+" you!\n\n")
 				for (challenge in inChallenges) {
 					addButton("Accept "+challenge.sender.char.name+"'s challenge") {
-						removePlayerChallenges(challenge.sender)
-						removePlayerChallenges(challenge.target)
 						Game.server?.startCombat(
 							challenge.sender,
 							challenge.target,
 							challenge.sender.scene
 						)
+						removePlayerChallenges(challenge.sender)
+						removePlayerChallenges(challenge.target)
 					}
 					addButton("Reject "+challenge.sender.char.name+"'s challenge") {
 						if (challenges.remove(challenge)) {

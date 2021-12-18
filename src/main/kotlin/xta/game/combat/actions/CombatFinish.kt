@@ -16,6 +16,7 @@ class CombatFinish(actor: Player) : AbstractCombatAction(actor) {
 			combat.returnScene.execute(actor)
 			Game.server?.sendStatusUpdate(actor, char = true)
 		}
+		actor.location.onCombatStatusChange()
 	}
 
 	override val label: String

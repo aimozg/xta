@@ -60,7 +60,7 @@
 		font-weight: bold;
 	}
 	.-me {
-		color: #888800;
+		color: #666666;
 		font-weight: bold;
 	}
 	.-info {
@@ -79,6 +79,7 @@
 
 .chat-send-div {
 	display: flex;
+	padding-right: 1em;
 
 	input {
 		flex-grow: 1;

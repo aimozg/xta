@@ -69,8 +69,9 @@ class LocalGuestProtocol(
 					}
 				}
 				// TODO check if party changes mid-combat
-				if (!player.inCombat) {
+				if (player.combat?.id != cum.combatId) {
 					player.combat = Combat(
+						cum.combatId!!,
 						Combat.Party(
 							(cum.partyA?: emptyArray()).mapTo(ArrayList()) {
 								Game.requireKnownPlayer(it)
