@@ -1,6 +1,8 @@
 package xta
 
+import kotlinx.browser.document
 import kotlinx.browser.window
+import org.w3c.dom.HTMLElement
 import xta.charview.CharViewImage
 import xta.game.combat.statuses.StatusLib
 import xta.game.creature.perks.PerkLib
@@ -17,7 +19,19 @@ fun main() {
 	js("""require("game.scss")""")
 
 	window.asDynamic().game = Game
-	//TODO set onerror
+
+	val errorBlock = document.getElementById("errors") as HTMLElement
+	window.onerror = { msg: dynamic, _: String, _: Int, _: Int, error: Any? ->
+		errorBlock.innerHTML = "Unhandled error:"
+		if (error is Throwable) {
+			val stack = error.stackTraceToString()
+			errorBlock.append("\n$stack")
+			console.error(stack)
+		} else {
+			errorBlock.append("\n$msg")
+		}
+	}
+
 	ScreenManager.init()
 	LogManager.setLevelForMany("", Logger.Level.DEBUG)
 //	LogManager.setLevelForMany("xta.charview.CompositeImage", Logger.Level.INFO)
