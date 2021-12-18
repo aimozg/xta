@@ -9,6 +9,10 @@ abstract class ItemType(
 	val name:String
 ) {
 	val buffTag get() = "item_$id"
+
+	abstract val description: String
+	abstract val tooltipHtml: String
+
 	init {
 		BY_ID[id] = this
 	}

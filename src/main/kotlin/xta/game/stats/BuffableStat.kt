@@ -15,6 +15,14 @@ open class BuffableStat(
 	open val min: Double = Double.NEGATIVE_INFINITY,
 	open val max: Double = Double.POSITIVE_INFINITY
 ) : IJsonSerializable, IStat {
+	constructor(
+		meta: StatMeta,
+		aggregate: Aggregate = Aggregate.SUM,
+		baseValue: Double = aggregate.defaultBase,
+		min: Double = Double.NEGATIVE_INFINITY,
+		max: Double = Double.POSITIVE_INFINITY
+	): this(meta.id, aggregate, baseValue, min, max)
+
 	val buffs = ArrayList<Buff>()
 
 	override fun deserializeFromJson(input: dynamic) {
@@ -104,7 +112,8 @@ open class BuffableStat(
 		asPercentage: Boolean,
 		htmlFormat:Boolean = true,
 		includeHidden: Boolean = false,
-		groupPerks: Boolean = true
+		groupPerks: Boolean = true,
+		isGood: Boolean = true
 	) = buildString {
 		var perkBuff = 0.0
 		for (buff in buffs) {
@@ -116,10 +125,10 @@ open class BuffableStat(
 			if (!includeHidden && !buff.show) continue
 			if (asPercentage && 0.0 <= x && x < 0.01) continue
 			if (!asPercentage && 0.0 <= x && x < 1.0) continue
-			explainBuff(buff.text, x, htmlFormat, asPercentage)
+			explainBuff(buff.text, x, htmlFormat, asPercentage, isGood)
 		}
 		if (perkBuff != 0.0) {
-			explainBuff("Perks", perkBuff, htmlFormat, asPercentage)
+			explainBuff("Perks", perkBuff, htmlFormat, asPercentage, isGood)
 		}
 	}
 
@@ -139,19 +148,18 @@ open class BuffableStat(
 	}
 
 	companion object {
-		private fun StringBuilder.explainBuff(
+		fun StringBuilder.explainBuff(
 			text: String,
 			value: Double,
 			htmlFormat: Boolean,
-			asPercentage: Boolean
+			asPercentage: Boolean,
+			isGood: Boolean
 		) {
 			if (htmlFormat) {
 				append("<div class='buff ")
-				if (value > 0) {
-					append("buff-gt0")
-				} else {
-					append("buff-lt0")
-				}
+				append(if (isGood) "buff-good" else "buff-bad")
+				append(" ")
+				append(if (value > 0) "buff-gt0" else "buff-lt0")
 				append("'>")
 				append("<span class='buff-name'>")
 				append(text)

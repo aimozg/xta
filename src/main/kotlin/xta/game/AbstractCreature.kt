@@ -33,13 +33,13 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val statStore = StatStore()
 
 	//new stat area
-	val strStat by nestedProperty(PrimaryStat(this as Creature, Stats.STR, "Strength"))
-	val touStat by nestedProperty(PrimaryStat(this as Creature, Stats.TOU, "Toughness"))
-	val speStat by nestedProperty(PrimaryStat(this as Creature, Stats.SPE, "Speed"))
-	val intStat by nestedProperty(PrimaryStat(this as Creature, Stats.INT, "Intelligence"))
-	val wisStat by nestedProperty(PrimaryStat(this as Creature, Stats.WIS, "Wisdom"))
-	val libStat by nestedProperty(PrimaryStat(this as Creature, Stats.LIB, "Libido"))
-	val sensStat by nestedProperty(BuffableStat(Stats.SENS, baseValue = 15.0))
+	val strStat by nestedProperty(PrimaryStat(this as Creature, Stats.STR))
+	val touStat by nestedProperty(PrimaryStat(this as Creature, Stats.TOU))
+	val speStat by nestedProperty(PrimaryStat(this as Creature, Stats.SPE))
+	val intStat by nestedProperty(PrimaryStat(this as Creature, Stats.INT))
+	val wisStat by nestedProperty(PrimaryStat(this as Creature, Stats.WIS))
+	val libStat by nestedProperty(PrimaryStat(this as Creature, Stats.LIB))
+	val sensStat by nestedProperty(BuffableStat(Stats.SENS.id, baseValue = 15.0))
 
 	//Primary stats
 	var cor:Int by property(0)

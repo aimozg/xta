@@ -1,6 +1,7 @@
 package xta.game.creature
 
 import xta.game.PlayerCharacter
+import xta.game.stats.StatMeta
 import xta.game.text.Appearance
 
 /*
@@ -9,9 +10,9 @@ import xta.game.text.Appearance
 open class RacialStage(
 	val race:Race,
 	val name:String,
-	val buffs:List<Pair<String,Double>>
+	val buffs:List<Pair<StatMeta,Double>>
 ) {
-	constructor(race:Race,name:String,vararg buffs:Pair<String,Double>):
+	constructor(race:Race,name:String,vararg buffs:Pair<StatMeta,Double>):
 			this(race,name,buffs.asList())
 
 	open fun nameOf(creature: PlayerCharacter):String =

@@ -250,12 +250,13 @@ class CharacterPanel : UiTemplate("char-panel") {
 		showCombatStat(char.resistMagStat, true, "Resist magical")
 		showCombatStat(char.resistLustStat, true, "Resist lust")
 		showCombatStat(char.spellPowerStat, true, "Spell power")
-		showCombatStat(char.spellCostStat, true, "Spell cost")
+		showCombatStat(char.spellCostStat, true, "Spell cost", false)
 		showCombatStat(char.soulskillPowerStat, true, "Soulskill power")
-		showCombatStat(char.soulskillCostStat, true, "Soulskill cost")
+		showCombatStat(char.soulskillCostStat, true, "Soulskill cost", false)
 
 		// TODO weapon
 		equipmentArmor.textContent = char.armor?.name ?: "nothing"
+		equipmentArmor.addTooltip(char.armor?.tooltipHtml?:"")
 		// TODO undergarments
 
 		rerender()
@@ -273,10 +274,10 @@ class CharacterPanel : UiTemplate("char-panel") {
 		}
 	}
 
-	private fun showCombatStat(stat: BuffableStat, asPercentage: Boolean, displayName: String) {
+	private fun showCombatStat(stat: BuffableStat, asPercentage: Boolean, displayName: String, isGood: Boolean = true) {
 		val cs = CombatStat(displayName)
 		cs.insertTo(combatStatDiv)
-		cs.showForStat(asPercentage, stat)
+		cs.showForStat(asPercentage, stat, isGood)
 	}
 
 	private fun addResourceTooltip(
@@ -315,14 +316,14 @@ class CharacterPanel : UiTemplate("char-panel") {
 			fragment.ref("stat-name").textContent = statName
 		}
 
-		fun showForStat(asPercentage:Boolean, stat:BuffableStat) {
+		fun showForStat(asPercentage:Boolean, stat:BuffableStat, isGood: Boolean) {
 			divValue.toggleClass("-buffed", stat.hasPositiveBuffs())
 			divValue.toggleClass("-debuffed", stat.hasNegativeBuffs())
 			divValue.textContent =
 				if (asPercentage) (stat.value*100).roundToInt().toString()+"%"
 				else stat.value.toNiceString(1)
 			divValue.addTooltip(
-				stat.explainBuffs(asPercentage = asPercentage).wrapIfNotEmpty(
+				stat.explainBuffs(asPercentage = asPercentage, isGood=isGood).wrapIfNotEmpty(
 					"<div class='stat-buffs -"+stat.statName+"'>",
 					"</div>"
 				)

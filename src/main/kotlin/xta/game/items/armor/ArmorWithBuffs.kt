@@ -3,21 +3,31 @@ package xta.game.items.armor
 import xta.game.PlayerCharacter
 import xta.game.items.ArmorItem
 import xta.game.items.ArmorType
+import xta.game.stats.BuffableStat.Companion.explainBuff
+import xta.game.stats.StatMeta
 import xta.utils.capitalized
 
-// TODO add buffs on equip, remove on unequip
 open class ArmorWithBuffs(
-	id: String, name: String, longName: String,
+	id: String, name: String, longName: String, description: String,
 	type: ArmorType, def: Int, mdef: Int, cost: Int,
-	vararg val buffs: Pair<String,Double>
-) : ArmorItem(id, name, longName, type, def, mdef, cost) {
+	vararg val buffs: Pair<StatMeta,Double>
+) : ArmorItem(id, name, longName, description, type, def, mdef, cost) {
+
+	override val tooltipHtml: String
+		get() = buildString {
+			append(super.tooltipHtml)
+			for ((stat, value) in buffs) {
+				explainBuff(stat.displayName, value, true, stat.isPercentage, stat.isGood)
+			}
+		}
+
 	override fun equipped(creature: PlayerCharacter) {
 		super.equipped(creature)
-		for (buff in buffs) {
+		for ((stat, value) in buffs) {
 			creature.statStore.addOrReplaceBuff(
-				buff.first,
+				stat.id,
 				buffTag,
-				buff.second,
+				value,
 				text = name.capitalized(),
 				save = false
 			)

@@ -7,6 +7,7 @@ import xta.game.creature.RacialStage
 import xta.game.creature.perks.PerkLib
 import xta.game.creature.races.HumanRace
 import xta.game.items.ArmorItem
+import xta.game.items.ArmorType
 import xta.game.stats.Stats
 
 /*
@@ -55,12 +56,17 @@ class PlayerCharacter: Creature() {
 			race.applyBonuses(this)
 		}
 		if (hasPerk(PerkLib.Agility)) {
-			// TODO make proper dynamic buff: defense%+ spe/10 if wearing light armor, spe/25 if medium
+			val buffValue =
+				when (armor?.type) {
+					null, ArmorType.LIGHT -> spe/10.0
+					ArmorType.MEDIUM -> spe/25.0
+					else -> 0.0
+				}
 			statStore.addOrReplaceBuff(
 				Stats.RESIST_PHYS,
 				PerkLib.Agility.buffTag,
-				0.001*spe,
-				"Perk: "+PerkLib.Agility.name,
+				0.01*buffValue,
+				"(Perk) "+PerkLib.Agility.name,
 				save = false
 			)
 		}
