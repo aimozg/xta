@@ -33,13 +33,7 @@ object TownLocation:GameLocation("Town") {
 
 	val healScene = scene("heal") {
 		outputText("You evoke the debug powers of pre-alpha game build, and your HP and other stats are restored!")
-		val pc = player.char
-		pc.hp = pc.maxHp()
-		pc.lust = pc.minLust()
-		pc.wrath = 0.0
-		pc.fatigue = 0.0
-		pc.mana = pc.maxMana()
-		pc.soulforce = pc.maxSoulforce()
+		player.char.resetStats()
 		player.sendCharUpdate()
 
 		addButton("Back", main)

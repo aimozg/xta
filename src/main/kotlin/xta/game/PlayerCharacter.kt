@@ -71,6 +71,15 @@ class PlayerCharacter: Creature() {
 			)
 		}
 	}
+	fun resetStats() {
+		clearCombatStatuses()
+		hp = maxHp()
+		lust = minLust()
+		wrath = 0.0
+		fatigue = 0.0
+		mana = maxMana()
+		soulforce = maxSoulforce()
+	}
 	fun equipArmor(armorItem: ArmorItem) {
 		unequipArmor()
 		armor = armorItem

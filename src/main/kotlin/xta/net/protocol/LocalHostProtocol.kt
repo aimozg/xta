@@ -21,7 +21,7 @@ class LocalHostProtocol(
 			Game.hostProtocol = this
 			setupLocalGuest(player)
 			logger.debug(this, "Game hosted")
-			Game.localMessage("Connected! Use invite code ${connection.inviteCode()}")
+			Game.localMessage("Connected! Use invite ${connection.inviteCode()}")
 			ScreenManager.showGameScreen()
 			Game.started()
 		}
