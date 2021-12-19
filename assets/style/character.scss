@@ -120,6 +120,10 @@
 	font-weight: bold;
 	font-family: monospace;
 }
+.char-equipment {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+}
 .char-render {
 	display: flex;
 	justify-content: center;

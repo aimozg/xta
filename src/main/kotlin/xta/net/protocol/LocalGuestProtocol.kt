@@ -22,7 +22,7 @@ class LocalGuestProtocol(
 	override val identity: String
 		get() = connection?.identity?:"[LocalHost]"
 
-	override fun toLogString() = connection?.toLogString()?:"[LocalHost]"
+	override fun logContextLabel() = connection?.logContextLabel()?:"[LocalHost]"
 
 	override fun onMessage(message: MessageToGuest) {
 		logger.ifdebug(this) { "< ${message.stringify()}" }
@@ -69,8 +69,9 @@ class LocalGuestProtocol(
 					}
 				}
 				// TODO check if party changes mid-combat
-				if (!player.inCombat) {
+				if (player.combat?.id != cum.combatId) {
 					player.combat = Combat(
+						cum.combatId!!,
 						Combat.Party(
 							(cum.partyA?: emptyArray()).mapTo(ArrayList()) {
 								Game.requireKnownPlayer(it)

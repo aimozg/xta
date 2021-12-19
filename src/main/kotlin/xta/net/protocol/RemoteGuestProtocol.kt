@@ -10,7 +10,7 @@ class RemoteGuestProtocol(
 	override val player: Player,
 	val connection: AbstractConnection
 ): GuestProtocol() {
-	override fun toLogString() = connection.toLogString()
+	override fun logContextLabel() = connection.logContextLabel()
 	override val isConnected: Boolean
 		get() = connection.isConnected
 	override val identity: String

@@ -1,5 +1,5 @@
 plugins {
-    kotlin("js") version "1.6.0"
+    kotlin("js") version "1.6.10"
 }
 
 group = "aimozg"
@@ -29,7 +29,7 @@ kotlin {
 		kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.js.ExperimentalJsExport"
 		kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
 	}
-    js(IR) {
+    js(LEGACY) {
         binaries.executable()
         browser {
             commonWebpackConfig {

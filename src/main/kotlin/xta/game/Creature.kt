@@ -19,6 +19,21 @@ import kotlin.math.roundToInt
  */
 @JsExport
 abstract class Creature: AbstractCreature() {
+	init {
+		meleeAimStat.dynamicBuff("leveled",show=false, persistent = true) {
+			(it.level*0.06).coerceAtMost(0.36)
+		}
+		meleeAimStat.dynamicBuff("condition_Blind","Blinded", persistent = true) {
+			if (it.hasCondition(CombatCondition.BLIND)) {
+				// 50% of base+leveled
+				-0.5*((0.64+it.level*0.06).coerceAtMost(1.00))
+			} else 0.0
+		}
+		// TODO flying penalty
+		// TODO perk bonuses
+		// TODO item bonuses
+		// TODO mastery
+	}
 
 	/*
 	 *    ███████  ██████  ██    ██ ██ ██████  ███    ███ ███████ ███    ██ ████████
@@ -29,6 +44,11 @@ abstract class Creature: AbstractCreature() {
 	 *                ▀▀
 	 *
 	 */
+
+	fun allClothesDescript(nakedText:String = "gear"): String {
+		// TODO upper and lower garment
+		return armor?.name ?: nakedText
+	}
 
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
@@ -326,6 +346,8 @@ abstract class Creature: AbstractCreature() {
 	fun mf(m:String,f:String) = if (looksFemale()) f else m
 
 	fun hasPerk(perkType: PerkType) = perkType in perks
+	fun addPerk(perkType: PerkType) = perks.addPerk(perkType)
+	fun removePerk(perkType: PerkType) = perks.removePerk(perkType)
 
 	// TODO maxVenom
 	fun maxVenom():Double = 0.0
@@ -380,18 +402,7 @@ abstract class Creature: AbstractCreature() {
 	}
 
 	val meleeAim: Double
-		get() {
-			var aim =meleeAimStat.value
-			aim += (level*0.06).coerceAtMost(0.72)
-			// TODO flying penalty
-			// TODO perk bonuses
-			// TODO item bonuses
-			// TODO mastery
-			if (hasCondition(CombatCondition.BLIND)) {
-				aim /= 2
-			}
-			return aim
-		}
+		get() = meleeAimStat.value
 	val meleeDodge: Double
 		get() {
 			return meleeDodgeStat.value + dodgeStat.value
@@ -440,8 +451,4 @@ abstract class Creature: AbstractCreature() {
 		addStatusEffect(StatusEffect(this, type, duration))
 	}
 
-	fun armorDescript(nakedText:String = "gear"): String {
-		// TODO upper and lower garment
-		return armor?.name ?: nakedText
-	}
 }

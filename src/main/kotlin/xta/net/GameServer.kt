@@ -54,7 +54,7 @@ import xta.utils.*
  * 4. See 3-7 above
  */
 class GameServer(): LogContext {
-	override fun toLogString() = "[GameServer]"
+	override fun logContextLabel() = "[GameServer]"
 
 	val players = arrayListOf(Game.me)
 
@@ -70,7 +70,7 @@ class GameServer(): LogContext {
 		}
 		 */
 	}
-	fun hostGame() {
+	fun startGame() {
 		placePlayer(Game.me)
 	}
 
@@ -204,6 +204,8 @@ class GameServer(): LogContext {
 
 	private fun placePlayer(player: Player) {
 		player.char.updateStats()
+		player.char.resetStats()
+		player.sendCharUpdate()
 		TownLocation.main.execute(player)
 	}
 
@@ -256,6 +258,7 @@ class GameServer(): LogContext {
 			msg.combatUpdate = jsobject { cum -> /* yes, and? */
 				cum.inCombat = player.inCombat
 				val combat = player.combat
+				cum.combatId = combat?.id
 				cum.ongoing = combat?.ongoing?:false
 				if (combat != null) {
 					cum.partyA = combat.partyA.players.mapToArray { it.id }

@@ -10,6 +10,11 @@ abstract class Logger(val id:String) {
 
 	abstract fun doLog(level:Level, context: LogContext, message:String)
 	abstract fun doLogObject(level:Level, context: LogContext, message:String, obj: Any?)
+	open fun format(message:Any?):String = when {
+		message is Error -> message.stackTraceToString()+
+				(message.cause?.let { " Caused by: "+format(it) }?:"")
+		else -> message.toString()
+	}
 
 	fun log(level:Level, context: LogContext?, message:String) {
 		if (level >= this.level) doLog(level, context ?: Game.me, message)
@@ -26,22 +31,34 @@ abstract class Logger(val id:String) {
 	fun critical(context: LogContext?, message: String) = log(Level.CRITICAL, context, message)
 
 	fun trace(context: LogContext?, vararg message: Any?) {
-		if (Level.TRACE >= level) log(Level.TRACE, context, message.joinToString(" "))
+		if (Level.TRACE >= level) log(Level.TRACE, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 	fun debug(context: LogContext?, vararg message: Any?) {
-		if (Level.DEBUG >= level) log(Level.DEBUG, context, message.joinToString(" "))
+		if (Level.DEBUG >= level) log(Level.DEBUG, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 	fun info(context: LogContext?, vararg message: Any?) {
-		if (Level.INFO >= level) log(Level.INFO, context, message.joinToString(" "))
+		if (Level.INFO >= level) log(Level.INFO, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 	fun warn(context: LogContext?, vararg message: Any?) {
-		if (Level.WARNING >= level) log(Level.WARNING, context, message.joinToString(" "))
+		if (Level.WARNING >= level) log(Level.WARNING, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 	fun error(context: LogContext?, vararg message: Any?) {
-		if (Level.ERROR >= level) log(Level.ERROR, context, message.joinToString(" "))
+		if (Level.ERROR >= level) log(Level.ERROR, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 	fun critical(context: LogContext?, vararg message: Any?) {
-		if (Level.CRITICAL >= level) log(Level.CRITICAL, context, message.joinToString(" "))
+		if (Level.CRITICAL >= level) log(Level.CRITICAL, context, message.joinToString(" ") {
+			format(it)
+		})
 	}
 
 	inline fun iftrace(context: LogContext?, message: ()->String) {

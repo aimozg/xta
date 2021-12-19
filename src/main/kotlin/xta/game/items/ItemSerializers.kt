@@ -8,6 +8,7 @@ object ItemSerializers {
 		override fun serializeObject(t: ArmorItem?) = t?.id
 
 		override fun deserializeObject(j: dynamic): ArmorItem? {
+			if (j == null || j == undefined) return null
 			val item = ItemType.BY_ID[j as String] ?: return null
 			return item as? ArmorItem ?: error("Item with id '$j' is not an armor")
 		}

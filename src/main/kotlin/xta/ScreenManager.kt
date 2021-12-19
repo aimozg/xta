@@ -108,7 +108,7 @@ object ScreenManager: LogContext {
 		}
 	}
 
-	override fun toLogString() = "[ScreenManager]"
+	override fun logContextLabel() = "[ScreenManager]"
 
 	private val logger = LogManager.getLogger("xta.ScreenManager")
 }

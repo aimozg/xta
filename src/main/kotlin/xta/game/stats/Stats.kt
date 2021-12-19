@@ -4,72 +4,72 @@ package xta.game.stats
  * Created by aimozg on 09.12.2021.
  */
 object Stats {
-	const val STR = "str"
-	const val STR_CORE = "$STR.core"
-	const val STR_MULT = "$STR.mult"
-	const val STR_BONUS = "$STR.bonus"
-	const val TOU = "tou"
-	const val TOU_CORE = "$TOU.core"
-	const val TOU_MULT = "$TOU.mult"
-	const val TOU_BONUS = "$TOU.bonus"
-	const val SPE = "spe"
-	const val SPE_CORE = "$SPE.core"
-	const val SPE_MULT = "$SPE.mult"
-	const val SPE_BONUS = "$SPE.bonus"
-	const val INT = "int"
-	const val INT_CORE = "$INT.core"
-	const val INT_MULT = "$INT.mult"
-	const val INT_BONUS = "$INT.bonus"
-	const val WIS = "wis"
-	const val WIS_CORE = "$WIS.core"
-	const val WIS_MULT = "$WIS.mult"
-	const val WIS_BONUS = "$WIS.bonus"
-	const val LIB = "wis"
-	const val LIB_CORE = "$LIB.core"
-	const val LIB_MULT = "$LIB.mult"
-	const val LIB_BONUS = "$LIB.bonus"
+	val STR = StatMeta("str", "Strength")
+	val STR_CORE = StatMeta("str.core", "Strength", "Strength core")
+	val STR_MULT = StatMeta("str.mult", "Strength", "Strength mult", isPercentage = true)
+	val STR_BONUS = StatMeta("str.bonus", "Strength", "Strength bonus")
+	val TOU = StatMeta("tou", "Toughness")
+	val TOU_CORE = StatMeta("tou.core", "Toughness", "Toughness core")
+	val TOU_MULT = StatMeta("tou.mult", "Toughness", "Toughness mult", isPercentage = true)
+	val TOU_BONUS = StatMeta("tou.bonus", "Toughness", "Toughness bonus")
+	val SPE = StatMeta("spe", "Speed")
+	val SPE_CORE = StatMeta("spe.core", "Speed", "Speed core")
+	val SPE_MULT = StatMeta("spe.mult", "Speed", "Speed mult", isPercentage = true)
+	val SPE_BONUS = StatMeta("spe.bonus", "Speed", "Speed bonus")
+	val INT = StatMeta("int", "Intelligence")
+	val INT_CORE = StatMeta("int.core", "Intelligence", "Intelligence core")
+	val INT_MULT = StatMeta("int.mult", "Intelligence", "Intelligence mult", isPercentage = true)
+	val INT_BONUS = StatMeta("int.bonus", "Intelligence", "Intelligence bonus")
+	val WIS = StatMeta("wis", "Wisdom")
+	val WIS_CORE = StatMeta("wis.core", "Wisdom", "Wisdom core")
+	val WIS_MULT = StatMeta("wis.mult", "Wisdom", "Wisdom mult", isPercentage = true)
+	val WIS_BONUS = StatMeta("wis.bonus", "Wisdom", "Wisdom bonus")
+	val LIB = StatMeta("lib", "Libido")
+	val LIB_CORE = StatMeta("lib.core", "Libido", "Libido core")
+	val LIB_MULT = StatMeta("lib.mult", "Libido", "Libido mult", isPercentage = true)
+	val LIB_BONUS = StatMeta("lib.bonus", "Libido", "Libido bonus")
 
-	const val SENS = "sens"
+	val SENS = StatMeta("sens", "Sensitivity", isGood = false)
 
-	const val HP_MAX_BASE = "hpmax_base"
-	const val HP_MAX_MULT = "hpmax_mult"
-	const val HP_MAX_PERLEVEL = "hpmax_perlevel"
+	val HP_MAX_BASE = StatMeta("hpmax_base", "HP Max")
+	val HP_MAX_MULT = StatMeta("hpmax_mult", "HP Max", "HP Max mult", isPercentage = true)
+	val HP_MAX_PERLEVEL = StatMeta("hpmax_perlevel", "HP Max per level")
 
-	const val MANA_MAX_BASE = "manamax_base"
-	const val MANA_MAX_MULT = "manamax_mult"
-	const val MANA_MAX_PERLEVEL = "manamax_perlevel"
+	val MANA_MAX_BASE = StatMeta("manamax_base", "Mana Max")
+	val MANA_MAX_MULT = StatMeta("manamax_mult", "Mana Max", "Mana Max mult", isPercentage = true)
+	val MANA_MAX_PERLEVEL = StatMeta("manamax_perlevel", "Mana Max per level")
 
-	const val LUST_MIN = "lustmin"
-	const val LUST_MAX_BASE = "lustmax_base"
-	const val LUST_MAX_MULT = "lustmax_mult"
-	const val LUST_MAX_PERLEVEL = "lustmax_perlevel"
+	val LUST_MIN = StatMeta("lustmin", "Min Lust", isGood = false)
+	val LUST_MAX_BASE = StatMeta("lustmax_base", "Max Lust")
+	val LUST_MAX_MULT = StatMeta("lustmax_mult", "Max Lust", "Max Lust mult", isPercentage = true)
+	val LUST_MAX_PERLEVEL = StatMeta("lustmax_perlevel", "Lust Max per level")
 
-	const val FATIGUE_MAX_BASE = "fatgmax_base"
-	const val FATIGUE_MAX_MULT = "fatgmax_mult"
-	const val FATIGUE_MAX_PERLEVEL = "fatgmax_perlevel"
+	val FATIGUE_MAX_BASE = StatMeta("fatgmax_base", "Max Fatigue")
+	val FATIGUE_MAX_MULT = StatMeta("fatgmax_mult", "Max Fatigue", "Max Fatigue mult", isPercentage = true)
+	val FATIGUE_MAX_PERLEVEL = StatMeta("fatgmax_perlevel", "Fatigue Max per level")
 
-	const val WRATH_MAX_BASE = "wrathmax_base"
-	const val WRATH_MAX_MULT = "wrathmax_mult"
-	const val WRATH_MAX_PERLEVEL = "wrathmax_perlevel"
+	val WRATH_MAX_BASE = StatMeta("wrathmax_base", "Max Wrath")
+	val WRATH_MAX_MULT = StatMeta("wrathmax_mult", "Max Wrath", "Max Wrath mult", isPercentage = true)
+	val WRATH_MAX_PERLEVEL = StatMeta("wrathmax_perlevel", "Wrath Max per level")
 
-	const val SF_MAX_BASE = "sfmax_base"
-	const val SF_MAX_MULT = "sfmax_mult"
-	const val SF_MAX_PERLEVEL = "sfmax_perlevel"
+	val SF_MAX_BASE = StatMeta("sfmax_base", "Max Soulforce")
+	val SF_MAX_MULT = StatMeta("sfmax_mult", "Max Soulforce", "Max Soulforce mult", isPercentage = true)
+	val SF_MAX_PERLEVEL = StatMeta("sfmax_perlevel", "Soulforce Max per level")
 
-	const val AIM_MELEE = "aim_melee"
+	val AIM_MELEE = StatMeta("aim_melee", "Melee aim", isPercentage = true)
 
-	const val DODGE_ANY = "dodge"
-	const val DODGE_MELEE = "dodge_melee"
+	val DODGE_ANY = StatMeta("dodge", "Dodge", isPercentage = true)
+	val DODGE_MELEE = StatMeta("dodge_melee", "Melee dodge", isPercentage = true)
 
-	const val DAMAGE_MELEE = "dmg_melee"
-	const val DAMAGE_RANGED_MULT = "dmg_ranged_mult"
+	val DAMAGE_MELEE = StatMeta("dmg_melee", "Melee damage")
+	val DAMAGE_RANGED_MULT = StatMeta("dmg_ranged_mult", "Ranged damage", "Ranged damage mult", isPercentage = true)
 
-	const val RESIST_PHYS = "resist_phys"
-	const val RESIST_MAG = "resist_mag"
-	const val RESIST_LUST = "resist_lust"
+	val RESIST_PHYS = StatMeta("resist_phys", "Reisst physical", isPercentage = true)
+	val RESIST_MAG = StatMeta("resist_mag", "Resist magical", isPercentage = true)
+	val RESIST_LUST = StatMeta("resist_lust", "Resist lust", isPercentage = true)
 
-	const val SPELL_POWER = "spellpower"
-	const val SPELL_COST = "spell_cost"
-	const val SOULSKILL_POWER = "soulskillpower"
-	const val SOULSKILL_COST = "soulskill_cost"
+	val SPELL_POWER = StatMeta("spellpower", "Spell power", isPercentage = true)
+	val SPELL_COST = StatMeta("spell_cost", "Spell cost", isPercentage = true, isGood = false)
+	val SOULSKILL_POWER = StatMeta("soulskillpower", "Soulskill power", isPercentage = true)
+	val SOULSKILL_COST = StatMeta("soulskill_cost", "Soulkill cost", isPercentage = true, isGood = false)
 }

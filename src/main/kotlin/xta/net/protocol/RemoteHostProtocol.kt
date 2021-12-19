@@ -10,7 +10,7 @@ class RemoteHostProtocol(
 	override val player: Player,
 	val connection: AbstractConnection
 ): HostProtocol() {
-	override fun toLogString() = connection.toLogString()
+	override fun logContextLabel() = connection.logContextLabel()
 	override val isConnected: Boolean
 		get() = connection.isConnected
 

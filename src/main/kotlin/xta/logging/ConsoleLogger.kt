@@ -22,7 +22,7 @@ class ConsoleLogger(id: String) : Logger(id) {
 
 	override fun doLogObject(level: Level, context: LogContext, message: String, obj: Any?) {
 		val myname = wrappedId
-		val actualContext = context.toLogString()
+		val actualContext = context.logContextLabel()
 		val dt = (Date().getTime() - t0).div(1000).toFixed(3).padStart(7, ' ')
 		val safemessage = message.replace("\n"," ")
 		when (level) {
@@ -32,8 +32,10 @@ class ConsoleLogger(id: String) : Logger(id) {
 				console.asDynamic().debug(dt, myname, actualContext, safemessage, obj)
 			Level.INFO ->
 				console.info(dt, myname, actualContext, safemessage, obj)
-			Level.WARNING ->
+			Level.WARNING -> {
 				console.warn(dt, myname, actualContext, safemessage, obj)
+				// Game.localWarnMessage(safemessage+" "+obj.toString())
+			}
 			Level.ERROR,
 			Level.CRITICAL,
 			Level.NONE -> {

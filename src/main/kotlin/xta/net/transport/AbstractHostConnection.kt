@@ -8,7 +8,7 @@ import kotlin.js.Promise
  * Created by aimozg on 29.11.2021.
  */
 abstract class AbstractHostConnection : EventEmitter(), LogContext {
-	override fun toLogString() = "[$identity]"
+	override fun logContextLabel() = "[$identity]"
 
 	abstract val guestList: Collection<AbstractConnection>
 
