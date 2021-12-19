@@ -262,12 +262,15 @@ class CharacterPanel : UiTemplate("char-panel") {
 		rerender()
 	}
 
+	val image by lazy {
+		CharViewImage.INSTANCE.copy()
+	}
 	fun rerender() {
 		renderDiv.clear()
 		val char = lastCharacter
 		if (render && char != null) {
 			renderDiv.append(
-				CharViewImage.INSTANCE.renderCharacter(
+				image.renderCharacter(
 					char, renderX2, armorDisplayMode, weaponDisplayMode
 				).canvas
 			)

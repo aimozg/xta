@@ -1,10 +1,8 @@
 package xta.game.combat.actions.abilities.spellswhite
 
 import xta.Player
-import xta.game.combat.CombatPipeline
 import xta.game.combat.CombatRoll
 import xta.game.combat.DamageType
-import xta.game.combat.DealDamagePipe
 import xta.game.combat.actions.abilities.AbstractWhiteSpell
 import xta.game.creature.KnownThings
 import kotlin.math.floor
@@ -18,6 +16,29 @@ class SpellLightningBolt(
 ) {
 	// TODO cooldown
 	val target = targetPlayer.char
+
+	inner class Roll : CombatRoll(caster, target, display) {
+		init {
+			canBeDodged = false
+			damageType = DamageType.LIGHTNING
+		}
+
+		override fun phaseCast() {
+			display.selectNpcs(caster, target)
+			display.outputText("[You] [verb charge] out energy in your hand and [verb fire] it out in the form of a powerful bolt of lightning at [npc1 you] !\n")
+		}
+
+		override fun phaseCalcEffect() {
+			damage = calcDamage()
+		}
+
+		override fun doEffect() {
+			// TODO proper damage dealing function
+			// TODO crit and repeat damage
+			dealDamage()
+		}
+	}
+
 	override fun isKnown() = caster.knows(KnownThings.SPELL_LIGHTNINGBOLT)
 	override val description: String
 		get() = "Lightning Bolt is a basic lightning attack that will electrocute your foe with a single bolt of lightning."
@@ -36,17 +57,6 @@ class SpellLightningBolt(
 	}
 
 	override fun performAbilityEffect() {
-		display.selectNpcs(caster, target)
-		display.outputText("[You] [verb charge] out energy in your hand and [verb fire] it out in the form of a powerful bolt of lightning at [npc1 you] !\n")
-		val roll = CombatRoll(caster, target)
-		roll.damageType = DamageType.LIGHTNING
-		// TODO proper damage dealing function
-		// TODO crit and repeat damage
-		roll.damage = calcDamage()
-		CombatPipeline.execute(
-			arrayOf(
-				DealDamagePipe
-			), display, roll
-		)
+		Roll().execute()
 	}
 }

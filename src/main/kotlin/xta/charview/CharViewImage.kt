@@ -9,8 +9,9 @@ import kotlin.js.Date
 /*
  * Created by aimozg on 02.12.2021.
  */
-class CharViewImage : CompositeImage(200, 220) {
-	init {
+class CharViewImage : CompositeImage {
+
+	private constructor() : super(200, 220) {
 		logger.info(null, "Loading images")
 		val t0 = Date().getTime()
 		loadPartsFromJson(sprites_json, charviewImages, originX = 15, originY = 10)
@@ -123,6 +124,13 @@ class CharViewImage : CompositeImage(200, 220) {
 			"aura",
 		)
 	}
+	private constructor(original:CharViewImage) : super(200, 220) {
+		keyColors = original.keyColors.slice()
+		partsByName.putAll(original.partsByName)
+		partsLayered.putAll(original.partsLayered)
+		partsOrdered.addAll(original.partsOrdered)
+	}
+	fun copy() = CharViewImage(this)
 
 	fun setupColors(char: PlayerCharacter) {
 		val hairColor = colordb.find("hair", char.hairColor)
@@ -208,12 +216,37 @@ class CharViewImage : CompositeImage(200, 220) {
 		fun next() = values().getOrNull(values().indexOf(this)+1)?:NO_WEAPON
 	}
 
+	private var cache: Pair<String,CanvasRenderingContext2D>? = null
 	fun renderCharacter(
 		char: PlayerCharacter,
 		scale: Boolean,
 		armorDisplayMode: ArmorDisplayMode = ArmorDisplayMode.CLOTHED,
 		weaponDisplayMode: WeaponDisplayMode = WeaponDisplayMode.MELEE
-	): CanvasRenderingContext2D = with(char) {
+	): CanvasRenderingContext2D {
+		setCharProps(char, scale, armorDisplayMode, weaponDisplayMode)
+		return composeCached(scale)
+	}
+	private fun composeCached(scale:Boolean):CanvasRenderingContext2D {
+		val key = cacheKey() + scale.toString()
+		cache?.let { (cachedKey,cachedImage) ->
+			if (cachedKey == key) return cachedImage
+		}
+		var image = compose()
+		if (scale) {
+			val x2 = createContext2D(width * 2, height * 2)
+			x2.drawImage(image.canvas, 0.0, 0.0, width * 2.0, height * 2.0)
+			image = x2
+		}
+		cache = key to image
+		return image
+	}
+
+	private fun setCharProps(
+		char: PlayerCharacter,
+		scale: Boolean,
+		armorDisplayMode: ArmorDisplayMode = ArmorDisplayMode.CLOTHED,
+		weaponDisplayMode: WeaponDisplayMode = WeaponDisplayMode.MELEE
+	): Unit = with(char) {
 		// regexes to port model.xml:
 
 		// \<show part *\= *\"([\w-/]+)\"\/\>
@@ -2388,14 +2421,6 @@ class CharViewImage : CompositeImage(200, 220) {
 
 		/* FULL BODY AREA */
 		// TODO port model.xml code
-
-		val compose = compose()
-		if (scale) {
-			val x2 = createContext2D(width * 2, height * 2)
-			x2.drawImage(compose.canvas, 0.0, 0.0, width * 2.0, height * 2.0)
-			return x2
-		}
-		return compose
 	}
 
 	companion object {

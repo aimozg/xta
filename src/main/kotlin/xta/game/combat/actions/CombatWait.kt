@@ -5,7 +5,7 @@ import xta.game.combat.AbstractCombatAction
 
 class CombatWait(actor: Player): AbstractCombatAction(actor) {
 	override fun perform() {
-		display.selectPerson(actor)
+		display.selectNpc(0, actor.char)
 		display.outputText("[You] [verb do] nothing.")
 	}
 

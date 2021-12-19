@@ -1,7 +1,13 @@
 package xta.game.combat.actions
 
 import xta.Player
-import xta.game.combat.*
+import xta.game.combat.AbstractCombatAction
+import xta.game.combat.CombatMath
+import xta.game.combat.CombatRoll
+import xta.game.combat.DamageType
+import xta.utils.gamerng
+import xta.utils.percentRoll
+import kotlin.math.round
 import kotlin.math.roundToInt
 
 class CombatMeleeAttack(
@@ -11,30 +17,46 @@ class CombatMeleeAttack(
 	private val attacker = actor.char
 	private val defender = target.char
 
-	override fun perform() {
+	inner class Roll: CombatRoll(attacker, defender, display) {
 		// TODO multi-attack
 		// TODO handle seals
 		// TODO port combat math
 		// TODO feral combat
-		val roll = CombatRoll(attacker, defender)
-		roll.aim = attacker.meleeAim
-		roll.dodgeChance = CombatMath.meleeEvadeChance(attacker, defender)
-		roll.damageType = DamageType.PHYSICAL
-		roll.critChance = CombatMath.meleeDamageCritChancePercent(attacker, defender)
-		roll.critMultiplier = CombatMath.meleeDamageCritMultiplier(attacker, defender)
-		CombatPipeline.execute(
-			arrayOf(
-				AimPipe,
-				DodgePipe,
-				// TODO blocking
-				MeleeDamageRollPipe,
-				MeleeHitPipe,
-				DealDamagePipe
-			),
-			display,
-			roll
-		)
-		if (roll.failed) return
+			init {
+				aim = attacker.meleeAim
+				dodgeChance = CombatMath.meleeEvadeChance(attacker, target)
+				damageType = DamageType.PHYSICAL
+				critChance = CombatMath.meleeDamageCritChancePercent(attacker, target)
+				critMultiplier = CombatMath.meleeDamageCritMultiplier(attacker, target)
+			}
+
+		override fun phaseCalcEffect() {
+			damage = CombatMath.meleeDamage(attacker, target)
+			val crit = gamerng.percentRoll(critChance)
+			if (crit) {
+				damage *= critMultiplier
+			}
+			damage = round(CombatMath.meleeDamageReduction(target, damage))
+		}
+
+		override fun phaseHit() {
+			display.selectNpcs(attacker, target)
+			if (damage < 0) {
+				display.outputText("[Your] attacks are deflected by [npc1 you].")
+				failed = true
+				return
+			}
+			// TODO weapon verbs
+			display.outputText("[You] [verb hit] [npc1 you]! ")
+		}
+
+		override fun doEffect() {
+			dealDamage()
+		}
+	}
+
+	override fun perform() {
+		Roll().execute()
 	}
 
 	override val label: String
