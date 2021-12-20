@@ -1,8 +1,11 @@
 package xta.game.combat.actions.abilities.spellswhite
 
 import xta.Player
+import xta.game.PlayerCharacter
+import xta.game.combat.Combat
 import xta.game.combat.CombatRoll
 import xta.game.combat.DamageType
+import xta.game.combat.actions.CombatAbility
 import xta.game.combat.actions.abilities.AbstractWhiteSpell
 import xta.game.creature.KnownThings
 import kotlin.math.floor
@@ -14,6 +17,8 @@ class SpellWhitefire(
 	actor,
 	"Whitefire"
 ) {
+	override val ability: CombatAbility
+		get() = Companion
 	val target = targetPlayer.char
 
 	inner class Roll : CombatRoll(caster, target, display) {
@@ -58,5 +63,12 @@ class SpellWhitefire(
 
 	override fun performAbilityEffect() {
 		Roll().execute()
+	}
+
+	companion object: CombatAbility.TargetingOneEnemy("Whitefire") {
+		override fun isKnownBy(caster: PlayerCharacter) = caster.knows(KnownThings.SPELL_WHITEFIRE)
+
+		override fun createAction(actor: Player, targetPlayer: Player, combat: Combat) =
+			SpellWhitefire(actor, targetPlayer)
 	}
 }

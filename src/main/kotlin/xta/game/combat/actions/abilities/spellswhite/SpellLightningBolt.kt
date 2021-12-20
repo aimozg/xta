@@ -1,8 +1,11 @@
 package xta.game.combat.actions.abilities.spellswhite
 
 import xta.Player
+import xta.game.PlayerCharacter
+import xta.game.combat.Combat
 import xta.game.combat.CombatRoll
 import xta.game.combat.DamageType
+import xta.game.combat.actions.CombatAbility
 import xta.game.combat.actions.abilities.AbstractWhiteSpell
 import xta.game.creature.KnownThings
 import kotlin.math.floor
@@ -14,6 +17,9 @@ class SpellLightningBolt(
 	actor,
 	"Lightning Bolt"
 ) {
+	override val ability: CombatAbility
+		get() = Companion
+
 	// TODO cooldown
 	val target = targetPlayer.char
 
@@ -39,7 +45,6 @@ class SpellLightningBolt(
 		}
 	}
 
-	override fun isKnown() = caster.knows(KnownThings.SPELL_LIGHTNINGBOLT)
 	override val description: String
 		get() = "Lightning Bolt is a basic lightning attack that will electrocute your foe with a single bolt of lightning."
 
@@ -58,5 +63,13 @@ class SpellLightningBolt(
 
 	override fun performAbilityEffect() {
 		Roll().execute()
+	}
+
+	companion object: CombatAbility.TargetingOneEnemy("Lightning Bolt") {
+		override fun isKnownBy(caster: PlayerCharacter) =
+			caster.knows(KnownThings.SPELL_LIGHTNINGBOLT)
+
+		override fun createAction(actor: Player, targetPlayer: Player, combat: Combat)=
+			SpellLightningBolt(actor, targetPlayer)
 	}
 }

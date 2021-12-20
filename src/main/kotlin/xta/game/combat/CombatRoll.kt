@@ -23,7 +23,7 @@ abstract class CombatRoll(
 	// Phase: Aim
 
 	var canMiss:Boolean = true
-	var aim: Double = 0.0
+	var aim: Double = 1.0
 	var missed:Boolean = false
 
 	// Phase: Dodge

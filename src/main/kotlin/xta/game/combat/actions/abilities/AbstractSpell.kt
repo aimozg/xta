@@ -2,7 +2,7 @@ package xta.game.combat.actions.abilities
 
 import xta.Player
 
-abstract class AbstractSpell(actor: Player): AbstractCombatAbility(actor) {
+abstract class AbstractSpell(actor: Player): CombatAbilityAction(actor) {
 	abstract val baseManaCost: Int
 
 	override fun usabilityCheck(): String? {
