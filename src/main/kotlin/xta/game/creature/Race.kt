@@ -7,6 +7,10 @@ import xta.game.creature.races.KitsuneRace
 import xta.game.creature.races.DogRace
 import xta.game.creature.races.HorseRace
 import xta.game.creature.races.WolfRace
+import xta.game.creature.races.OniRace
+import xta.game.creature.races.ElfRace
+import xta.game.creature.races.JiangshiRace
+import xta.game.creature.races.WerewolfRace
 
 
 /*
@@ -64,7 +68,7 @@ abstract class Race(
 			// RaccoonRace,
 			DogRace,
 			WolfRace,
-			// WerewolfRace,
+			WerewolfRace,
 			// FoxRace,
 			// FerretRace,
 			KitsuneRace,
@@ -81,8 +85,8 @@ abstract class Race(
 			// SharkRace,
 			// OrcaRace,
 			// OomukadeRace,
-			// OniRace,
-			// ElfRace,
+			OniRace,
+			ElfRace,
 			// OrcRace,
 			// RaijuRace,
 			// ThunderbirdRace,
@@ -125,7 +129,7 @@ abstract class Race(
 			// SlimeRace,
 			// MagmaslimeRace,
 			// DarkslimeRace,
-			// JiangshiRace,
+			JiangshiRace,
 			// PoltergeistRace,
 			// BansheeRace,
 			// MelkieRace,

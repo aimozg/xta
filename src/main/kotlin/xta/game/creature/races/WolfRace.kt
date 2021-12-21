@@ -10,7 +10,7 @@ object WolfRace : Race(13, "wolf", 4)  {
 
     object STAGE_WOLF: RacialStage(this, "wolf",
         Stats.STR_MULT to +0.15,
-        Stats.SPE_MULT to + 0.1,
+        Stats.SPE_MULT to +0.1,
         Stats.INT_MULT to -0.1
 
     ) {
