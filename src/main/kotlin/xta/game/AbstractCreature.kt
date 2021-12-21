@@ -87,6 +87,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val meleeAimStat by nestedProperty(BuffableStat(this as Creature, Stats.AIM_MELEE, baseValue = 0.64))
 	val meleeDodgeStat by nestedProperty(BuffableStat(this as Creature, Stats.DODGE_MELEE, baseValue = 0.0))
 	val meleeDamageStat by nestedProperty(BuffableStat(this as Creature, Stats.DAMAGE_MELEE, baseValue = 0.0))
+	val meleeDamageMultStat by nestedProperty(BuffableStat(this as Creature, Stats.DAMAGE_MELEE_MULT, baseValue = 1.0))
 
 	val rangedDamageMultStat by nestedProperty(BuffableStat(this as Creature, Stats.DAMAGE_RANGED_MULT, baseValue = 1.0))
 
@@ -98,6 +99,7 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val spellCostStat by nestedProperty(BuffableStat(this as Creature, Stats.SPELL_COST, baseValue = 1.0))
 
 	val soulskillPowerStat by nestedProperty(BuffableStat(this as Creature, Stats.SOULSKILL_POWER, baseValue = 1.0))
+	val soulskillPhysPowerStat by nestedProperty(BuffableStat(this as Creature, Stats.SOULSKILL_PHYS_POWER, baseValue = 1.0))
 	val soulskillCostStat by nestedProperty(BuffableStat(this as Creature, Stats.SOULSKILL_COST, baseValue = 1.0))
 
 	//Level Stats

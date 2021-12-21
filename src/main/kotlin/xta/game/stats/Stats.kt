@@ -70,6 +70,7 @@ object Stats {
 	val DODGE_MELEE = StatMeta("dodge_melee", "Melee dodge", isPercentage = true)
 
 	val DAMAGE_MELEE = StatMeta("dmg_melee", "Melee damage")
+	val DAMAGE_MELEE_MULT = StatMeta("dmg_melee_mult", "Melee damage", "Melee damage mult", isPercentage = true)
 	val DAMAGE_RANGED_MULT = StatMeta("dmg_ranged_mult", "Ranged damage", "Ranged damage mult", isPercentage = true)
 
 	val RESIST_PHYS = StatMeta("resist_phys", "Reisst physical", isPercentage = true)
@@ -79,5 +80,6 @@ object Stats {
 	val SPELL_POWER = StatMeta("spellpower", "Spell power", isPercentage = true)
 	val SPELL_COST = StatMeta("spell_cost", "Spell cost", isPercentage = true, isGood = false)
 	val SOULSKILL_POWER = StatMeta("soulskillpower", "Soulskill power", isPercentage = true)
+	val SOULSKILL_PHYS_POWER = StatMeta("soulskillpower_phys", "Soulskill physical power", isPercentage = true)
 	val SOULSKILL_COST = StatMeta("soulskill_cost", "Soulkill cost", isPercentage = true, isGood = false)
 }

@@ -1,6 +1,8 @@
 package xta.game.items.weapons
 
+import xta.charview.CharViewImage
 import xta.game.Creature
+import xta.game.PlayerCharacter
 import xta.game.items.MeleeWeaponItem
 import xta.game.items.MeleeWeaponType
 
@@ -18,8 +20,10 @@ object ItemBeautifulSword : MeleeWeaponItem(
 	560
 ) {
 	// TODO corruption blocks equipping
-	init {
-		sprite = "weapon/swordHoly"
+
+	override fun render(image: CharViewImage, creature: PlayerCharacter) {
+		// TODO fire buff
+		image.showPart("weapon/swordHoly")
 	}
 
 	override fun attack(wielder: Creature?): Int {

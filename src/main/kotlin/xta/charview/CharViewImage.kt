@@ -3,7 +3,6 @@ package xta.charview
 import org.w3c.dom.CanvasRenderingContext2D
 import xta.game.PlayerCharacter
 import xta.game.creature.body.*
-import xta.game.items.MeleeWeaponTag
 import xta.logging.LogManager
 import kotlin.js.Date
 
@@ -335,7 +334,7 @@ class CharViewImage : CompositeImage {
 		// TODO use sprite ids from weapons
 		val PlayerHasAWeapon = meleeWeapon != null
 		val PlayerHasAShield = false
-		val PlayerHasADualWeapon = meleeWeapon?.hasTag(MeleeWeaponTag.DUAL) ?: false
+		val PlayerHasADualWeapon = meleeWeapon?.isDual ?: false
 
 		val FireBuff = false
 

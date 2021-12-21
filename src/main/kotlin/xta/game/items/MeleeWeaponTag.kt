@@ -6,9 +6,12 @@ enum class MeleeWeaponTag(
 	// Misc tags
 	DUAL("Dual"),
 	HYBRID("Hyrid"),
+	// TODO consider making katana,rapier,tetsubo into a type or subtype
+	KATANA("Katana"),
+	RAPIER("Rapier"),
+	STAFF_PART("Partially Staff"),
 	TESTUBO("Tetsubo"),
 	THROWN("Thrown"),
-	STAFF_PART("Partially Staff"),
 	WHIPPING("Whipping"),
 	WHIRLWIND("Whirlwind"),
 	// Size tags - TODO consider making a required separate property instead
