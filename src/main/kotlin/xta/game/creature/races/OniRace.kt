@@ -15,42 +15,21 @@ object OniRace : Race(31, "oni", 6) {
         Stats.TOU_MULT to +0.9,
         Stats.INT_MULT to -0.3,
         Stats.WIS_MULT to +0.6
-    ){
-        override fun nameOf(creature: PlayerCharacter) = when {
-            creature.isTaur->
-                "elder oni-taur"
-            else ->
-                "elder oni"
-        }
-    }
+    )
 
     object STAGE_ONI: RacialStage(this, "oni",
         Stats.STR_MULT to +1.00,
         Stats.TOU_MULT to +0.6,
         Stats.INT_MULT to -0.2,
         Stats.WIS_MULT to +0.4
-    ){
-        override fun nameOf(creature: PlayerCharacter) = when {
-            creature.isTaur->
-                "oni-taur"
-            else ->
-                "oni"
-        }
-    }
+    )
 
     object STAGE_HALF_ONI: RacialStage(this, "half oni",
         Stats.STR_MULT to +0.50,
         Stats.TOU_MULT to +0.3,
         Stats.INT_MULT to -0.1,
         Stats.WIS_MULT to +0.2
-    ){
-        override fun nameOf(creature: PlayerCharacter) = when {
-            creature.isTaur->
-                "half oni-taur"
-            else ->
-                "half oni"
-        }
-    }
+    )
 
     override fun stageForScore(creature: PlayerCharacter, score: Int) = when {
         score >= 18 -> STAGE_ELDER_ONI

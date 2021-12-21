@@ -7,8 +7,8 @@ import xta.game.creature.body.*
 import xta.game.stats.Stats
 
 object ElfRace : Race(32, "elf", 5) {
-    var elfHairColour = listOf("black", "leaf green", "golden blonde", "silver")
-    var elfSkinColour = listOf("dark", "light","tan")
+    val elfHairColour = listOf("black", "leaf green", "golden blonde", "silver")
+    val elfSkinColour = listOf("dark", "light","tan")
 
     object STAGE_ELF: RacialStage(this, "elf",
         Stats.STR_MULT to -0.1,
@@ -17,14 +17,7 @@ object ElfRace : Race(32, "elf", 5) {
         Stats.INT_MULT to +0.8,
         Stats.WIS_MULT to +0.6,
         Stats.SENS to + 0.3
-    ){
-        override fun nameOf(creature: PlayerCharacter) = when {
-            creature.isTaur->
-                "elf-taur"
-            else ->
-                "elf"
-        }
-    }
+    )
 
     object STAGE_HALF_ELF: RacialStage(this, "half elf",
         Stats.STR_MULT to -0.05,
@@ -33,14 +26,7 @@ object ElfRace : Race(32, "elf", 5) {
         Stats.INT_MULT to +0.45,
         Stats.WIS_MULT to +0.3,
         Stats.SENS to + 0.15
-    ){
-        override fun nameOf(creature: PlayerCharacter) = when {
-            creature.isTaur->
-                "half elf-taur"
-            else ->
-                "half elf"
-        }
-    }
+    )
 
     override fun stageForScore(creature: PlayerCharacter, score: Int): RacialStage? {
         return when {

@@ -7,7 +7,7 @@ import xta.game.creature.body.*
 import xta.game.stats.Stats
 
 object JiangshiRace : Race(75, "jiangshi", 20) {
-    var jiangshiSkinColour = listOf("ghostly pale", "light blue", "snow white")
+    val jiangshiSkinColour = listOf("ghostly pale", "light blue", "snow white")
 
     object STAGE_JIANGSHI: RacialStage(this, "jiangshi",
         Stats.STR_MULT to +1.5,
