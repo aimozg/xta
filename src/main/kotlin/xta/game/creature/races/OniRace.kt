@@ -6,7 +6,7 @@ import xta.game.creature.RacialStage
 import xta.game.creature.body.*
 import xta.game.stats.Stats
 
-object OniRace : Race(31, "oni", 4) {
+object OniRace : Race(31, "oni", 6) {
     val oniEyeColours = listOf("red", "orange", "yellow", "green")
     val oniSkinColours = listOf("red", "reddish-orange","purple", "blue")
 
