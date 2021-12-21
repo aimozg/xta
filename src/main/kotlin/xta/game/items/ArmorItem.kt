@@ -12,7 +12,7 @@ open class ArmorItem(
 	id: String,
 	name: String,
 	longName: String,
-	override val description: String,
+	private val staticDescription: String,
 	val type: ArmorType,
 	open val def: Int,
 	open val mdef: Int,
@@ -20,9 +20,10 @@ open class ArmorItem(
 ) : ItemType(id, name) {
 	open fun render(image: CharViewImage, creature: PlayerCharacter) {}
 
-	override val tooltipHtml: String
-		get() = buildString {
-			append(super.tooltipHtml)
+	override fun description(wielder: PlayerCharacter?) = staticDescription
+
+	override fun tooltipHtml(wielder: PlayerCharacter?) = buildString {
+			append(super.tooltipHtml(wielder))
 			append("\n")
 			append("\tType: ")
 			append(type.displayName)

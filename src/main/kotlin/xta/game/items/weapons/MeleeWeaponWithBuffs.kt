@@ -1,18 +1,19 @@
-package xta.game.items.armor
+package xta.game.items.weapons
 
 import xta.game.PlayerCharacter
-import xta.game.items.ArmorItem
-import xta.game.items.ArmorType
+import xta.game.items.MeleeWeaponItem
+import xta.game.items.MeleeWeaponTag
+import xta.game.items.MeleeWeaponType
 import xta.game.stats.BuffableStat.Companion.explainBuff
 import xta.game.stats.StatMeta
 import xta.utils.capitalized
 
-open class ArmorWithBuffs(
-	id: String, name: String, longName: String, description: String,
-	type: ArmorType, def: Int, mdef: Int, cost: Int,
+open class MeleeWeaponWithBuffs(
+	id: String, name:String, longName: String, description:String,
+	type: MeleeWeaponType, attackVerb: String, baseAttack: Int, cost: Int,
+	tags: Array<MeleeWeaponTag>,
 	vararg val buffs: Pair<StatMeta,Double>
-) : ArmorItem(id, name, longName, description, type, def, mdef, cost) {
-
+): MeleeWeaponItem(id, name, longName, description, type, attackVerb, baseAttack, cost, tags) {
 	override fun tooltipHtml(wielder: PlayerCharacter?) = buildString {
 		append(super.tooltipHtml(wielder))
 		for ((stat, value) in buffs) {

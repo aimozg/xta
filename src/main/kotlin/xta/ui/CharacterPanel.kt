@@ -57,6 +57,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 
 	private val combatStatDiv = fragment.ref("combat-stats")
 
+	// TODO other weapon slots
 	private val equipmentWeapon = fragment.ref("equipment-weapon")
 	private val equipmentArmor = fragment.ref("equipment-armor")
 	private val equipmentUnderUpper = fragment.ref("equipment-underupper")
@@ -254,20 +255,24 @@ class CharacterPanel : UiTemplate("char-panel") {
 		showCombatStat(char.soulskillPowerStat, true, "Soulskill power")
 		showCombatStat(char.soulskillCostStat, true, "Soulskill cost", false)
 
-		// TODO weapon
+		equipmentWeapon.textContent = char.meleeWeapon?.name ?: "fists"
+		equipmentWeapon.addTooltip(char.meleeWeapon?.tooltipHtml(char)?:"")
 		equipmentArmor.textContent = char.armor?.name ?: "nothing"
-		equipmentArmor.addTooltip(char.armor?.tooltipHtml?:"")
+		equipmentArmor.addTooltip(char.armor?.tooltipHtml(char)?:"")
 		// TODO undergarments
 
 		rerender()
 	}
 
+	val image by lazy {
+		CharViewImage.INSTANCE.copy()
+	}
 	fun rerender() {
 		renderDiv.clear()
 		val char = lastCharacter
 		if (render && char != null) {
 			renderDiv.append(
-				CharViewImage.INSTANCE.renderCharacter(
+				image.renderCharacter(
 					char, renderX2, armorDisplayMode, weaponDisplayMode
 				).canvas
 			)

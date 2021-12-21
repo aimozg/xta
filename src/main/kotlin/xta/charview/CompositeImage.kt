@@ -18,7 +18,7 @@ import kotlin.js.json
 @JsExport
 open class CompositeImage(val width:Int, val height:Int) {
 	// sparse array of rgb->rgb
-	val keyColors:dynamic = js("([])")
+	var keyColors:dynamic = js("([])")
 	val partsByName = HashMap<String,CompositePart>()
 	val partsLayered = HashMap<String,HashMap<String,CompositePart>>()
 	val partsOrdered = ArrayList<CompositePart>()
@@ -126,6 +126,20 @@ open class CompositeImage(val width:Int, val height:Int) {
 		}
 	}
 
+	fun cacheKey() = buildString {
+		for (part in partsOrdered) {
+			if (part.visible) {
+				append(part.fullName)
+			}
+			append(",")
+		}
+		append(";")
+		for (kv in Object.entries(keyColors)) {
+			append(kv[0].toString())
+			append("=")
+			append(kv[1].toString())
+		}
+	}
 	fun compose():CanvasRenderingContext2D {
 		logger.debug(null,"Composing image")
 		val t0 = Date().getTime()

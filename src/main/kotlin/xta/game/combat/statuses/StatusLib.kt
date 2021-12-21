@@ -10,4 +10,8 @@ object StatusLib {
 		"-bad",
 		"<span class='material-icons'>visibility_off</span>"
 	)
+	val ChargeWeapon = StatusType("Charge Weapon", "Charge Weapon",
+		"-good",
+		"CW"
+	)
 }

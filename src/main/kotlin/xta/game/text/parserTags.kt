@@ -84,7 +84,7 @@ fun evalNpcTag(forMe:Boolean, char: PlayerCharacter, tag:String, tagArgs: String
 			"was", "were" -> "was"
 			"has", "have" -> "has"
 			else -> {
-				if (verb.endsWith("o") || verb.endsWith("s") || verb.endsWith("ch")) verb+"es"
+				if (verb.endsWith("o") || verb.endsWith("s") || verb.endsWith("ch") || verb.endsWith("sh")) verb+"es"
 				else verb+"s"
 			}
 		}

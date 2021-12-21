@@ -12,6 +12,7 @@ import xta.game.PlayerCharacter
 import xta.game.creature.KnownThings
 import xta.game.creature.body.*
 import xta.game.items.ArmorItem
+import xta.game.items.MeleeWeaponItem
 import xta.game.stats.BuffRate
 import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
@@ -220,6 +221,14 @@ class FlashImporter {
 			armor?.loaded(character)
 			if (armor == null) {
 				logger.warn(null, "Unknown armor id '${data.armorId}'")
+			}
+		}
+		if (data.weaponId != "Fists  ") {
+			val weapon = ItemType.BY_ID[data.weaponId] as? MeleeWeaponItem
+			character.meleeWeapon = weapon
+			weapon?.loaded(character)
+			if (weapon == null) {
+				logger.warn(null, "Unknown melee weapon id '${data.weaponId}'")
 			}
 		}
 

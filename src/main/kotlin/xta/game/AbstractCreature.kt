@@ -5,6 +5,7 @@ import xta.game.creature.PerkManager
 import xta.game.creature.body.*
 import xta.game.items.ArmorItem
 import xta.game.items.ItemSerializers
+import xta.game.items.MeleeWeaponItem
 import xta.game.stats.*
 import xta.net.serialization.JsonSerializable
 
@@ -154,7 +155,9 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	// nipplelength
 	val breastRows by nestedJsonList { BreastRowPart() }
 
+	// TODO make editable nullable field equippedArmor/equippedWeapon and non-null armor/weapon returning natural armor or fists
 	var armor: ArmorItem? by nestedProperty(null, ItemSerializers.ArmorSerializer)
+	var meleeWeapon: MeleeWeaponItem? by nestedProperty(null, ItemSerializers.MeleeWeaponSerializer)
 
 	init {
 		for (descriptor in propertyDescriptors) {

@@ -2,6 +2,7 @@ package xta.game.combat.actions.abilities
 
 import xta.Player
 import xta.game.combat.AbstractCombatAction
+import xta.game.combat.actions.CombatAbility
 import xta.text.numberOfThings
 import xta.utils.joinAppend
 import xta.utils.wrapIfNotEmpty
@@ -9,10 +10,11 @@ import xta.utils.wrapIfNotEmpty
 /*
  * Created by aimozg on 14.12.2021.
  */
-abstract class AbstractCombatAbility(actor:Player): AbstractCombatAction(actor) {
+abstract class CombatAbilityAction(actor:Player): AbstractCombatAction(actor) {
+	abstract val ability: CombatAbility
 	protected val caster = actor.char
 
-	abstract fun isKnown(): Boolean
+	open fun isKnown() = ability.isKnownBy(caster)
 
 	fun isUsable():Boolean = usabilityCheck() == null
 	fun isKnownAndUsable():Boolean = isKnown() && isUsable()
@@ -50,6 +52,7 @@ abstract class AbstractCombatAbility(actor:Player): AbstractCombatAction(actor) 
 		performAbilityEffect()
 	}
 
+	// TODO 'Cast X on Y'
 	override val label: String
 		get() = name
 	override val tooltip: String?

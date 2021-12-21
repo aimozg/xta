@@ -3,14 +3,16 @@ package xta.charview
 import org.w3c.dom.CanvasRenderingContext2D
 import xta.game.PlayerCharacter
 import xta.game.creature.body.*
+import xta.game.items.MeleeWeaponTag
 import xta.logging.LogManager
 import kotlin.js.Date
 
 /*
  * Created by aimozg on 02.12.2021.
  */
-class CharViewImage : CompositeImage(200, 220) {
-	init {
+class CharViewImage : CompositeImage {
+
+	private constructor() : super(200, 220) {
 		logger.info(null, "Loading images")
 		val t0 = Date().getTime()
 		loadPartsFromJson(sprites_json, charviewImages, originX = 15, originY = 10)
@@ -123,6 +125,13 @@ class CharViewImage : CompositeImage(200, 220) {
 			"aura",
 		)
 	}
+	private constructor(original:CharViewImage) : super(200, 220) {
+		keyColors = original.keyColors.slice()
+		partsByName.putAll(original.partsByName)
+		partsLayered.putAll(original.partsLayered)
+		partsOrdered.addAll(original.partsOrdered)
+	}
+	fun copy() = CharViewImage(this)
 
 	fun setupColors(char: PlayerCharacter) {
 		val hairColor = colordb.find("hair", char.hairColor)
@@ -208,12 +217,37 @@ class CharViewImage : CompositeImage(200, 220) {
 		fun next() = values().getOrNull(values().indexOf(this)+1)?:NO_WEAPON
 	}
 
+	private var cache: Pair<String,CanvasRenderingContext2D>? = null
 	fun renderCharacter(
 		char: PlayerCharacter,
 		scale: Boolean,
 		armorDisplayMode: ArmorDisplayMode = ArmorDisplayMode.CLOTHED,
 		weaponDisplayMode: WeaponDisplayMode = WeaponDisplayMode.MELEE
-	): CanvasRenderingContext2D = with(char) {
+	): CanvasRenderingContext2D {
+		setCharProps(char, scale, armorDisplayMode, weaponDisplayMode)
+		return composeCached(scale)
+	}
+	private fun composeCached(scale:Boolean):CanvasRenderingContext2D {
+		val key = cacheKey() + scale.toString()
+		cache?.let { (cachedKey,cachedImage) ->
+			if (cachedKey == key) return cachedImage
+		}
+		var image = compose()
+		if (scale) {
+			val x2 = createContext2D(width * 2, height * 2)
+			x2.drawImage(image.canvas, 0.0, 0.0, width * 2.0, height * 2.0)
+			image = x2
+		}
+		cache = key to image
+		return image
+	}
+
+	private fun setCharProps(
+		char: PlayerCharacter,
+		scale: Boolean,
+		armorDisplayMode: ArmorDisplayMode = ArmorDisplayMode.CLOTHED,
+		weaponDisplayMode: WeaponDisplayMode = WeaponDisplayMode.MELEE
+	): Unit = with(char) {
 		// regexes to port model.xml:
 
 		// \<show part *\= *\"([\w-/]+)\"\/\>
@@ -299,47 +333,10 @@ class CharViewImage : CompositeImage(200, 220) {
 		val playerHasWridLowerBody = isTaur || lowerBody.type in arrayOf(LowerBodyType.DRIDER, LowerBodyType.ATLACH_NACHA, LowerBodyType.HYDRA, LowerBodyType.NAGA, LowerBodyType.MELKIE, LowerBodyType.CENTIPEDE, LowerBodyType.SCYLLA, LowerBodyType.KRAKEN)
 
 		// TODO use sprite ids from weapons
-		val PlayerHasAWeapon = false
-		val PlayerHasAStaff = false
-		val PlayerHasAStaffHoly = false
-		val PlayerHasAStaffUnholy = false
-		val PlayerHasASword = false
-		val PlayerHasASwordHoly = false
-		val PlayerHasASwordunholy = false
-		val PlayerHasAnAxe = false
-		val PlayerHasAnAxeHoly = false
-		val PlayerHasAnAxeUnholy = false
-		val PlayerHasAHammer = false
-		val PlayerHasATetsu = false
-		val PlayerHasATetsuHoly = false
-		val PlayerHasATetsuUnholy = false
-		val PlayerHasASpear = false
-		val PlayerHasASpearHoly = false
-		val PlayerHasASpearUnholy = false
-		val PlayerHasAKatana = false
-		val PlayerHasAKatanaHoly = false
-		val PlayerHasAKatanaUnholy = false
-		val PlayerHasARapier = false
-		val PlayerHasARapierHoly = false
-		val PlayerHasARapierUnholy = false
-		val PlayerHasDagger = false
+		val PlayerHasAWeapon = meleeWeapon != null
 		val PlayerHasAShield = false
-		val PlayerDualWield = false
-		val PlayerHasSanctuary = false
-		val PlayerHasSanctuaryHoly = false
-		val PlayerHasSanctuaryUnholy = false
-		val PlayerHasABow = false
-		val PlayerHasABowHoly = false
-		val PlayerHasABowUnholy = false
-		val PlayerHasAThrownWeapon = false
-		val PlayerHasAJavelin = false
-		val PlayerHasAJavelinHoly = false
-		val PlayerHasAJavelinUnholy = false
-		val PlayerHasAThrownAe = false
-		val PlayerHasLactoBlaster = false
-		val PlayerHasADualWeapon = false
+		val PlayerHasADualWeapon = meleeWeapon?.hasTag(MeleeWeaponTag.DUAL) ?: false
 
-		val WeaponDisplay = false
 		val FireBuff = false
 
 		val armStanceNonBannedList = false
@@ -347,11 +344,20 @@ class CharViewImage : CompositeImage(200, 220) {
 		val playerWearsAStanceBannedDress = false
 		val playerWearsAStanceBannedArmor = false
 
-		// TODO use sprite id from armor
-		val ComfyCLothes = false
-
 		/* WEAPON AREA */
-		// TODO use sprite ids from weapons
+		if (playerHasWeaponBannedArms) when (weaponDisplayMode) {
+			WeaponDisplayMode.NO_WEAPON -> {}
+			WeaponDisplayMode.MELEE -> if (playerHasWeaponWings){
+				/* MELEE WEAPON */
+				meleeWeapon?.render(this@CharViewImage, char)
+				/* Shield */
+				// TODO port model.xml code (shield display)
+			}
+			WeaponDisplayMode.RANGED -> {
+				/* RANGED WEAPON */
+				// TODO port model.xml code (ranged weapon display)
+			}
+		}
 
 		/* ANTENNAE AREA */
 		when (antennae.type) {
@@ -2388,14 +2394,6 @@ class CharViewImage : CompositeImage(200, 220) {
 
 		/* FULL BODY AREA */
 		// TODO port model.xml code
-
-		val compose = compose()
-		if (scale) {
-			val x2 = createContext2D(width * 2, height * 2)
-			x2.drawImage(compose.canvas, 0.0, 0.0, width * 2.0, height * 2.0)
-			return x2
-		}
-		return compose
 	}
 
 	companion object {
