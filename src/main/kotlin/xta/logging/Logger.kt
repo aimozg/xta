@@ -1,15 +1,13 @@
 package xta.logging
 
-import xta.Game
-
 /*
  * Created by aimozg on 01.12.2021.
  */
 abstract class Logger(val id:String) {
 	var level: Level = Level.INFO
 
-	abstract fun doLog(level:Level, context: LogContext, message:String)
-	abstract fun doLogObject(level:Level, context: LogContext, message:String, obj: Any?)
+	abstract fun doLog(level:Level, context: LogContext?, message:String)
+	abstract fun doLogObject(level:Level, context: LogContext?, message:String, obj: Any?)
 	open fun format(message:Any?):String = when {
 		message is Error -> message.stackTraceToString()+
 				(message.cause?.let { " Caused by: "+format(it) }?:"")
@@ -17,10 +15,10 @@ abstract class Logger(val id:String) {
 	}
 
 	fun log(level:Level, context: LogContext?, message:String) {
-		if (level >= this.level) doLog(level, context ?: Game.me, message)
+		if (level >= this.level) doLog(level, context, message)
 	}
 	fun logObject(level:Level, context: LogContext?, message:String, obj: Any?) {
-		if (level >= this.level) doLogObject(level, context ?: Game.me, message, obj)
+		if (level >= this.level) doLogObject(level, context, message, obj)
 	}
 
 	fun trace(context: LogContext?, message: String) = log(Level.TRACE, context, message)

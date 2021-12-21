@@ -16,13 +16,13 @@ class ConsoleLogger(id: String) : Logger(id) {
 		id2.fixedWrap("[","]",n)
 	}
 
-	override fun doLog(level: Level, context: LogContext, message: String) {
+	override fun doLog(level: Level, context: LogContext?, message: String) {
 		doLogObject(level, context, message, "")
 	}
 
-	override fun doLogObject(level: Level, context: LogContext, message: String, obj: Any?) {
+	override fun doLogObject(level: Level, context: LogContext?, message: String, obj: Any?) {
 		val myname = wrappedId
-		val actualContext = context.logContextLabel()
+		val actualContext = context?.logContextLabel()?:""
 		val dt = (Date().getTime() - t0).div(1000).toFixed(3).padStart(7, ' ')
 		val safemessage = message.replace("\n"," ")
 		when (level) {

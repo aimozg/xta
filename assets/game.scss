@@ -106,3 +106,25 @@ button.material-icons {
 canvas {
     image-rendering: pixelated;
 }
+
+.stat-buffs {
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+}
+
+.buff-good.buff-gt0 .buff-value,
+.buff-bad.buff-lt0 .buff-value {
+    color: #080;
+}
+.buff-good.buff-lt0 .buff-value,
+.buff-bad.buff-gt0 .buff-value {
+    color: #800;
+}
+
+.buff-value {
+    font-weight: bold;
+    font-family: monospace;
+}

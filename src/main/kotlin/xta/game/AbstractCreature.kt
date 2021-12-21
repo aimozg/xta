@@ -65,13 +65,22 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val maxWrathMultStat by nestedProperty(BuffableStat(this as Creature, Stats.WRATH_MAX_MULT, baseValue = 1.0))
 	val maxFatigueBaseStat by nestedProperty(BuffableStat(this as Creature, Stats.FATIGUE_MAX_BASE, baseValue = 150.0))
 	val maxFatiguePerLevelStat by nestedProperty(BuffableStat(this as Creature, Stats.FATIGUE_MAX_PERLEVEL, baseValue = 5.0))
+	val maxFatiguePerSpeStat by nestedProperty(BuffableStat(this as Creature, Stats.FATIGUE_MAX_PERSPE, baseValue = 0.0))
 	val maxFatigueMultStat by nestedProperty(BuffableStat(this as Creature, Stats.FATIGUE_MAX_MULT, baseValue = 1.0))
 	val maxManaBaseStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_MAX_BASE, baseValue = 300.0))
 	val maxManaPerLevelStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_MAX_PERLEVEL, baseValue = 10.0))
+	val maxManaPerIntStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_MAX_PERINT, baseValue = 0.0))
+	val maxManaPerWisStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_MAX_PERWIS, baseValue = 0.0))
 	val maxManaMultStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_MAX_MULT, baseValue = 1.0))
 	val maxSfBaseStat by nestedProperty(BuffableStat(this as Creature, Stats.SF_MAX_BASE, baseValue = 50.0))
 	val maxSfPerLevelStat by nestedProperty(BuffableStat(this as Creature, Stats.SF_MAX_PERLEVEL, baseValue = 5.0))
 	val maxSfMultStat by nestedProperty(BuffableStat(this as Creature, Stats.SF_MAX_MULT, baseValue = 1.0))
+
+	val hpRegenStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_REGEN, baseValue = 0.0))
+	val wrathRegenStat by nestedProperty(BuffableStat(this as Creature, Stats.WRATH_REGEN, baseValue = 0.0))
+	val fatigueRegenStat by nestedProperty(BuffableStat(this as Creature, Stats.FATIGUE_REGEN, baseValue = 0.0))
+	val manaRegenStat by nestedProperty(BuffableStat(this as Creature, Stats.MANA_REGEN, baseValue = 0.0))
+	val sfRegenStat by nestedProperty(BuffableStat(this as Creature, Stats.SF_REGEN, baseValue = 0.0))
 
 	val dodgeStat by nestedProperty(BuffableStat(this as Creature, Stats.DODGE_ANY, baseValue = 0.0))
 

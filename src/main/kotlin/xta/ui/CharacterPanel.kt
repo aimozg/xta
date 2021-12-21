@@ -10,6 +10,7 @@ import xta.game.PlayerCharacter
 import xta.game.settings.GameSettings
 import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
+import xta.game.stats.printStatValueAndBuffs
 import xta.text.toNiceString
 import xta.utils.toggleClass
 import xta.utils.wrapIfNotEmpty
@@ -156,6 +157,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxHpPerLevelStat,
 			char.maxHpBaseStat,
 			char.maxHpMultStat,
+			char.hpRegenStat
 		)
 		// TODO display white/gray/black magic thresholds
 		lustBar.displayValue(
@@ -186,6 +188,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxWrathPerLevelStat,
 			char.maxWrathBaseStat,
 			char.maxWrathMultStat,
+			char.wrathRegenStat
 		)
 		staminaBar.displayValue(
 			value = char.stamina,
@@ -200,7 +203,12 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxFatiguePerLevelStat,
 			char.maxFatigueBaseStat,
 			char.maxFatigueMultStat,
-		)
+			char.fatigueRegenStat
+		) {
+			if (char.maxFatiguePerSpeStat.value != 0.0) {
+				append(printStatValueAndBuffs(char.maxFatiguePerSpeStat,"Per speed"))
+			}
+		}
 		manaBar.displayValue(
 			value = char.mana,
 			max = char.maxMana(),
@@ -214,7 +222,15 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxManaPerLevelStat,
 			char.maxManaBaseStat,
 			char.maxManaMultStat,
-		)
+			char.manaRegenStat
+		) {
+			if (char.maxManaPerIntStat.value != 0.0) {
+				append(printStatValueAndBuffs(char.maxManaPerIntStat,"Per intelligence"))
+			}
+			if (char.maxManaPerWisStat.value != 0.0) {
+				append(printStatValueAndBuffs(char.maxManaPerWisStat,"Per wisdom"))
+			}
+		}
 		sfBar.displayValue(
 			value = char.soulforce,
 			max = char.maxSoulforce(),
@@ -228,6 +244,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 			char.maxSfPerLevelStat,
 			char.maxSfBaseStat,
 			char.maxSfMultStat,
+			char.sfRegenStat
 		)
 		gemsValue.textContent = char.gems.toString()
 		ssValue.textContent = "0" // TODO soulstones - do we need them? maybe other resource
@@ -292,24 +309,23 @@ class CharacterPanel : UiTemplate("char-panel") {
 		maxValue: Double,
 		perLevelStat: BuffableStat,
 		baseStat: BuffableStat,
-		multStat: BuffableStat
+		multStat: BuffableStat,
+		regenStat: BuffableStat? = null,
+		extraTooltip: StringBuilder.()->Unit = {}
 	) {
 		container.addTooltip(buildString {
 			append(name+": "+value.toInt()+"/"+maxValue.toInt()+"\n")
 //			append("(${char.hpRatio.times(100).roundToInt()}%)")
-			append("<div><b>Per level</b>: <span class='buff-value'>")
-			append(perLevelStat.value.toInt())
-			append("</span></div>")
-			append(perLevelStat.explainBuffs(false))
-			append("<div class='stat-buffs -hp'>")
-			append("<div><b>Bonus</b>: <span class='buff-value'>")
-			append(baseStat.value.toInt())
-			append("</span></div>")
-			append(baseStat.explainBuffs(false))
-			append("<div><b>Multiplier</b>: <span class='buff-value'>")
-			append(multStat.value.times(100).toInt())
-			append("%</span></div>")
-			append(multStat.explainBuffs(true))
+
+			if (regenStat != null) {
+				append(printStatValueAndBuffs(regenStat,"Regeneration"))
+			}
+
+			append(printStatValueAndBuffs(perLevelStat,"Per level"))
+			append(printStatValueAndBuffs(baseStat,"Bonus"))
+			append(printStatValueAndBuffs(multStat,"Multiplier",asPercentage = true))
+
+			extraTooltip()
 		})
 	}
 

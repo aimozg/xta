@@ -4,8 +4,8 @@ import xta.game.PlayerCharacter
 import xta.game.items.MeleeWeaponItem
 import xta.game.items.MeleeWeaponTag
 import xta.game.items.MeleeWeaponType
-import xta.game.stats.BuffableStat.Companion.explainBuff
 import xta.game.stats.StatMeta
+import xta.game.stats.explainBuff
 import xta.utils.capitalized
 
 open class MeleeWeaponWithBuffs(
@@ -16,8 +16,11 @@ open class MeleeWeaponWithBuffs(
 ): MeleeWeaponItem(id, name, longName, description, type, attackVerb, baseAttack, cost, tags) {
 	override fun tooltipHtml(wielder: PlayerCharacter?) = buildString {
 		append(super.tooltipHtml(wielder))
-		for ((stat, value) in buffs) {
-			explainBuff(stat.displayName, value, true, stat.isPercentage, stat.isGood)
+		if (buffs.isNotEmpty()) {
+			append("Buffs:")
+			for ((stat, value) in buffs) {
+				explainBuff(stat.displayName, value, true, stat.isPercentage, stat.isGood)
+			}
 		}
 	}
 

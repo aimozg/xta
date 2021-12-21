@@ -4,7 +4,6 @@ import js.jspush
 import xta.game.Creature
 import xta.game.creature.PerkType
 import xta.net.serialization.IJsonSerializable
-import xta.text.toNiceString
 import xta.utils.buildJson
 import xta.utils.walk
 import kotlin.js.Json
@@ -170,45 +169,5 @@ open class BuffableStat(
 
 	fun hasPositiveBuffs(): Boolean {
 		return buffs.any { !it.isNatural && it.value > 0 }
-	}
-
-	companion object {
-		fun StringBuilder.explainBuff(
-			text: String,
-			value: Double,
-			htmlFormat: Boolean,
-			asPercentage: Boolean,
-			isGood: Boolean
-		) {
-			if (htmlFormat) {
-				append("<div class='buff ")
-				append(if (isGood) "buff-good" else "buff-bad")
-				append(" ")
-				append(if (value > 0) "buff-gt0" else "buff-lt0")
-				append("'>")
-				append("<span class='buff-name'>")
-				append(text)
-				append("</span>: <span class='buff-value'>")
-				if (value > 0) append("+")
-				if (asPercentage) {
-					append(value.times(100).toInt().toString())
-					append("%")
-				} else {
-					append(value.toNiceString(1))
-				}
-				append("</span></div>")
-			} else {
-				append(text)
-				append(": ")
-				if (value > 0) append("+")
-				if (asPercentage) {
-					append(value.times(100).toInt().toString())
-					append("%")
-				} else {
-					append(value.toNiceString(1))
-				}
-				append("\n")
-			}
-		}
 	}
 }

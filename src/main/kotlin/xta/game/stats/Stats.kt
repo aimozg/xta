@@ -34,10 +34,14 @@ object Stats {
 	val HP_MAX_BASE = StatMeta("hpmax_base", "HP Max")
 	val HP_MAX_MULT = StatMeta("hpmax_mult", "HP Max", "HP Max mult", isPercentage = true)
 	val HP_MAX_PERLEVEL = StatMeta("hpmax_perlevel", "HP Max per level")
+	val HP_REGEN = StatMeta("hp-regen", "HP regeneration")
 
 	val MANA_MAX_BASE = StatMeta("manamax_base", "Mana Max")
 	val MANA_MAX_MULT = StatMeta("manamax_mult", "Mana Max", "Mana Max mult", isPercentage = true)
 	val MANA_MAX_PERLEVEL = StatMeta("manamax_perlevel", "Mana Max per level")
+	val MANA_MAX_PERINT = StatMeta("manamax_perlevel", "Mana Max per intelligence")
+	val MANA_MAX_PERWIS = StatMeta("manamax_perlevel", "Mana Max per wisdom")
+	val MANA_REGEN = StatMeta("mana-regen", "Mana regeneration")
 
 	val LUST_MIN = StatMeta("lustmin", "Min Lust", isGood = false)
 	val LUST_MAX_BASE = StatMeta("lustmax_base", "Max Lust")
@@ -47,14 +51,18 @@ object Stats {
 	val FATIGUE_MAX_BASE = StatMeta("fatgmax_base", "Max Fatigue")
 	val FATIGUE_MAX_MULT = StatMeta("fatgmax_mult", "Max Fatigue", "Max Fatigue mult", isPercentage = true)
 	val FATIGUE_MAX_PERLEVEL = StatMeta("fatgmax_perlevel", "Fatigue Max per level")
+	val FATIGUE_MAX_PERSPE = StatMeta("fatgmax_perspe", "Fatigue Max per speed")
+	val FATIGUE_REGEN = StatMeta("fatg-regen", "Fatigue regeneration")
 
 	val WRATH_MAX_BASE = StatMeta("wrathmax_base", "Max Wrath")
 	val WRATH_MAX_MULT = StatMeta("wrathmax_mult", "Max Wrath", "Max Wrath mult", isPercentage = true)
 	val WRATH_MAX_PERLEVEL = StatMeta("wrathmax_perlevel", "Wrath Max per level")
+	val WRATH_REGEN = StatMeta("wrath-regen", "Wrath regeneration")
 
 	val SF_MAX_BASE = StatMeta("sfmax_base", "Max Soulforce")
 	val SF_MAX_MULT = StatMeta("sfmax_mult", "Max Soulforce", "Max Soulforce mult", isPercentage = true)
 	val SF_MAX_PERLEVEL = StatMeta("sfmax_perlevel", "Soulforce Max per level")
+	val SF_REGEN = StatMeta("sf-regen", "Soulforce regeneration")
 
 	val AIM_MELEE = StatMeta("aim_melee", "Melee aim", isPercentage = true)
 

@@ -3,8 +3,8 @@ package xta.game.items.armor
 import xta.game.PlayerCharacter
 import xta.game.items.ArmorItem
 import xta.game.items.ArmorType
-import xta.game.stats.BuffableStat.Companion.explainBuff
 import xta.game.stats.StatMeta
+import xta.game.stats.explainBuff
 import xta.utils.capitalized
 
 open class ArmorWithBuffs(
@@ -15,8 +15,11 @@ open class ArmorWithBuffs(
 
 	override fun tooltipHtml(wielder: PlayerCharacter?) = buildString {
 		append(super.tooltipHtml(wielder))
-		for ((stat, value) in buffs) {
-			explainBuff(stat.displayName, value, true, stat.isPercentage, stat.isGood)
+		if (buffs.isNotEmpty()) {
+			append("Buffs:")
+			for ((stat, value) in buffs) {
+				explainBuff(stat.displayName, value, true, stat.isPercentage, stat.isGood)
+			}
 		}
 	}
 

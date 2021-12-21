@@ -202,6 +202,7 @@ abstract class Creature: AbstractCreature() {
 		// TODO racial scores items and perks
 		max += level*maxFatiguePerLevel()
 		if (level <= 6) max += level*5
+		max += spe*maxFatiguePerSpeStat.value
 		return round(max)
 	}
 	open fun maxFatiguePerLevel():Double {
@@ -220,6 +221,8 @@ abstract class Creature: AbstractCreature() {
 		// TODO perk, race, item bonuses
 		max += level*maxManaPerLevel()
 		if (level <= 6) max += level*10
+		max += int*maxManaPerIntStat.value
+		max += wis*maxManaPerWisStat.value
 		return round(max)
 	}
 	open fun maxManaPerLevel():Double {
