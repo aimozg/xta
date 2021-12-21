@@ -130,7 +130,6 @@ sealed class AbstractCreature: JsonSerializable(), IStatHolder {
 	val skin by nestedProperty(SkinPart(this as Creature))
 	val face by nestedProperty(FacePart(this as Creature))
 	val claws by nestedProperty(ClawsPart(this as Creature))
-	val underBody by nestedProperty(UnderBodyPart(this as Creature))
 	val ears by nestedProperty(EarsPart(this as Creature))
 	val horns by nestedProperty(HornsPart(this as Creature))
 	val wings by nestedProperty(WingsPart(this as Creature))

@@ -153,8 +153,8 @@ class FlashImporter {
 		character.skin.coatPattern = SkinCoatPatternType.byId(data.skin.coat.pattern)
 		character.face.type = FaceType.byId(data.facePart.type)
 		character.claws.type = ClawType.byId(data.clawsPart.type)
-		// TODO clawsPart.tone
-		// TODO underbody
+		character.claws.color = data.clawsPart.tone
+		// Underbody - not used in CoCX
 		character.ears.type = EarType.byId(data.earType)
 		character.horns.type = HornType.byId(data.hornType)
 		character.horns.count = data.horns
