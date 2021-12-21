@@ -2,20 +2,21 @@ package xta.game.creature.perks
 
 import xta.game.Creature
 import xta.game.creature.PerkType
+import xta.game.stats.StatMeta
 
 class SimplePerkWithBuffs(id:String,
                           name:String,
                           override val description: String,
-                          vararg val buffs:Pair<String,Double>
+                          vararg val buffs:Pair<StatMeta,Double>
 						  ): PerkType(id, name) {
 
 	override fun onAdd(host: Creature) {
-		for (buff in buffs) {
+		for ((stat, value) in buffs) {
 			host.statStore.addOrReplaceBuff(
-				buff.first,
+				stat.id,
 				buffTag,
-				buff.second,
-				text = "Perk: $name",
+				value,
+				text = "(Perk) $name",
 				save = false
 			)
 		}

@@ -1,5 +1,6 @@
 package xta.game.creature.perks
 
+import xta.game.stats.StatMeta
 import xta.game.stats.Stats
 
 /*
@@ -305,7 +306,7 @@ object PerkLib {
 		Stats.MANA_MAX_PERLEVEL to 10.0
 	)
 
-	private fun mk(id: String, name: String, desc: String, vararg buffs: Pair<String, Double>) =
+	private fun mk(id: String, name: String, desc: String, vararg buffs: Pair<StatMeta, Double>) =
 		if (buffs.isEmpty()) SimplePerk(id, name, desc)
 		else SimplePerkWithBuffs(id, name, desc, *buffs)
 }

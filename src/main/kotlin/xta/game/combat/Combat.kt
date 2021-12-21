@@ -4,28 +4,23 @@ import xta.Game
 import xta.Player
 import xta.game.PlayerCharacter
 import xta.game.Scene
-import xta.game.combat.actions.CombatFinish
-import xta.game.combat.actions.CombatMeleeAttack
-import xta.game.combat.actions.CombatSurrender
-import xta.game.combat.actions.CombatWait
-import xta.game.combat.actions.abilities.AbstractCombatAbility
-import xta.game.combat.actions.abilities.spellswhite.SpellBlind
-import xta.game.combat.actions.abilities.spellswhite.SpellLightningBolt
-import xta.game.combat.actions.abilities.spellswhite.SpellWhitefire
+import xta.game.combat.actions.*
 import xta.logging.LogContext
 import xta.logging.LogManager
 import xta.text.TextOutput
+import xta.utils.nextUid
 import xta.utils.walk
 
 /*
  * Created by aimozg on 04.12.2021.
  */
 class Combat(
+	val id: String,
 	val partyA: Party,
 	val partyB: Party,
 	val returnScene: Scene
 ): LogContext {
-	override fun toLogString(): String = buildString {
+	override fun logContextLabel(): String = buildString {
 		append("[Combat ")
 		append(partyA.players.joinToString { it.id })
 		append(" vs ")
@@ -33,7 +28,7 @@ class Combat(
 		append("]")
 	}
 
-	override fun toString() = toLogString()
+	override fun toString() = logContextLabel()
 
 	var ongoing = false
 	val participants = partyA.players + partyB.players
@@ -96,6 +91,7 @@ class Combat(
 			player.char.clearCombatStatuses()
 			player.display.clearOutput()
 		}
+		participants.map { it.location }.toSet().forEach { it.onCombatStatusChange() }
 		nextRound()
 		for (player in participants) {
 			buildCombatActions(player)
@@ -111,15 +107,14 @@ class Combat(
 				actions.add(CombatWait(player))
 				for (target in opponentsOf(player)?.players ?: emptyList()) {
 					actions.add(CombatMeleeAttack(player, target))
-					// TODO needs better library organization
-					val abilities: List<AbstractCombatAbility> = listOf(
-						SpellWhitefire(player, target),
-						SpellLightningBolt(player, target),
-						SpellBlind(player, target),
-					)
-					for (ability in abilities) {
-						if (!ability.isKnown()) continue
-						actions.add(ability)
+					for (ability in CombatAbility.ALL) {
+						if (ability.isKnownBy(player.char)) {
+							for (action in ability.createActions(player, this)) {
+								if (action.isKnown()) {
+									actions.add(action)
+								}
+							}
+						}
 					}
 				}
 				actions.add(CombatSurrender(player))
@@ -236,6 +231,6 @@ class Combat(
 		private val logger = LogManager.getLogger("xta.game.combat.Combat")
 
 		fun oneOnOne(playerA: Player, playerB: Player, returnScene: Scene) =
-			Combat(Party(playerA), Party(playerB), returnScene)
+			Combat(nextUid().toString(), Party(playerA), Party(playerB), returnScene)
 	}
 }

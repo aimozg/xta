@@ -1,6 +1,9 @@
 package xta.game.combat.actions.abilities.spellswhite
 
 import xta.Player
+import xta.game.PlayerCharacter
+import xta.game.combat.Combat
+import xta.game.combat.actions.CombatAbility
 import xta.game.combat.actions.abilities.AbstractWhiteSpell
 import xta.game.combat.statuses.StatusLib
 import xta.game.creature.KnownThings
@@ -15,9 +18,11 @@ class SpellBlind(
 	actor,
 	"Blind"
 ) {
+	override val ability: CombatAbility
+		get() = Companion
+
 	// TODO cooldown
 	val target = targetPlayer.char
-	override fun isKnown() = caster.knows(KnownThings.SPELL_BLIND)
 	override val description: String
 		get() = "Blind is a fairly self-explanatory spell.  It will create a bright flash just in front of the victim's eyes, blinding them for a time.  However if they blink it will be wasted."
 
@@ -49,5 +54,12 @@ class SpellBlind(
 		} else {
 			display.outputText("[Npc1 you] blinked!")
 		}
+	}
+
+	companion object: CombatAbility.TargetingOneEnemy("Blind") {
+		override fun isKnownBy(caster: PlayerCharacter) = caster.knows(KnownThings.SPELL_BLIND)
+
+		override fun createAction(actor: Player, targetPlayer: Player, combat: Combat) =
+			SpellBlind(actor, targetPlayer)
 	}
 }

@@ -23,6 +23,13 @@ body {
     flex-direction: column;
 }
 
+#errors {
+    position: fixed;
+    background: #333;
+    color: #c00;
+    font-family: monospace;
+}
+
 #root {
     overflow-y: auto;
     width: 100%;

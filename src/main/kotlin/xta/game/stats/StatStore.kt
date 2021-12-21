@@ -27,12 +27,24 @@ class StatStore : IStatHolder {
 		tag:String,
 		value:Double,
 		text:String = tag,
-		rate: Buff.Rate = Buff.Rate.PERMANENT,
+		rate: BuffRate = BuffRate.PERMANENT,
 		ticks: Int = 0,
 		save: Boolean = true,
 		show: Boolean = true
 	) {
 		val stat = findBuffableStat(statName) ?: error("Stat does not exist '$statName'")
 		stat.addOrReplaceBuff(tag,value,text,rate,ticks,save,show)
+	}
+	fun addOrReplaceBuff(
+		meta:StatMeta,
+		tag:String,
+		value:Double,
+		text:String = tag,
+		rate: BuffRate = BuffRate.PERMANENT,
+		ticks: Int = 0,
+		save: Boolean = true,
+		show: Boolean = true
+	) {
+		addOrReplaceBuff(meta.id, tag, value, text, rate, ticks, save, show)
 	}
 }

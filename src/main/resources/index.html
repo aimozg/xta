@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<div id="errors"></div>
 <div id="root"></div>
 <div id="chatbox-container"></div>
 
@@ -75,7 +76,12 @@
 
 <template id="main-screen">
     <div class="main-screen">
-        <div class="mainscreen-topmenu"></div>
+        <div class="mainscreen-topmenu">
+            <!--<button class="material-icons">menu</button>
+            <button class="material-icons">settings</button>
+            <button class="material-icons">people</button>
+            <button class="material-icons">manage_accounts</button>-->
+        </div>
         <div class="mainscreen-left" data-ref="left"></div>
         <div class="mainscreen-text" data-ref="text-output"></div>
         <div class="mainscreen-right" data-ref="right"></div>
@@ -111,7 +117,8 @@
             </div>
             <div class="tab-buttons mt-2">
                 <button type="button" class="tab -active" data-ref="seltab-main">Main</button>
-                <button type="button" class="tab" data-ref="seltab-combat">Combat</button>
+                <button type="button" class="tab" data-ref="seltab-combat">Details</button>
+                <button type="button" class="tab" data-ref="seltab-items">Items</button>
             </div>
             <div class="tab-content -active" data-ref="tab-main">
                 <div class="char-statgrid mt-2">
@@ -148,6 +155,21 @@
             </div>
             <div class="tab-content" data-ref="tab-combat">
                 <div data-ref="combat-stats"></div>
+            </div>
+            <div class="tab-content" data-ref="tab-items">
+                <div class="my-2">
+                    <b>Equipment</b>
+                </div>
+                <div class="char-equipment">
+                    <div class="equipment-slot-name">Weapon</div>
+                    <div class="equipment-slot" data-ref="equipment-weapon">fists</div>
+                    <div class="equipment-slot-name">Armor</div>
+                    <div class="equipment-slot" data-ref="equipment-armor"></div>
+                    <div class="equipment-slot-name">Top</div>
+                    <div class="equipment-slot" data-ref="equipment-underupper">nothing</div>
+                    <div class="equipment-slot-name">Bottom</div>
+                    <div class="equipment-slot" data-ref="equipment-underlower">nothing</div>
+                </div>
             </div>
         </div>
         <div class="char-render">

@@ -3,8 +3,6 @@ package xta.game.scenes
 import xta.game.GameLocation
 import xta.game.Scene
 import xta.game.creature.Race
-import xta.game.stats.BuffableStat
-import xta.game.stats.PrimaryStat
 
 /*
  * Created by aimozg on 02.12.2021.
@@ -19,7 +17,6 @@ object TownLocation:GameLocation("Town") {
 		addButton("Rest", healScene, "Recover your HP and other stats")
 		addButton("Arena", ArenaLocation.enterScene, "Go to arena")
 		addButton("Debug - racial scores", racialScores)
-		addButton("Debug - combat stats", combatStats)
 	}
 
 	val racialScores = scene("racialScores") {
@@ -34,28 +31,9 @@ object TownLocation:GameLocation("Town") {
 		addButton("Back", main)
 	}
 
-	val combatStats = scene("combatStats") {
-		for (stat in character.allStats().sortedBy { it.statName }) {
-			if (stat is PrimaryStat || stat == character.sensStat) continue
-			outputText("<b>"+stat.statName+"</b>: "+stat.value+"\n")
-			if (stat is BuffableStat) {
-				outputText("<div class='stat-buffs'>")
-				outputText(stat.explainBuffs(false))
-				outputText("</div>")
-			}
-		}
-		addButton("Back", main)
-	}
-
 	val healScene = scene("heal") {
 		outputText("You evoke the debug powers of pre-alpha game build, and your HP and other stats are restored!")
-		val pc = player.char
-		pc.hp = pc.maxHp()
-		pc.lust = pc.minLust()
-		pc.wrath = 0.0
-		pc.fatigue = 0.0
-		pc.mana = pc.maxMana()
-		pc.soulforce = pc.maxSoulforce()
+		player.char.resetStats()
 		player.sendCharUpdate()
 
 		addButton("Back", main)

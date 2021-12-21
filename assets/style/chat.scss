@@ -55,12 +55,16 @@
 		color: #ee3333;
 		font-weight: bold;
 	}
+	.-warning {
+		color: #ff8800;
+		font-weight: bold;
+	}
 	.-me {
-		color: #eeaa33;
+		color: #666666;
 		font-weight: bold;
 	}
 	.-info {
-		color: #884;
+		color: #33aa33;
 		font-weight: bold;
 	}
 	.-host {
@@ -75,6 +79,7 @@
 
 .chat-send-div {
 	display: flex;
+	padding-right: 1em;
 
 	input {
 		flex-grow: 1;

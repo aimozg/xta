@@ -26,8 +26,10 @@ class CharacterPanel : UiTemplate("char-panel") {
 
 	private val tabBtnMain = fragment.ref("seltab-main")
 	private val tabBtnCombat = fragment.ref("seltab-combat")
+	private val tabBtnItems = fragment.ref("seltab-items")
 	private val tabContentMain = fragment.ref("tab-main")
 	private val tabContentCombat = fragment.ref("tab-combat")
+	private val tabContentItems = fragment.ref("tab-items")
 
 	private val strVal = fragment.ref("stat-str")
 	private val touVal = fragment.ref("stat-tou")
@@ -46,6 +48,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val gemsValue = fragment.ref("gems")
 	private val ssValue = fragment.ref("soulstones")
 	private val effectsDiv = fragment.ref("status-effects")
+
 	private val btnRenderZoom = fragment.ref("render-zoombtn")
 	private val btnRenderShow = fragment.ref("render-showbtn")
 	private val btnRenderArmor = fragment.ref("render-armorbtn")
@@ -53,17 +56,12 @@ class CharacterPanel : UiTemplate("char-panel") {
 	private val renderDiv = fragment.ref("render")
 
 	private val combatStatDiv = fragment.ref("combat-stats")
-	private val csDodge = CombatStat("Dodge").also { it.insertTo(combatStatDiv) }
-	private val csDodgeMelee = CombatStat("Melee dodge bonus").also { it.insertTo(combatStatDiv) }
-	private val csAimMelee = CombatStat("Melee aim").also { it.insertTo(combatStatDiv) }
-	private val csDmgMelee = CombatStat("Melee damage bonus").also { it.insertTo(combatStatDiv) }
-	private val csDmgRangedMult = CombatStat("Ranged damage").also { it.insertTo(combatStatDiv) }
-	private val csResistPhys = CombatStat("Resist physical").also { it.insertTo(combatStatDiv) }
-	private val csResistMag = CombatStat("Resist magical").also { it.insertTo(combatStatDiv) }
-	private val csResistLust = CombatStat("Resist lust").also { it.insertTo(combatStatDiv) }
-	private val csSpellPower = CombatStat("Spell power").also { it.insertTo(combatStatDiv) }
-	private val csSoulskillPower = CombatStat("Soulskill power").also { it.insertTo(combatStatDiv) }
-	private val csSoulskillCost = CombatStat("Soulskill cost").also { it.insertTo(combatStatDiv) }
+
+	// TODO other weapon slots
+	private val equipmentWeapon = fragment.ref("equipment-weapon")
+	private val equipmentArmor = fragment.ref("equipment-armor")
+	private val equipmentUnderUpper = fragment.ref("equipment-underupper")
+	private val equipmentUnderLower = fragment.ref("equipment-underlower")
 
 	private var lastCharacter: PlayerCharacter? = null
 	private var armorDisplayMode = CharViewImage.ArmorDisplayMode.NEVER_NUDE
@@ -94,6 +92,7 @@ class CharacterPanel : UiTemplate("char-panel") {
 		setupTabList(
 			tabBtnMain to tabContentMain,
 			tabBtnCombat to tabContentCombat,
+			tabBtnItems to tabContentItems
 		)
 	}
 	fun hide() {
@@ -242,31 +241,48 @@ class CharacterPanel : UiTemplate("char-panel") {
 			}
 		}
 
-		csDodge.showForStat(true, char.dodgeStat)
-		csDodgeMelee.showForStat(true, char.meleeDodgeStat)
-		csAimMelee.showForStat(true, char.meleeAimStat)
-		csDmgMelee.showForStat(false, char.meleeDamageStat)
-		csDmgRangedMult.showForStat(true, char.rangedDamageMultStat)
-		csResistPhys.showForStat(true, char.resistPhysStat)
-		csResistMag.showForStat(true, char.resistMagStat)
-		csResistLust.showForStat(true, char.resistLustStat)
-		csSpellPower.showForStat(true, char.spellPowerStat)
-		csSoulskillPower.showForStat(true, char.soulskillPowerStat)
-		csSoulskillCost.showForStat(true, char.soulskillCostStat)
+		combatStatDiv.clear()
+		showCombatStat(char.dodgeStat, true, "Dodge")
+		showCombatStat(char.meleeDodgeStat, true, "Melee dodge bonus")
+		showCombatStat(char.meleeAimStat, true, "Melee aim")
+		showCombatStat(char.meleeDamageStat, false, "Melee damage bonus")
+		showCombatStat(char.rangedDamageMultStat, true, "Ranged damage")
+		showCombatStat(char.resistPhysStat, true, "Resist physical")
+		showCombatStat(char.resistMagStat, true, "Resist magical")
+		showCombatStat(char.resistLustStat, true, "Resist lust")
+		showCombatStat(char.spellPowerStat, true, "Spell power")
+		showCombatStat(char.spellCostStat, true, "Spell cost", false)
+		showCombatStat(char.soulskillPowerStat, true, "Soulskill power")
+		showCombatStat(char.soulskillCostStat, true, "Soulskill cost", false)
+
+		equipmentWeapon.textContent = char.meleeWeapon?.name ?: "fists"
+		equipmentWeapon.addTooltip(char.meleeWeapon?.tooltipHtml(char)?:"")
+		equipmentArmor.textContent = char.armor?.name ?: "nothing"
+		equipmentArmor.addTooltip(char.armor?.tooltipHtml(char)?:"")
+		// TODO undergarments
 
 		rerender()
 	}
 
+	val image by lazy {
+		CharViewImage.INSTANCE.copy()
+	}
 	fun rerender() {
 		renderDiv.clear()
 		val char = lastCharacter
 		if (render && char != null) {
 			renderDiv.append(
-				CharViewImage.INSTANCE.renderCharacter(
+				image.renderCharacter(
 					char, renderX2, armorDisplayMode, weaponDisplayMode
 				).canvas
 			)
 		}
+	}
+
+	private fun showCombatStat(stat: BuffableStat, asPercentage: Boolean, displayName: String, isGood: Boolean = true) {
+		val cs = CombatStat(displayName)
+		cs.insertTo(combatStatDiv)
+		cs.showForStat(asPercentage, stat, isGood)
 	}
 
 	private fun addResourceTooltip(
@@ -305,14 +321,14 @@ class CharacterPanel : UiTemplate("char-panel") {
 			fragment.ref("stat-name").textContent = statName
 		}
 
-		fun showForStat(asPercentage:Boolean, stat:BuffableStat) {
+		fun showForStat(asPercentage:Boolean, stat:BuffableStat, isGood: Boolean) {
 			divValue.toggleClass("-buffed", stat.hasPositiveBuffs())
 			divValue.toggleClass("-debuffed", stat.hasNegativeBuffs())
 			divValue.textContent =
 				if (asPercentage) (stat.value*100).roundToInt().toString()+"%"
 				else stat.value.toNiceString(1)
 			divValue.addTooltip(
-				stat.explainBuffs(asPercentage = asPercentage).wrapIfNotEmpty(
+				stat.explainBuffs(asPercentage = asPercentage, isGood=isGood).wrapIfNotEmpty(
 					"<div class='stat-buffs -"+stat.statName+"'>",
 					"</div>"
 				)

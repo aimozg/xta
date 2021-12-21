@@ -7,6 +7,8 @@ fun HTMLElement.toggleClass(className:String, condition:Boolean) {
 	classList.toggle(className, condition)
 }
 
+val Location.fullpath get() = origin + pathname
+
 fun Document.getElementByIdOrThrow(elementId:String) =
 	getElementById(elementId) ?: error("Element #$elementId not found in document")
 

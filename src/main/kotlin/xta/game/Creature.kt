@@ -19,6 +19,21 @@ import kotlin.math.roundToInt
  */
 @JsExport
 abstract class Creature: AbstractCreature() {
+	init {
+		meleeAimStat.dynamicBuff("leveled",show=false, persistent = true) {
+			(it.level*0.06).coerceAtMost(0.36)
+		}
+		meleeAimStat.dynamicBuff("condition_Blind","Blinded", persistent = true) {
+			if (it.hasCondition(CombatCondition.BLIND)) {
+				// 50% of base+leveled
+				-0.5*((0.64+it.level*0.06).coerceAtMost(1.00))
+			} else 0.0
+		}
+		// TODO flying penalty
+		// TODO perk bonuses
+		// TODO item bonuses
+		// TODO mastery
+	}
 
 	/*
 	 *    ███████  ██████  ██    ██ ██ ██████  ███    ███ ███████ ███    ██ ████████
@@ -29,6 +44,11 @@ abstract class Creature: AbstractCreature() {
 	 *                ▀▀
 	 *
 	 */
+
+	fun allClothesDescript(nakedText:String = "gear"): String {
+		// TODO upper and lower garment
+		return armor?.name ?: nakedText
+	}
 
 	/*
 	 *     █████  ██████  ██████  ███████  █████  ██████   █████  ███    ██  ██████ ███████
@@ -326,6 +346,8 @@ abstract class Creature: AbstractCreature() {
 	fun mf(m:String,f:String) = if (looksFemale()) f else m
 
 	fun hasPerk(perkType: PerkType) = perkType in perks
+	fun addPerk(perkType: PerkType) = perks.addPerk(perkType)
+	fun removePerk(perkType: PerkType) = perks.removePerk(perkType)
 
 	// TODO maxVenom
 	fun maxVenom():Double = 0.0
@@ -380,35 +402,35 @@ abstract class Creature: AbstractCreature() {
 	}
 
 	val meleeAim: Double
-		get() {
-			var aim =meleeAimStat.value
-			aim += (level*0.06).coerceAtMost(0.72)
-			// TODO flying penalty
-			// TODO perk bonuses
-			// TODO item bonuses
-			// TODO mastery
-			if (hasCondition(CombatCondition.BLIND)) {
-				aim /= 2
-			}
-			return aim
-		}
+		get() = meleeAimStat.value
 	val meleeDodge: Double
 		get() {
 			return meleeDodgeStat.value + dodgeStat.value
 		}
 	fun meleeDamage(randomize:Boolean=true):Double {
 		var dmg = meleeDamageStat.value
-		dmg += scalingBonusStrength(randomize)
+		// Strength-based damage
+		// TODO port calculations from Combat.meleeDamageAcc (BASIC DAMAGE STUFF)
+		dmg += str
+		dmg += scalingBonusStrength(randomize)*0.2
 		dmg = round(dmg)
 		dmg = dmg.coerceAtLeast(10.0)
-		// Strength-based damage
-		// TODO port calculations from Combat.as:5166-5203
 		// Weapon-based damage
-		// TODO port calculations from Combat.as:5204-5287
+		// TODO Player.weaponAttack uses extra scaling with perks
+		val weaponAttack = meleeWeapon?.attack(this)?:0
+		val weaponDmgFactor = when {
+			weaponAttack < 51 -> (1.0 + weaponAttack * 0.03)
+			weaponAttack < 101 -> (2.5 + (weaponAttack-50) * 0.025)
+			weaponAttack < 151 -> (3.75 + (weaponAttack-100) * 0.02)
+			weaponAttack < 201 -> (4.75 + (weaponAttack-150) * 0.015)
+			else -> (5.5 + (weaponAttack-200) * 0.01)
+		}
+		dmg *= weaponDmgFactor
+		// TODO port other calculations from Combat.meleeDamageAcc (Weapon addition!)
 		// Damage post-processing
-		// TODO port calculations from Combat.as:5313-5327 (damage post-processing)
-		// TODO port calculations from Combat.as:5422-5440 (some more perk-based damage)
-		// TODO port calculations from Combat.as:5518-5539 (damage boosted by dao)
+		// TODO port calculations from Combat.meleeDamageAcc (damage post-processing)
+		// TODO port calculations from Combat.meleeDamageAcc (some more perk-based damage)
+		// TODO port calculations from Combat.meleeDamageAcc (damage boosted by dao)
 		// TODO port calculations from doDamage/doXXXDamage functions (damage type-related adjustments)
 		return dmg
 	}
@@ -440,8 +462,4 @@ abstract class Creature: AbstractCreature() {
 		addStatusEffect(StatusEffect(this, type, duration))
 	}
 
-	fun armorDescript(nakedText:String = "gear"): String {
-		// TODO upper and lower garment
-		return armor?.name ?: nakedText
-	}
 }

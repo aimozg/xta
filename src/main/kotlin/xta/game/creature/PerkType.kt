@@ -5,6 +5,7 @@ import xta.game.Creature
 /*
  * Created by aimozg on 09.12.2021.
  */
+@JsExport
 abstract class PerkType(
 	val id:String,
 	val name:String

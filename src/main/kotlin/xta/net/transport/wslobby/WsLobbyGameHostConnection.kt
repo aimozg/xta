@@ -1,11 +1,15 @@
 package xta.net.transport.wslobby
 
+import kotlinx.browser.window
 import org.khronos.webgl.Uint8Array
+import org.w3c.dom.btoa
 import xta.game.settings.GameSettings
 import xta.logging.LogManager
 import xta.logging.Logger
 import xta.net.transport.AbstractConnection
 import xta.net.transport.AbstractHostConnection
+import xta.utils.fullpath
+import xta.utils.stringify
 import kotlin.js.Promise
 
 /*
@@ -50,7 +54,15 @@ class WsLobbyGameHostConnection(
 		get() = ws?.state == WsLobbyClient.State.INROOM
 
 	override fun inviteCode(): String {
-		return "wsl-$roomId"
+		// if lobby is on same host&port
+		// ex. https://example.com/game with lobby wss://example.com/lobby
+		// remove origin from lobby url ("/lobby")
+		val sameurl = window.location.origin.replace(Regex("^http"),"ws")
+		val inviteUrl =
+			if (url.startsWith(sameurl)) url.replace(Regex("^wss?://[^/]+"),"")
+			else url
+		return window.location.fullpath.substringBefore('#') + "#" +
+				btoa(arrayOf("join",inviteUrl,roomId).stringify())
 	}
 
 	override fun register():Promise<WsLobbyGameHostConnection> {

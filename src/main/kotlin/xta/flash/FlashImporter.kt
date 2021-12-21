@@ -12,7 +12,8 @@ import xta.game.PlayerCharacter
 import xta.game.creature.KnownThings
 import xta.game.creature.body.*
 import xta.game.items.ArmorItem
-import xta.game.stats.Buff
+import xta.game.items.MeleeWeaponItem
+import xta.game.stats.BuffRate
 import xta.game.stats.BuffableStat
 import xta.game.stats.PrimaryStat
 import xta.game.stats.RawStat
@@ -55,7 +56,7 @@ class FlashImporter {
 			tag,
 			value,
 			options.text,
-			Buff.Rate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
+			BuffRate.byID(options.rate) ?: error("Invalid buff ${dest.statName}/$tag rate ${options.rate}"),
 			options.tick,
 			true,
 			options.show ?: true
@@ -205,8 +206,8 @@ class FlashImporter {
 			})
 		}
 
-		character.perks.clear()
 		for (jperk in data.perks) {
+			if (jperk.id in IGNORED_PERK_IDS) continue
 			character.perks.loadPerk(jperk.id)
 		}
 
@@ -217,8 +218,17 @@ class FlashImporter {
 		if (data.armorId != "nothing") {
 			val armor = ItemType.BY_ID[data.armorId] as? ArmorItem
 			character.armor = armor
+			armor?.loaded(character)
 			if (armor == null) {
-				logger.error(null, "Unknown armor id '${data.armorId}'")
+				logger.warn(null, "Unknown armor id '${data.armorId}'")
+			}
+		}
+		if (data.weaponId != "Fists  ") {
+			val weapon = ItemType.BY_ID[data.weaponId] as? MeleeWeaponItem
+			character.meleeWeapon = weapon
+			weapon?.loaded(character)
+			if (weapon == null) {
+				logger.warn(null, "Unknown melee weapon id '${data.weaponId}'")
 			}
 		}
 
@@ -228,6 +238,11 @@ class FlashImporter {
 
 	companion object {
 		private val logger by lazy { LogManager.getLogger("xta.flash.FlashImporter") }
+
+		private val IGNORED_PERK_IDS = arrayOf(
+			"Wizard's Endurance",
+			"Wizard's and Daoists's Endurance"
+		)
 
 		private val statusEffectIdToKnowledge = mapOf(
 			"Knows Aegis" to KnownThings.SPELL_AEGIS,
