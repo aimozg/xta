@@ -1,5 +1,7 @@
 package xta.game.items
 
+import xta.charview.CharViewImage
+import xta.game.Creature
 import xta.game.ItemType
 import xta.game.PlayerCharacter
 
@@ -10,24 +12,34 @@ import xta.game.PlayerCharacter
 open class MeleeWeaponItem(
 	id: String,
 	name: String,
-	longName: String,
-	override val description: String,
+	val longName: String,
+	val staticDescription: String,
 	val type: MeleeWeaponType,
 	val attackVerb: String,
-	open val attack: Int,
-	val cost: Int
+	val baseAttack: Int,
+	val cost: Int,
+	val tags: Array<out MeleeWeaponTag> = emptyArray()
 ): ItemType(id, name) {
-	override val tooltipHtml: String
-		get() = buildString {
-			append(super.tooltipHtml)
+	var sprite: String? = null
+
+	open fun render(image: CharViewImage, creature: PlayerCharacter) {
+		if (sprite != null) image.showPart(sprite!!)
+	}
+
+	override fun description(wielder: PlayerCharacter?) = staticDescription
+
+	override fun tooltipHtml(wielder: PlayerCharacter?) = buildString {
+			append(super.tooltipHtml(wielder))
 			append("\n")
 			append("\tType: ")
 			append(type.displayName)
 			append("\nAttack: ")
-			append(attack)
+			append(attack(wielder))
 			append("\nCost: ")
 			append(cost)
 		}
+
+	open fun attack(wielder: Creature?) = baseAttack
 
 	/**
 	 * Called when weapon is put in the slot by internal process (ex. from JSON)
@@ -40,19 +52,11 @@ open class MeleeWeaponItem(
 	open fun unequipped(creature: PlayerCharacter) {
 
 	}
+
+	fun hasTag(tag: MeleeWeaponTag) = tag in tags
+
 	companion object {
 		const val BUFF_TAG_SLOT = "slot_weapon"
 	}
 }
 
-enum class MeleeWeaponType(
-	val displayName: String
-) {
-	AXE("Axe"),
-	DAGGER("Dagger"),
-	GAUNTLET("Gauntlet"),
-	MACE("Mace/Hammer"),
-	SWORD("Sword"),
-	WAND("Wand"),
-	EXOTIC("Exotic"),
-}

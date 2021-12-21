@@ -5,6 +5,7 @@ import xta.game.PlayerCharacter
 import xta.game.combat.Combat
 import xta.game.combat.actions.abilities.CombatAbilityAction
 import xta.game.combat.actions.abilities.spellswhite.SpellBlind
+import xta.game.combat.actions.abilities.spellswhite.SpellHeal
 import xta.game.combat.actions.abilities.spellswhite.SpellLightningBolt
 import xta.game.combat.actions.abilities.spellswhite.SpellWhitefire
 
@@ -48,7 +49,7 @@ sealed class CombatAbility {
 			SpellBlind,
 //			SpellChargeWeapon,
 //			SpellChargeArmor,
-//			SpellHeal,
+			SpellHeal,
 //			SpellBlizzard,
 //			SpellMentalShield,
 //			SpellCure,

@@ -3,6 +3,7 @@ package xta.charview
 import org.w3c.dom.CanvasRenderingContext2D
 import xta.game.PlayerCharacter
 import xta.game.creature.body.*
+import xta.game.items.MeleeWeaponTag
 import xta.logging.LogManager
 import kotlin.js.Date
 
@@ -332,47 +333,10 @@ class CharViewImage : CompositeImage {
 		val playerHasWridLowerBody = isTaur || lowerBody.type in arrayOf(LowerBodyType.DRIDER, LowerBodyType.ATLACH_NACHA, LowerBodyType.HYDRA, LowerBodyType.NAGA, LowerBodyType.MELKIE, LowerBodyType.CENTIPEDE, LowerBodyType.SCYLLA, LowerBodyType.KRAKEN)
 
 		// TODO use sprite ids from weapons
-		val PlayerHasAWeapon = false
-		val PlayerHasAStaff = false
-		val PlayerHasAStaffHoly = false
-		val PlayerHasAStaffUnholy = false
-		val PlayerHasASword = false
-		val PlayerHasASwordHoly = false
-		val PlayerHasASwordunholy = false
-		val PlayerHasAnAxe = false
-		val PlayerHasAnAxeHoly = false
-		val PlayerHasAnAxeUnholy = false
-		val PlayerHasAHammer = false
-		val PlayerHasATetsu = false
-		val PlayerHasATetsuHoly = false
-		val PlayerHasATetsuUnholy = false
-		val PlayerHasASpear = false
-		val PlayerHasASpearHoly = false
-		val PlayerHasASpearUnholy = false
-		val PlayerHasAKatana = false
-		val PlayerHasAKatanaHoly = false
-		val PlayerHasAKatanaUnholy = false
-		val PlayerHasARapier = false
-		val PlayerHasARapierHoly = false
-		val PlayerHasARapierUnholy = false
-		val PlayerHasDagger = false
+		val PlayerHasAWeapon = meleeWeapon != null
 		val PlayerHasAShield = false
-		val PlayerDualWield = false
-		val PlayerHasSanctuary = false
-		val PlayerHasSanctuaryHoly = false
-		val PlayerHasSanctuaryUnholy = false
-		val PlayerHasABow = false
-		val PlayerHasABowHoly = false
-		val PlayerHasABowUnholy = false
-		val PlayerHasAThrownWeapon = false
-		val PlayerHasAJavelin = false
-		val PlayerHasAJavelinHoly = false
-		val PlayerHasAJavelinUnholy = false
-		val PlayerHasAThrownAe = false
-		val PlayerHasLactoBlaster = false
-		val PlayerHasADualWeapon = false
+		val PlayerHasADualWeapon = meleeWeapon?.hasTag(MeleeWeaponTag.DUAL) ?: false
 
-		val WeaponDisplay = false
 		val FireBuff = false
 
 		val armStanceNonBannedList = false
@@ -380,11 +344,20 @@ class CharViewImage : CompositeImage {
 		val playerWearsAStanceBannedDress = false
 		val playerWearsAStanceBannedArmor = false
 
-		// TODO use sprite id from armor
-		val ComfyCLothes = false
-
 		/* WEAPON AREA */
-		// TODO use sprite ids from weapons
+		if (playerHasWeaponBannedArms) when (weaponDisplayMode) {
+			WeaponDisplayMode.NO_WEAPON -> {}
+			WeaponDisplayMode.MELEE -> if (playerHasWeaponWings){
+				/* MELEE WEAPON */
+				meleeWeapon?.render(this@CharViewImage, char)
+				/* Shield */
+				// TODO port model.xml code (shield display)
+			}
+			WeaponDisplayMode.RANGED -> {
+				/* RANGED WEAPON */
+				// TODO port model.xml code (ranged weapon display)
+			}
+		}
 
 		/* ANTENNAE AREA */
 		when (antennae.type) {

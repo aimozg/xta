@@ -95,6 +95,7 @@ class PlayerCharacter: Creature() {
 	override fun deserializeFromJson(input: dynamic) {
 		super.deserializeFromJson(input)
 		armor?.loaded(this)
+		meleeWeapon?.loaded(this)
 		// TODO other items
 		updateStats()
 	}

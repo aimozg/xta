@@ -13,4 +13,13 @@ object ItemSerializers {
 			return item as? ArmorItem ?: error("Item with id '$j' is not an armor")
 		}
 	}
+	object MeleeWeaponSerializer: JsonSerializer<MeleeWeaponItem?> {
+		override fun serializeObject(t: MeleeWeaponItem?) = t?.id
+
+		override fun deserializeObject(j: dynamic): MeleeWeaponItem? {
+			if (j == null || j == undefined) return null
+			val item = ItemType.BY_ID[j as String] ?: return null
+			return item as? MeleeWeaponItem ?: error("Item with id '$j' is not a melee weapon")
+		}
+	}
 }

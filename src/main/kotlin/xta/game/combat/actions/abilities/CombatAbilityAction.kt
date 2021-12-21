@@ -52,6 +52,7 @@ abstract class CombatAbilityAction(actor:Player): AbstractCombatAction(actor) {
 		performAbilityEffect()
 	}
 
+	// TODO 'Cast X on Y'
 	override val label: String
 		get() = name
 	override val tooltip: String?

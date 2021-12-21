@@ -5,6 +5,7 @@ import xta.game.combat.AbstractCombatAction
 import xta.game.combat.CombatMath
 import xta.game.combat.CombatRoll
 import xta.game.combat.DamageType
+import xta.utils.capitalized
 import xta.utils.gamerng
 import xta.utils.percentRoll
 import kotlin.math.round
@@ -46,8 +47,7 @@ class CombatMeleeAttack(
 				failed = true
 				return
 			}
-			// TODO weapon verbs
-			display.outputText("[You] [verb hit] [npc1 you]! ")
+			display.outputText("[You] [verb ${attacker.meleeWeapon?.attackVerb?:"hit"}] [npc1 you]! ")
 		}
 
 		override fun doEffect() {
@@ -63,8 +63,7 @@ class CombatMeleeAttack(
 		get() = "Attack ${defender.name}"
 	override val tooltip: String
 		get() = buildString {
-			// TODO use weapon name
-			append("Strike ${defender.name} with your weapon")
+			append("${attacker.meleeWeapon?.attackVerb?.capitalized()?:"Strike"} ${defender.name} with your ${attacker.meleeWeapon?.name?:"fists"}")
 			append("\n")
 //			val hitChance = CombatMath.meleeTotalAccuracy(attacker, defender).times(100).roundToInt()
 //			append("\nHit chance: $hitChance%")

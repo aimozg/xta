@@ -12,13 +12,12 @@ abstract class ItemType(
 ) {
 	val buffTag get() = "item_$id"
 
-	abstract val description: String
-	open val tooltipHtml: String
-	get() = buildString {
+	abstract fun description(wielder: PlayerCharacter?): String
+	open fun tooltipHtml(wielder:PlayerCharacter?) = buildString {
 		append("<b>")
 		append(name.capitalized())
 		append("</b>\n\n")
-		append(description)
+		append(description(wielder))
 	}
 
 	init {

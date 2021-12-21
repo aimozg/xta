@@ -409,17 +409,28 @@ abstract class Creature: AbstractCreature() {
 		}
 	fun meleeDamage(randomize:Boolean=true):Double {
 		var dmg = meleeDamageStat.value
-		dmg += scalingBonusStrength(randomize)
+		// Strength-based damage
+		// TODO port calculations from Combat.meleeDamageAcc (BASIC DAMAGE STUFF)
+		dmg += str
+		dmg += scalingBonusStrength(randomize)*0.2
 		dmg = round(dmg)
 		dmg = dmg.coerceAtLeast(10.0)
-		// Strength-based damage
-		// TODO port calculations from Combat.as:5166-5203
 		// Weapon-based damage
-		// TODO port calculations from Combat.as:5204-5287
+		// TODO Player.weaponAttack uses extra scaling with perks
+		val weaponAttack = meleeWeapon?.attack(this)?:0
+		val weaponDmgFactor = when {
+			weaponAttack < 51 -> (1.0 + weaponAttack * 0.03)
+			weaponAttack < 101 -> (2.5 + (weaponAttack-50) * 0.025)
+			weaponAttack < 151 -> (3.75 + (weaponAttack-100) * 0.02)
+			weaponAttack < 201 -> (4.75 + (weaponAttack-150) * 0.015)
+			else -> (5.5 + (weaponAttack-200) * 0.01)
+		}
+		dmg *= weaponDmgFactor
+		// TODO port other calculations from Combat.meleeDamageAcc (Weapon addition!)
 		// Damage post-processing
-		// TODO port calculations from Combat.as:5313-5327 (damage post-processing)
-		// TODO port calculations from Combat.as:5422-5440 (some more perk-based damage)
-		// TODO port calculations from Combat.as:5518-5539 (damage boosted by dao)
+		// TODO port calculations from Combat.meleeDamageAcc (damage post-processing)
+		// TODO port calculations from Combat.meleeDamageAcc (some more perk-based damage)
+		// TODO port calculations from Combat.meleeDamageAcc (damage boosted by dao)
 		// TODO port calculations from doDamage/doXXXDamage functions (damage type-related adjustments)
 		return dmg
 	}
