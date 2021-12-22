@@ -35,35 +35,48 @@ object GoblinRace : Race(25, "goblin", 10) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (face.type == FaceType.HUMAN || face.type == FaceType.ANIMAL_TEETH)
+        if (face.type == FaceType.HUMAN || face.type == FaceType.ANIMAL_TEETH) {
             score++
-        if (ears.type == EarType.ELFIN)
+        }
+        if (ears.type == EarType.ELFIN) {
             score++
-        if (creature.tallness < 48)
+        }
+        if (creature.tallness < 48) {
             score++
-        if (hasVagina())
+        }
+        if (hasVagina()) {
             score++
-        if (hasPlainSkinOnly())
+        }
+        if (hasPlainSkinOnly()) {
             score++
-            if (skin.baseColor in goblinSkinColour)
+            if (skin.baseColor in goblinSkinColour) {
                 score++
-            if (eyes.type == EyeType.HUMAN && eyes.irisColor in goblinEyeColour)
+            }
+            if (eyes.type == EyeType.HUMAN && eyes.irisColor in goblinEyeColour) {
                 score++
-            if (hairColor in goblinHairColour)
+            }
+            if (hairColor in goblinHairColour) {
                 score++
-            if (arms.type == ArmType.HUMAN)
+            }
+            if (arms.type == ArmType.HUMAN) {
                 score++
-            if (lowerBody.type == LowerBodyType.HUMAN)
+            }
+            if (lowerBody.type == LowerBodyType.HUMAN) {
                 score++
-            if (antennae.type == AntennaeType.NONE)
+            }
+            if (antennae.type == AntennaeType.NONE) {
                 score++
+            }
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */
-        if (skin.baseColor !in goblinSkinColour)
+        if (skin.baseColor !in goblinSkinColour) {
             score = 0
-        if (ears.type != EarType.ELFIN)
+        }
+        if (ears.type != EarType.ELFIN) {
             score = 0
+        }
         score
     }
 }

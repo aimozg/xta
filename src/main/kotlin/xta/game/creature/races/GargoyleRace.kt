@@ -79,38 +79,54 @@ object GargoyleRace : Race(71, "gargoyle", 22) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (hairColor in gargoyleColour)
+        if (hairColor in gargoyleColour) {
             score++
-        if (skin.baseColor in gargoyleColour)
+        }
+        if (skin.baseColor in gargoyleColour) {
             score++
-        if (hair.type == HairType.NORMAL)
+        }
+        if (hair.type == HairType.NORMAL) {
             score++
-        if (skin.baseType == SkinBaseType.STONE)
+        }
+        if (skin.baseType == SkinBaseType.STONE) {
             score++
-        if (horns.type == HornType.GARGOYLE)
+        }
+        if (horns.type == HornType.GARGOYLE) {
             score++
-        if (eyes.type == EyeType.GEMSTONES)
+        }
+        if (eyes.type == EyeType.GEMSTONES) {
             score++
-        if (ears.type == EarType.ELFIN)
+        }
+        if (ears.type == EarType.ELFIN) {
             score++
-        if (face.type == FaceType.DEVIL_FANGS)
+        }
+        if (face.type == FaceType.DEVIL_FANGS) {
             score++
-        if (tongue.type == TongueType.DEMONIC)
+        }
+        if (tongue.type == TongueType.DEMONIC) {
             score++
-        if (arms.type == ArmType.GARGOYLE || arms.type == ArmType.GARGOYLE_2)
+        }
+        if (arms.type == ArmType.GARGOYLE || arms.type == ArmType.GARGOYLE_2) {
             score++
-        if (tail.type == TailType.GARGOYLE || tail.type == TailType.GARGOYLE_2)
+        }
+        if (tail.type == TailType.GARGOYLE || tail.type == TailType.GARGOYLE_2) {
             score++
-        if (lowerBody.type == LowerBodyType.GARGOYLE || lowerBody.type == LowerBodyType.GARGOYLE_2)
+        }
+        if (lowerBody.type == LowerBodyType.GARGOYLE || lowerBody.type == LowerBodyType.GARGOYLE_2) {
             score++
-        if (wings.type == WingType.GARGOYLE_LIKE_LARGE)
+        }
+        if (wings.type == WingType.GARGOYLE_LIKE_LARGE) {
             score += 4
-        if (gills.type == GillType.NONE)
+        }
+        if (gills.type == GillType.NONE) {
             score++
-        if (rearBody.type == RearBodyType.NONE)
+        }
+        if (rearBody.type == RearBodyType.NONE) {
             score++
-        if (antennae.type == AntennaeType.NONE)
+        }
+        if (antennae.type == AntennaeType.NONE) {
             score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */

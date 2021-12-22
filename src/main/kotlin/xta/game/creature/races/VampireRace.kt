@@ -52,28 +52,38 @@ object VampireRace : Race(68, "vampire", 6) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (ears.type == EarType.BAT)
+        if (ears.type == EarType.BAT) {
             score -= 10
-        if (ears.type == EarType.VAMPIRE)
-            score++
-        if (wings.type == WingType.VAMPIRE)
-            score += 4
-        if (faceType == FaceType.VAMPIRE)
-            score += 2
-        if (eyes.type == EyeType.VAMPIRE)
-            score++
-        if (eyes.irisColor == "blood-red")
-            score++
-        if (score >= 8) {
-            if (arms.type == ArmType.HUMAN)
-                score++
-            if (lowerBody.type == LowerBodyType.HUMAN)
-                score++
         }
-        if (tail.type == TailType.NONE)
+        if (ears.type == EarType.VAMPIRE) {
             score++
-        if (horns.type == HornType.NONE)
+        }
+        if (wings.type == WingType.VAMPIRE) {
+            score += 4
+        }
+        if (faceType == FaceType.VAMPIRE) {
+            score += 2
+        }
+        if (eyes.type == EyeType.VAMPIRE) {
             score++
+        }
+        if (eyes.irisColor == "blood-red") {
+            score++
+        }
+        if (score >= 8) {
+            if (arms.type == ArmType.HUMAN) {
+                score++
+            }
+            if (lowerBody.type == LowerBodyType.HUMAN){
+                score++
+            }
+        }
+        if (tail.type == TailType.NONE) {
+            score++
+        }
+        if (horns.type == HornType.NONE) {
+            score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */

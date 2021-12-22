@@ -34,31 +34,42 @@ object PhoenixRace : Race(51, "phoenix", 10) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (wings.type == WingType.FEATHERED_PHOENIX)
+        if (wings.type == WingType.FEATHERED_PHOENIX) {
             score++
-        if (arms.type == ArmType.PHOENIX)
+        }
+        if (arms.type == ArmType.PHOENIX) {
             score++
-        if (hair.type == HairType.FEATHER)
+        }
+        if (hair.type == HairType.FEATHER){
             score++
-            if ((face.type == FaceType.HUMAN || face.type == FaceType.SALAMANDER_FANGS) && score > 2)
+            if ((face.type == FaceType.HUMAN || face.type == FaceType.SALAMANDER_FANGS) && score > 2) {
                 score++
-            if ((ears.type == EarType.HUMAN || ears.type == EarType.ELFIN || ears.type == EarType.LIZARD) && score > 2)
+            }
+            if ((ears.type == EarType.HUMAN || ears.type == EarType.ELFIN || ears.type == EarType.LIZARD) && score > 2) {
                 score++
-        if (eyes.type ==EyeType.LIZARD)
+            }
+        }
+        if (eyes.type ==EyeType.LIZARD) {
             score++
-        if (lowerBody.type == LowerBodyType.SALAMANDER || lowerBody.type == LowerBodyType.HARPY)
+        }
+        if (lowerBody.type == LowerBodyType.SALAMANDER || lowerBody.type == LowerBodyType.HARPY) {
             score++
-        if (tail.type == TailType.SALAMANDER)
+        }
+        if (tail.type == TailType.SALAMANDER) {
             score++
-        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES))
+        }
+        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES)) {
             score++
-        if (countCocksOfType(PenisType.LIZARD) > 0)
+        }
+        if (countCocksOfType(PenisType.LIZARD) > 0) {
             score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */
-        if (wings.type != WingType.FEATHERED_PHOENIX)
+        if (wings.type != WingType.FEATHERED_PHOENIX) {
             score = 0
+        }
         score
     }
 }

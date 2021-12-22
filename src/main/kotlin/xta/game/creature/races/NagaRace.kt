@@ -36,28 +36,37 @@ object NagaRace : Race(45, "naga", 4) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (isNaga)
+        if (isNaga) {
             score += 3
-            if (arms.type == ArmType.HUMAN)
+            if (arms.type == ArmType.HUMAN) {
                 score++
-        if (tongue.type == TongueType.SNAKE)
+            }
+        }
+        if (tongue.type == TongueType.SNAKE) {
             score++
-        if (face.type == FaceType.SNAKE_FANGS)
+        }
+        if (face.type == FaceType.SNAKE_FANGS) {
             score++
-        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES))
+        }
+        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES)) {
             score++
-        if (eyes.type == EyeType.SNAKE)
+        }
+        if (eyes.type == EyeType.SNAKE) {
             score++
-        if (ears.type == EarType.SNAKE)
+        }
+        if (ears.type == EarType.SNAKE) {
             score++
-        if ((hasVagina() && vaginas[0].type == VaginaType.NAGA) || countCocksOfType(PenisType.LIZARD) > 0)
+        }
+        if ((hasVagina() && vaginas[0].type == VaginaType.NAGA) || countCocksOfType(PenisType.LIZARD) > 0) {
             score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */
         if (!isNaga || hairType == HairType.GORGON || eyes.type == EyeType.GORGON || horns.type == HornType.DRACONIC_X4_12_INCH_LONG || horns.type == HornType.DRACONIC_X2 || tongue.type == TongueType.DRACONIC || wings.type == WingType.DRACONIC_SMALL || wings.type == WingType.DRACONIC_LARGE || wings.type == WingType.DRACONIC_HUGE || hairType == HairType.FEATHER || arms.type == ArmType.HARPY || wings.type == WingType.FEATHERED_LARGE
-            || lowerBody.type == LowerBodyType.HYDRA || arms.type == ArmType.HYDRA)
+            || lowerBody.type == LowerBodyType.HYDRA || arms.type == ArmType.HYDRA) {
             score = 0
+        }
         score
     }
 }

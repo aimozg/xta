@@ -52,29 +52,39 @@ object SpiderRace : Race(38, "spider", 4) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (eyes.type == EyeType.SPIDER)
+        if (eyes.type == EyeType.SPIDER) {
             score++
-        if (faceType == FaceType.SPIDER_FANGS)
+        }
+        if (faceType == FaceType.SPIDER_FANGS) {
             score++
-        if (ears.type == EarType.ELFIN)
+        }
+        if (ears.type == EarType.ELFIN) {
             score++
-        if (arms.type == ArmType.SPIDER)
+        }
+        if (arms.type == ArmType.SPIDER) {
             score++
-        if (lowerBody.type == LowerBodyType.CHITINOUS_SPIDER_LEGS)
+        }
+        if (lowerBody.type == LowerBodyType.CHITINOUS_SPIDER_LEGS) {
             score++
-        if (lowerBody.type == LowerBodyType.DRIDER)
+        }
+        if (lowerBody.type == LowerBodyType.DRIDER) {
             score += 2
-        if (tailType == TailType.SPIDER_ADBOMEN)
+        }
+        if (tailType == TailType.SPIDER_ADBOMEN) {
             score++
-        if (!skin.hasPartialCoatOfType(SkinCoatType.CHITIN) && score > 0)
+        }
+        if (!skin.hasPartialCoatOfType(SkinCoatType.CHITIN) && score > 0) {
             score--
-        if (skin.hasPartialCoatOfType(SkinCoatType.CHITIN))
+        }
+        if (skin.hasPartialCoatOfType(SkinCoatType.CHITIN)) {
             score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */
-        if (creature.hasStatusEffect(StatusLib.BlackNipples))
+        if (creature.hasStatusEffect(StatusLib.BlackNipples)) {
             score++
+        }
         score
     }
 }

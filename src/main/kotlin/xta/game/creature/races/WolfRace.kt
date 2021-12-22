@@ -54,34 +54,48 @@ object WolfRace : Race(13, "wolf", 4)  {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (face.type == FaceType.WOLF || face.type == FaceType.ANIMAL_TEETH)
+        if (face.type == FaceType.WOLF || face.type == FaceType.ANIMAL_TEETH) {
             score++
-        if (eyes.type == EyeType.FENRIR)
+        }
+        if (eyes.type == EyeType.FENRIR) {
             score += 3
-        if (eyes.irisColor == "glacial blue")
+        }
+        if (eyes.irisColor == "glacial blue") {
             score += 2
-        if (eyes.type == EyeType.FERAL)
+        }
+        if (eyes.type == EyeType.FERAL) {
             score -= 11
-        if (ears.type == EarType.WOLF)
+        }
+        if (ears.type == EarType.WOLF) {
             score++
-        if (arms.type == ArmType.WOLF)
+        }
+        if (arms.type == ArmType.WOLF) {
             score++
-        if (lowerBody.type == LowerBodyType.WOLF)
+        }
+        if (lowerBody.type == LowerBodyType.WOLF) {
             score++
-        if (tail.type == TailType.WOLF)
+        }
+        if (tail.type == TailType.WOLF) {
             score++
-        if(skin.hasCoatOfType(SkinCoatType.FUR) || skin.hasPartialCoatOfType(SkinCoatType.FUR))
+        }
+        if(skin.hasCoatOfType(SkinCoatType.FUR) || skin.hasPartialCoatOfType(SkinCoatType.FUR)) {
             score++
-        if (wings.type == WingType.NONE)
+        }
+        if (wings.type == WingType.NONE) {
             score++
-        if (hairColor == "glacial white")
+        }
+        if (hairColor == "glacial white") {
             score++
-        if (skin.coatColor == "glacial white")
+        }
+        if (skin.coatColor == "glacial white") {
             score++
-        if (rearBody.type == RearBodyType.FENRIR_ICE_SPIKES)
+        }
+        if (rearBody.type == RearBodyType.FENRIR_ICE_SPIKES) {
             score += 6
-        if (countCocksOfType(PenisType.WOLF) > 0 && score > 0)
+        }
+        if (countCocksOfType(PenisType.WOLF) > 0 && score > 0) {
             score++
+        }
         /*
         TODO Perks and Gargoyle
          */

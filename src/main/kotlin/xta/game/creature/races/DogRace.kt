@@ -30,24 +30,33 @@ object DogRace : Race(12, "dog", 4) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (face.type == FaceType.DOG)
+        if (face.type == FaceType.DOG) {
             score++
-        if (ears.type == EarType.DOG)
+        }
+        if (ears.type == EarType.DOG) {
             score++
-        if (tail.type == TailType.DOG)
+        }
+        if (tail.type == TailType.DOG) {
             score++
-        if (lowerBody.type == LowerBodyType.DOG)
+        }
+        if (lowerBody.type == LowerBodyType.DOG) {
             score++
-        if (countCocksOfType(PenisType.DOG) > 0)
+        }
+        if (countCocksOfType(PenisType.DOG) > 0) {
             score++
-        if (breastRows.size > 1)
+        }
+        if (breastRows.size > 1) {
             score++
-        if (breastRows.size == 3)
+        }
+        if (breastRows.size == 3) {
             score++
-        if (breastRows.size > 3)
+        }
+        if (breastRows.size > 3) {
             score--
-        if (skin.hasCoatOfType(SkinCoatType.FUR) && score > 0)
+        }
+        if (skin.hasCoatOfType(SkinCoatType.FUR) && score > 0) {
             score++
+        }
         score
     }
 

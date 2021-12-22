@@ -44,26 +44,36 @@ object RaijuRace : Race(34, "raiju", 5) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (ears.type == EarType.RAIJU || ears.type == EarType.WEASEL)
+        if (ears.type == EarType.RAIJU || ears.type == EarType.WEASEL) {
             score++
-        if (eyes.type == EyeType.RAIJU)
+        }
+        if (eyes.type == EyeType.RAIJU) {
             score++
-        if (faceType == FaceType.WEASEL)
+        }
+        if (faceType == FaceType.WEASEL) {
             score++
-        if (arms.type == ArmType.RAIJU || arms.type == ArmType.RAIJU_PAWS)
+        }
+        if (arms.type == ArmType.RAIJU || arms.type == ArmType.RAIJU_PAWS){
+        score++
+        }
+        if (lowerBody.type == LowerBodyType.RAIJU) {
+        score++
+        }
+        if (tailType == TailType.RAIJU) {
             score++
-        if (lowerBody.type == LowerBodyType.RAIJU)
+        }
+        if (wings.type == WingType.THUNDEROUS_AURA) {
             score++
-        if (tailType == TailType.RAIJU)
+        }
+        if (rearBody.type == RearBodyType.RAIJU_MANE) {
             score++
-        if (wings.type == WingType.THUNDEROUS_AURA)
+        }
+        if (skin.basePattern == SkinBasePatternType.LIGHTNING_SHAPED_TATTOO) {
             score++
-        if (rearBody.type == RearBodyType.RAIJU_MANE)
+        }
+        if (hairType == HairType.STORM) {
             score++
-        if (skin.basePattern == SkinBasePatternType.LIGHTNING_SHAPED_TATTOO)
-            score++
-        if (hairType == HairType.STORM)
-            score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */

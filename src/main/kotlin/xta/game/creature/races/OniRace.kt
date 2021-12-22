@@ -40,36 +40,51 @@ object OniRace : Race(31, "oni", 6) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (ears.type == EarType.ONI)
+        if (ears.type == EarType.ONI) {
             score++
-        if (face.type == FaceType.ONI_TEETH)
+        }
+        if (face.type == FaceType.ONI_TEETH) {
             score++
-        if (horns.type == HornType.ONI || horns.type == HornType.ONI_X2)
+        }
+        if (horns.type == HornType.ONI || horns.type == HornType.ONI_X2) {
             score++
-        if (arms.type == ArmType.ONI)
+        }
+        if (arms.type == ArmType.ONI) {
             score++
-        if (lowerBody.type == LowerBodyType.ONI)
+        }
+        if (lowerBody.type == LowerBodyType.ONI) {
             score++
-        if (eyes.type == EyeType.ONI && eyeColor in oniEyeColours)
+        }
+        if (eyes.type == EyeType.ONI && eyeColor in oniEyeColours) {
             score++
-        if (skinColor in oniSkinColours)
+        }
+        if (skinColor in oniSkinColours) {
             score++
-        if(skin.basePattern == SkinBasePatternType.BATTLE_TATTOO)
+        }
+        if(skin.basePattern == SkinBasePatternType.BATTLE_TATTOO) {
             score++
-        if (rearBody.type == RearBodyType.NONE)
+        }
+        if (rearBody.type == RearBodyType.NONE) {
             score++
-        if (tail.type == TailType.NONE)
+        }
+        if (tail.type == TailType.NONE) {
             score++
-        if (creature.tone >= 80)
+        }
+        if (creature.tone >= 80) {
             score++
-        if (creature.tone >= 120 && score >= 4)
+        }
+        if (creature.tone >= 120 && score >= 4) {
             score++
-        if (creature.tone >= 160 && score >= 8)
+        }
+        if (creature.tone >= 160 && score >= 8) {
             score++
-        if((hasVagina() && breastRows.size >= 19) || creature.cocks.any { it.length > 18 })
+        }
+        if((hasVagina() && breastRows.size >= 19) || creature.cocks.any { it.length > 18 }) {
             score++
-        if (creature.tallness >= 108)
+        }
+        if (creature.tallness >= 108) {
             score++
+        }
         /*
         TODO Perks and stuff
          */

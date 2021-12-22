@@ -51,28 +51,39 @@ object AlrauneRace : Race(54, "alraune", 13) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (face.type == FaceType.HUMAN)
+        if (face.type == FaceType.HUMAN) {
             score++
-        if (eyes.type == EyeType.HUMAN)
+        }
+        if (eyes.type == EyeType.HUMAN) {
             score++
-        if (eyes.irisColor in alrauneIrisColour)
+        }
+        if (eyes.irisColor in alrauneIrisColour) {
             score++
-        if (ears.type == EarType.ELFIN)
+        }
+        if (ears.type == EarType.ELFIN) {
             score++
-        if ((hair.type == HairType.LEAF || hair.type == HairType.GRASS) && skin.baseColor in alrauneSkinColour)
+        }
+        if ((hair.type == HairType.LEAF || hair.type == HairType.GRASS) && skin.baseColor in alrauneSkinColour) {
+        score++
+        }
+        if (hasPlainSkinOnly() && skin.baseColor in alrauneSkin2Colour) {
             score++
-        if (hasPlainSkinOnly() && skin.baseColor in alrauneSkin2Colour)
+        }
+        if (arms.type == ArmType.PLANT) {
             score++
-        if (arms.type == ArmType.PLANT)
+        }
+        if (wings.type == WingType.NONE) {
             score++
-        if (wings.type == WingType.NONE)
+        }
+        if (lowerBody.type.isAlraune) {
             score++
-        if (lowerBody.type.isAlraune)
+        }
+        if (countCocksOfType(PenisType.STAMEN) > 0) {
             score++
-        if (countCocksOfType(PenisType.STAMEN) > 0)
+        }
+        if (hasVagina() && vaginas[0].type == VaginaType.ALRAUNE) {
             score++
-        if (hasVagina() && vaginas[0].type == VaginaType.ALRAUNE)
-            score++
+        }
         /*
         TODO PERKS AND OTHER STUFF
         */

@@ -74,44 +74,63 @@ object WoodElfRace : Race(92, "wood elf", 22) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if(creature.hasPerk(PerkLib.BlessingOfTheAncestorTree))
+        if(creature.hasPerk(PerkLib.BlessingOfTheAncestorTree)){
             score += 4
-            if (ears.type == EarType.ELVEN)
+            if (ears.type == EarType.ELVEN) {
                 score++
-            if (eyes.type == EyeType.ELF)
+            }
+            if (eyes.type == EyeType.ELF) {
                 score++
-            if (faceType == FaceType.ELF)
+            }
+            if (faceType == FaceType.ELF) {
                 score++
-            if (tongue.type == TongueType.ELF)
+            }
+            if (tongue.type == TongueType.ELF) {
                 score++
-            if (arms.type == ArmType.ELF)
+            }
+            if (arms.type == ArmType.ELF) {
                 score++
-            if (lowerBody.type == LowerBodyType.ELF)
+            }
+            if (lowerBody.type == LowerBodyType.ELF) {
                 score++
-            if (hairType == HairType.SILKEN)
+            }
+            if (hairType == HairType.SILKEN) {
                 score++
-            if (wings.type == WingType.NONE)
+            }
+            if (wings.type == WingType.NONE){
                 score++
-            if (hairColor == "golden blonde")
+            }
+            if (hairColor == "golden blonde") {
                 score++
-            if (eyes.irisColor == "light green")
+            }
+            if (eyes.irisColor == "light green") {
                 score++
-            if (skin.baseColor == "light")
+            }
+            if (skin.baseColor == "light"){
                 score++
-            if (skin.hasPlainSkinOnly() && skin.baseAdj == "flawless")
+            }
+            if (skin.hasPlainSkinOnly() && skin.baseAdj == "flawless") {
                 score++
-            if (tone <= 60)
+            }
+            if (tone <= 60) {
                 score++
-            if (thickness <= 50)
+            }
+            if (thickness <= 50) {
                 score++
-            if ((hasCock() && cocks.size < 6) || (hasVagina() && biggestTitSize() >= 3))
+            }
+            if ((hasCock() && cocks.size < 6) || (hasVagina() && biggestTitSize() >= 3)) {
                 score++
-            if (cor >= 50)
+            }
+            if (cor >= 50) {
                 score++
-            if (hasPerk(PerkLib.FlawlessBody))
+            }
+            if (hasPerk(PerkLib.FlawlessBody)) {
                 score++
-            if (hasPerk(PerkLib.ElvenSense))
+            }
+            if (hasPerk(PerkLib.ElvenSense)) {
                 score++
+            }
+        }
         /*
         TODO PERKS AND OTHER STUFF 
         */

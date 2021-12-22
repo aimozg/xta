@@ -35,30 +35,42 @@ object CaveWyrmRace : Race(44, "cave wyrm", 5) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES))
-            if (skin.coatColor == "midnight black")
+        if (skin.hasPartialCoatOfType(SkinCoatType.SCALES)) {
+            if (skin.coatColor == "midnight black") {
                 score++
+            }
             score++
-        if (skin.baseColor == "grayish-blue")
+        }
+        if (skin.baseColor == "grayish-blue") {
             score++
-        if (ears.type == EarType.CAVE_WYRM)
+        }
+        if (ears.type == EarType.CAVE_WYRM) {
             score++
-        if (eyes.type == EyeType.CAVE_WYRM)
+        }
+        if (eyes.type == EyeType.CAVE_WYRM) {
             score++
-        if (eyes.irisColor == "neon blue")
+        }
+        if (eyes.irisColor == "neon blue") {
             score++
-        if (tongue.type == TongueType.CAVE_WYRM)
+        }
+        if (tongue.type == TongueType.CAVE_WYRM) {
             score++
-        if (face.type == FaceType.SALAMANDER_FANGS)
+        }
+        if (face.type == FaceType.SALAMANDER_FANGS){
             score++
-        if (arms.type == ArmType.CAVE_WYRM)
+        }
+        if (arms.type == ArmType.CAVE_WYRM) {
             score++
-        if (lowerBody.type == LowerBodyType.CAVE_WYRM)
+        }
+        if (lowerBody.type == LowerBodyType.CAVE_WYRM) {
             score++
-        if (tail.type == TailType.CAVE_WYRM)
+        }
+        if (tail.type == TailType.CAVE_WYRM) {
             score++
-        if (countCocksOfType(PenisType.CAVE_WYRM) > 0 || vaginas[0].type == VaginaType.CAVE_WYRM)
+        }
+        if (countCocksOfType(PenisType.CAVE_WYRM) > 0 || vaginas[0].type == VaginaType.CAVE_WYRM) {
             score++
+        }
         //Missing: if Glowing nipples/ glowing asshole status effect +1
         /*
         TODO PERKS AND OTHER STUFF
