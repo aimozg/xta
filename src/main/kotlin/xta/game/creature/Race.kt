@@ -83,7 +83,7 @@ abstract class Race(
 			// ThunderbirdRace,
 			// BunnyRace,
 			// HarpyRace,
-			// SpiderRace,
+			SpiderRace,
 			// KangarooRace,
 			// MouseRace,
 			// ScorpionRace,
