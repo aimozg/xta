@@ -1,16 +1,7 @@
 package xta.game.creature
 
 import xta.game.PlayerCharacter
-import xta.game.creature.races.CatRace
-import xta.game.creature.races.HumanRace
-import xta.game.creature.races.KitsuneRace
-import xta.game.creature.races.DogRace
-import xta.game.creature.races.HorseRace
-import xta.game.creature.races.WolfRace
-import xta.game.creature.races.OniRace
-import xta.game.creature.races.ElfRace
-import xta.game.creature.races.JiangshiRace
-import xta.game.creature.races.WerewolfRace
+import xta.game.creature.races.*
 
 
 /*
@@ -79,7 +70,7 @@ abstract class Race(
 			// CowRace,
 			// SandtrapRace,
 			// BeeRace,
-			// GoblinRace,
+			GoblinRace,
 			// DemonRace,
 			// DevilRace,
 			// SharkRace,
@@ -98,17 +89,17 @@ abstract class Race(
 			// ScorpionRace,
 			// MantisRace,
 			// SalamanderRace,
-			// CaveWyrmRace,
-			// NagaRace,
+			CaveWyrmRace,
+			NagaRace,
 			// GorgonRace,
 			// VouivreRace,
 			// CouatlRace,
 			// HydraRace,
 			// FireSnailRace,
-			// PhoenixRace,
+			PhoenixRace,
 			// ScyllaRace,
 			// PlantRace,
-			// AlrauneRace,
+			AlrauneRace,
 			// YggdrasilRace,
 			// PigRace,
 			// SatyrRace,
