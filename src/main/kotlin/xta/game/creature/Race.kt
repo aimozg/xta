@@ -79,7 +79,7 @@ abstract class Race(
 			OniRace,
 			ElfRace,
 			// OrcRace,
-			// RaijuRace,
+			RaijuRace,
 			// ThunderbirdRace,
 			// BunnyRace,
 			// HarpyRace,
