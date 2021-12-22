@@ -88,7 +88,7 @@ abstract class Race(
 			// MouseRace,
 			// ScorpionRace,
 			// MantisRace,
-			// SalamanderRace,
+			SalamanderRace,
 			CaveWyrmRace,
 			NagaRace,
 			// GorgonRace,
