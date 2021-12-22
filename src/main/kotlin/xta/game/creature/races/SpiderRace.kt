@@ -55,21 +55,21 @@ object SpiderRace : Race(38, "spider", 4) {
         if (eyes.type == EyeType.SPIDER)
             score++
         if (faceType == FaceType.SPIDER_FANGS)
-            score++;
+            score++
         if (ears.type == EarType.ELFIN)
-            score++;
+            score++
         if (arms.type == ArmType.SPIDER)
-            score++;
+            score++
         if (lowerBody.type == LowerBodyType.CHITINOUS_SPIDER_LEGS)
-            score++;
+            score++
         if (lowerBody.type == LowerBodyType.DRIDER)
-            score += 2;
+            score += 2
         if (tailType == TailType.SPIDER_ADBOMEN)
-            score++;
+            score++
         if (!skin.hasPartialCoatOfType(SkinCoatType.CHITIN) && score > 0)
-            score--;
+            score--
         if (skin.hasPartialCoatOfType(SkinCoatType.CHITIN))
-            score++;
+            score++
         /*
         TODO PERKS AND OTHER STUFF
         */
