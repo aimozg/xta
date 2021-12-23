@@ -26,38 +26,54 @@ object JiangshiRace : Race(75, "jiangshi", 20) {
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {
         var score = 0
-        if (hasPlainSkinOnly() && skin.adj != "slippery")
+        if (hasPlainSkinOnly() && skin.adj != "slippery") {
             score++
-        if (skinColor in jiangshiSkinColour)
+        }
+        if (skinColor in jiangshiSkinColour) {
             score++
-        if (hair.type == HairType.NORMAL)
+        }
+        if (hair.type == HairType.NORMAL) {
             score++
-        if (face.type == FaceType.JIANGSHI)
+        }
+        if (face.type == FaceType.JIANGSHI) {
             score++
-        if (eyes.type == EyeType.JIANGSHI)
+        }
+        if (eyes.type == EyeType.JIANGSHI){
             score += 2
-        if (ears.type == EarType.HUMAN)
+        }
+        if (ears.type == EarType.HUMAN) {
             score++
-        if (tongue.type == TongueType.HUMAN)
+        }
+        if (tongue.type == TongueType.HUMAN) {
             score++
-        if (gills.type == GillType.NONE)
+        }
+        if (gills.type == GillType.NONE) {
             score++
-        if (antennae.type == AntennaeType.NONE)
+        }
+        if (antennae.type == AntennaeType.NONE) {
             score++
-        if (horns.type == HornType.SPELL_TAG && horns.count > 0)
+        }
+        if (horns.type == HornType.SPELL_TAG && horns.count > 0) {
             score++
-        if (wings.type == WingType.NONE)
+        }
+        if (wings.type == WingType.NONE) {
             score += 2
-        if (tail.type == TailType.NONE)
+        }
+        if (tail.type == TailType.NONE) {
             score++
-        if (arms.type == ArmType.JIANGSHI)
+        }
+        if (arms.type == ArmType.JIANGSHI) {
             score++
-        if (lowerBody.type == LowerBodyType.JIANGSHI)
+        }
+        if (lowerBody.type == LowerBodyType.JIANGSHI) {
             score++
-        if (rearBody.type == RearBodyType.NONE)
+        }
+        if (rearBody.type == RearBodyType.NONE) {
             score++
-        if (skin.basePattern == SkinBasePatternType.NONE)
+        }
+        if (skin.basePattern == SkinBasePatternType.NONE) {
             score++
+        }
         /*
            TODO: Perks and stuff
         */
