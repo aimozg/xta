@@ -5,7 +5,6 @@ import xta.game.creature.Gender
 import xta.game.creature.Race
 import xta.game.creature.RacialStage
 import xta.game.creature.body.*
-import xta.game.combat.statuses.StatusLib
 import xta.game.stats.Stats
 
 object SpiderRace : Race(38, "spider", 4) {
@@ -82,9 +81,12 @@ object SpiderRace : Race(38, "spider", 4) {
         /*
         TODO PERKS AND OTHER STUFF
         */
+        /*
+        // TODO 'Black nipples' status
         if (creature.hasStatusEffect(StatusLib.BlackNipples)) {
             score++
         }
+         */
         score
     }
 }

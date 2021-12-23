@@ -17,6 +17,7 @@ abstract class AbstractCombatAction(val actor: Player) {
 	abstract val label:String
 	abstract val tooltip:String?
 	open val enabled: Boolean get() = true
+	open val actionGroupName: String? = null
 
 	protected open fun otherPlayers(): List<Player> =
 		combat.participants.minus(actor)

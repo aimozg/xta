@@ -410,6 +410,17 @@ abstract class Creature: AbstractCreature() {
 		get() {
 			return meleeDodgeStat.value + dodgeStat.value
 		}
+	fun meleeWeaponDamageFactor():Double {
+		// TODO Player.weaponAttack uses extra scaling with perks
+		val weaponAttack = meleeWeapon?.attack(this)?:0
+		return when {
+			weaponAttack < 51 -> (1.0 + weaponAttack * 0.03)
+			weaponAttack < 101 -> (2.5 + (weaponAttack-50) * 0.025)
+			weaponAttack < 151 -> (3.75 + (weaponAttack-100) * 0.02)
+			weaponAttack < 201 -> (4.75 + (weaponAttack-150) * 0.015)
+			else -> (5.5 + (weaponAttack-200) * 0.01)
+		}
+	}
 	fun meleeDamage(randomize:Boolean=true):Double {
 		var dmg = meleeDamageStat.value
 		// Strength-based damage
@@ -419,16 +430,8 @@ abstract class Creature: AbstractCreature() {
 		dmg = round(dmg)
 		dmg = dmg.coerceAtLeast(10.0)
 		// Weapon-based damage
-		// TODO Player.weaponAttack uses extra scaling with perks
-		val weaponAttack = meleeWeapon?.attack(this)?:0
-		val weaponDmgFactor = when {
-			weaponAttack < 51 -> (1.0 + weaponAttack * 0.03)
-			weaponAttack < 101 -> (2.5 + (weaponAttack-50) * 0.025)
-			weaponAttack < 151 -> (3.75 + (weaponAttack-100) * 0.02)
-			weaponAttack < 201 -> (4.75 + (weaponAttack-150) * 0.015)
-			else -> (5.5 + (weaponAttack-200) * 0.01)
-		}
-		dmg *= weaponDmgFactor
+		dmg *= meleeWeaponDamageFactor()
+		dmg *= meleeDamageMultStat.value
 		// TODO port other calculations from Combat.meleeDamageAcc (Weapon addition!)
 		// Damage post-processing
 		// TODO port calculations from Combat.meleeDamageAcc (damage post-processing)

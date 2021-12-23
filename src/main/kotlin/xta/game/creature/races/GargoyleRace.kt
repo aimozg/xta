@@ -3,8 +3,8 @@ package xta.game.creature.races
 import xta.game.PlayerCharacter
 import xta.game.creature.Race
 import xta.game.creature.RacialStage
-import xta.game.creature.perks.PerkLib
 import xta.game.creature.body.*
+import xta.game.creature.perks.PerkLib
 import xta.game.stats.Stats
 
 object GargoyleRace : Race(71, "gargoyle", 22) {
@@ -69,12 +69,16 @@ object GargoyleRace : Race(71, "gargoyle", 22) {
 
 
     override fun stageForScore(creature: PlayerCharacter, score: Int): RacialStage? {
-        if (score >= 22)
-            if (CoC.instance.flags[kFLAGS.GARGOYLE_BODY_MATERIAL] == 1) return STAGE_GARGOYLE_BASE_1
-            if (CoC.instance.flags[kFLAGS.GARGOYLE_BODY_MATERIAL] == 2) return STAGE_GARGOYLE_BASE_2
-            if (creature.hasPerk(PerkLib.GargoylePure)) return STAGE_GARGOYLE_PURE
-            if (creature.hasPerk(PerkLib.GargoyleCorrupted)) return STAGE_GARGOYLE_CORRUPTED
-        else return null
+        return when {
+            score < 22 -> null
+            // TODO gargoyle material check
+//            CoC.instance.flags[kFLAGS.GARGOYLE_BODY_MATERIAL] == 1 -> return STAGE_GARGOYLE_BASE_1
+//            CoC.instance.flags[kFLAGS.GARGOYLE_BODY_MATERIAL] == 2 -> return STAGE_GARGOYLE_BASE_2
+            creature.hasPerk(PerkLib.GargoylePure) -> STAGE_GARGOYLE_PURE
+            creature.hasPerk(PerkLib.GargoyleCorrupted) -> STAGE_GARGOYLE_CORRUPTED
+            else -> // Should never happen
+                null
+        }
     }
 
     override fun basicScore(creature: PlayerCharacter): Int = with(creature) {

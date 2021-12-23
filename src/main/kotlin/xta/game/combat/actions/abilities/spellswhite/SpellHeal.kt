@@ -34,6 +34,7 @@ class SpellHeal(
 		display.outputText("[You] [verb chant] a magical song of healing and recovery and [your] wounds start knitting themselves shut in response. ")
 		val power = calcPower()
 		// TODO crit roll
+		// TODO do not overheal, use some generic 'hp recover' function
 		caster.hp += power
 		display.outputText("(<span class='text-heal'>$power</span>)")
 	}

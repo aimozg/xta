@@ -118,6 +118,14 @@ object PerkLib {
 		Stats.LUST_MAX_BASE to 45.0,
 		Stats.SPELL_POWER to 0.30
 	)
+	val BlessingOfTheAncestorTree = mk(
+		"Blessing of the ancestor tree", "Blessing of the ancestor tree",
+		"You have been 'blessed' by an elven ancestor tree and made into a true elf, binding your soul to the forest, however you no longer have the ability to transform again.",
+		Stats.SPE_MULT to +0.50,
+		Stats.INT_MULT to +0.30,
+		Stats.LIB_MULT to +0.40
+		// TODO +50 permanent corruption.
+	)
 
 	// TODO deactivates if int drops <60
 	val Channeling = mk(
@@ -259,6 +267,14 @@ object PerkLib {
 	)
 
 	// TODO deactivates if int drops < 75
+	val GargoylePure = mk(
+		"Gargoyle", "Pure Gargoyle",
+		"Need to gain sustenance from soulforce to stay alive."
+	)
+	val GargoyleCorrupted = mk(
+		"Corrupted Gargoyle", "Corrupted Gargoyle",
+		"You need constant intakes of sexual fluids to stay alive."
+	)
 	val GrandMage = mk(
 		"Grand Mage", "Grand Mage",
 		"Increases base spell strength by 20%, base mana pool by 135 and lust bar by 30.",

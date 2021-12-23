@@ -10,4 +10,6 @@ abstract class AbstractWhiteSpell(
 	// TODO apply cost reduction
 	override val manaCost: Int
 		get() = (baseManaCost * caster.spellCostStat.value).roundToInt()
+	override val actionGroupName: String?
+		get() = "White Spell"
 }

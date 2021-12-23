@@ -124,15 +124,17 @@ object WoodElfRace : Race(92, "wood elf", 22) {
             if (cor >= 50) {
                 score++
             }
+            /*
             if (hasPerk(PerkLib.FlawlessBody)) {
                 score++
             }
             if (hasPerk(PerkLib.ElvenSense)) {
                 score++
             }
+             */
         }
         /*
-        TODO PERKS AND OTHER STUFF 
+        TODO PERKS AND OTHER STUFF
         */
         score
     }
