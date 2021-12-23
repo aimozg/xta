@@ -1,7 +1,6 @@
 package xta.game.creature.races
 
 import xta.game.PlayerCharacter
-import xta.game.combat.StatusType
 import xta.game.creature.Race
 import xta.game.creature.RacialStage
 import xta.game.creature.body.*
@@ -68,7 +67,7 @@ object CaveWyrmRace : Race(44, "cave wyrm", 5) {
         if (tail.type == TailType.CAVE_WYRM) {
             score++
         }
-        if (countCocksOfType(PenisType.CAVE_WYRM) > 0 || vaginas[0].type == VaginaType.CAVE_WYRM) {
+        if (countCocksOfType(PenisType.CAVE_WYRM) > 0 || vaginas.getOrNull(0)?.type == VaginaType.CAVE_WYRM) {
             score++
         }
         //Missing: if Glowing nipples/ glowing asshole status effect +1
